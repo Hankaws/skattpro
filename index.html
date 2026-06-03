@@ -13,7 +13,43 @@
 <meta property="og:url" content="https://skattpro.no/">
 <meta property="og:image" content="https://skattpro.no/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<title>SkattPro 2026 - Norges skattekalkulator</title>
+<title>SkattPro 2026 – Norges skattekalkulator</title>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "SkattPro",
+  "url": "https://skattpro.no/",
+  "logo": "https://skattpro.no/og-image.png",
+  "sameAs": []
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "url": "https://skattpro.no/",
+  "name": "SkattPro",
+  "description": "Norsk skattekalkulator for 2026.",
+  "inLanguage": "nb-NO",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://skattpro.no/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "SkattPro",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript",
+  "description": "Beregn skatt, trinnskatt, trygdeavgift og nettoinntekt for 2026."
+}
+</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -122,7 +158,7 @@ details.faq-item{summary{list-style:none}}
   </div>
 </div>
 <div class="wrap">
-  <nav class="nav">
+  <header class="nav" role="banner">
     <div class="logo"><i>🧮</i> SkattPro 2026</div>
     <div class="nav-actions">
       <span class="badge" id="planBadge">Gratis</span>
@@ -131,7 +167,7 @@ details.faq-item{summary{list-style:none}}
     </div>
   </nav>
 
-  <div class="hero">
+  <div class="hero" id="skattekalkulator">
     <h1>Norges skattekalkulator 2026</h1>
     <p>Beregn trinnskatt, trygdeavgift, kommuneskatt, fellesskatt, formuesskatt og nettoinntekt. Eksporter PDF og TXT. Alle norske kommuner støttes.</p>
     <div class="cta-row">
