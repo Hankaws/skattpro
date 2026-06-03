@@ -65,24 +65,27 @@ html,body{
   line-height:1.5; min-height:100vh;
 }
 .wrap{max-width:1200px;margin:0 auto;padding:22px 18px 80px}
-.nav{display:flex;justify-content:space-between;align-items:center;padding:10px 0 14px;flex-wrap:wrap;gap:10px}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:6px 0 10px;flex-wrap:wrap;gap:10px;border-bottom:1px solid #1e293b;margin-bottom:10px}
+.hero{text-align:center;padding:18px 0 12px;color:#fff}
+.hero h1{font-size:2rem;font-weight:900;letter-spacing:-.5px;line-height:1.2;margin-bottom:8px}
+.hero p{color:var(--muted);font-size:1rem;max-width:720px;margin:0 auto;line-height:1.5}
+.cta-row{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.card{background:var(--gd);border:1px solid #1e293b;border-radius:16px;padding:20px;margin:14px 0}
+.card h2{font-size:1.05rem;font-weight:700;color:#fff;margin:0 0 14px;display:flex;align-items:center;gap:10px}
+.pro-card{background:linear-gradient(135deg,#1e3a8a,#4c1d95);border:1px solid #312e81;border-radius:16px;padding:20px;margin:14px 0;color:#fff}
+.pro-card h2{font-size:1.05rem;font-weight:700;color:#fff;margin:0 0 10px;display:flex;align-items:center;gap:10px}
 .logo{font-weight:800;font-size:1.3rem;color:#fff;display:flex;align-items:center;gap:10px}
 .logo i{font-style:normal;font-size:1.3rem}
 .nav-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .badge{padding:6px 10px;border-radius:999px;background:#0f172a;border:1px solid #1e293b;font-size:.82rem;color:var(--muted)}
-.hero{text-align:center;padding:28px 0 16px;color:#fff;background:var(--bg)}
-.hero h1{font-size:2.4rem;font-weight:900;letter-spacing:-.6px;line-height:1.15;margin-bottom:10px}
-.hero p{color:var(--muted);font-size:1.05rem;max-width:720px;margin:0 auto}
-.cta-row{display:flex;gap:12px;justify-content:center;margin-top:18px;flex-wrap:wrap}
-.card{background:var(--gd);border:1px solid #1e293b;border-radius:18px;padding:22px;margin:16px 0}
-.card h2{font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:10px}
 .input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #1e293b;background:#0a101d;color:#e5e7eb;font-size:.95rem}
 .input:focus{outline:none;border-color:#60a5fa;box-shadow:0 0 0 3px #60a5fa44}
 label{font-size:.82rem;color:#cbd5e1;display:block;margin:8px 0 5px;font-weight:600}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
 .row-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px}
-@media(max-width:780px){.row,.row-3,.row-4{grid-template-columns:1fr}}
+@media(max-width:780px){.row,.row-2,.row-3,.row-4{grid-template-columns:1fr}}
 .select{appearance:none;background:#0a101d url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 12px center no-repeat;padding-right:38px}
 .btn{display:inline-flex;align-items:center;gap:8px;border:0;padding:11px 16px;border-radius:10px;font-weight:700;cursor:pointer;color:#fff;background:#2563eb;font-size:.92rem;font-family:inherit}
 .btn:hover{filter:brightness(1.08)}
@@ -165,7 +168,7 @@ details.faq-item{summary{list-style:none}}
       <a href="#pro" class="btn sm upgrade">Oppgrader</a>
       <button class="btn sm" id="buyBtnNav">Kjøp Pro</button>
     </div>
-  </nav>
+  </header>
 
   <div class="hero" id="skattekalkulator">
     <h1>Norges skattekalkulator 2026</h1>
@@ -230,10 +233,9 @@ details.faq-item{summary{list-style:none}}
       <div><label>BSU-fradrag</label><input id="f4" class="input" type="number" value="0" min="0" step="1000"></div>
     </div>
 
-    <div class="row-4" style="margin-top:14px">
+    <div class="row-2" style="margin-top:14px">
       <div><label>Krypto gevinst (kr)</label><input id="krypto" class="input" type="number" value="0" min="0" step="1000"></div>
       <div><label>Aksjegevinst (kr)</label><input id="aksje" class="input" type="number" value="0" min="0" step="1000"></div>
-      <div></div><div></div>
     </div>
 
     <div class="row-3" style="margin-top:14px">
