@@ -118,6 +118,24 @@ label{font-size:.82rem;color:#cbd5e1;display:block;margin:8px 0 5px;font-weight:
 .footer{text-align:center;color:var(--dim);padding:30px 20px;font-size:.82rem}
 .footer a{color:var(--muted);text-decoration:underline;margin:0 6px}
 .pro-card{background:linear-gradient(135deg,#1e3a8a,#4c1d95);border:1px solid #312e81;border-radius:16px;padding:20px;margin:14px 0;color:#fff}
+
+/* Chatbot */
+.skattpro-chat-toggle{position:fixed;right:18px;bottom:18px;width:56px;height:56px;border-radius:999px;border:0;background:linear-gradient(135deg,#60a5fa,#818cf8);color:#0b0f1a;font-weight:800;cursor:pointer;box-shadow:0 10px 25px rgba(15,23,42,.35);display:flex;align-items:center;justify-content:center;z-index:950;font-size:1.1rem}
+.skattpro-chat-panel{position:fixed;right:18px;bottom:90px;width:min(360px,calc(100% - 28px));max-height:520px;background:#0b1220;border:1px solid #1e293b;border-radius:16px;display:none;flex-direction:column;overflow:hidden;z-index:950;box-shadow:0 20px 40px rgba(15,23,42,.45)}
+.skattpro-chat-panel.open{display:flex}
+.skattpro-chat-head{background:#0f172a;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #1e293b}
+.skattpro-chat-head strong{color:#fff;font-weight:700}
+.skattpro-chat-close{background:transparent;border:0;color:#94a3b8;cursor:pointer;font-weight:700}
+.skattpro-chat-body{padding:12px;overflow:auto;display:flex;flex-direction:column;gap:10px}
+.skattpro-chat-foot{border-top:1px solid #1e293b;padding:10px;display:flex;gap:8px}
+.skattpro-chat-foot input{flex:1;background:#0a101d;border:1px solid #1e293b;color:#e5e7eb;border-radius:10px;padding:10px 12px;outline:none}
+.skattpro-chat-foot input:focus{border-color:#60a5fa}
+.skattpro-chat-foot button{background:#2563eb;border:0;color:#fff;padding:10px 12px;border-radius:10px;font-weight:700;cursor:pointer}
+.skattpro-bubble{background:#0f172a;border:1px solid #1e293b;color:#e5e7eb;padding:10px 12px;border-radius:12px;line-height:1.5;font-size:.92rem;align-self:flex-start;max-width:88%}
+.skattpro-bubble.user{background:#2563eb;border:0;color:#fff;align-self:flex-end}
+.skattpro-chips{display:flex;flex-wrap:wrap;gap:6px}
+.skattpro-chip{background:#0f172a;border:1px solid #1e293b;color:#e5e7eb;padding:8px 10px;border-radius:999px;font-size:.82rem;cursor:pointer;font-weight:600}
+.skattpro-chip:hover{border-color:#60a5fa}
 .pro-card h2{font-size:1.25rem;font-weight:800;margin-bottom:8px}
 .price{font-size:2rem;font-weight:900;color:#fff;margin:8px 0}
 .pro-features{list-style:none;padding:0;margin:12px 0}
@@ -882,6 +900,79 @@ if(document.readyState === 'loading'){
 } else {
   init();
 }
+})();
+</script>
+
+<div class="skattpro-chat-toggle" aria-label="Chatbot" tabindex="0">💬</div>
+<div class="skattpro-chat-panel" id="chatPanel" role="dialog" aria-label="Spørsmål og svar">
+  <div class="skattpro-chat-head">
+    <strong>🤖 SkattPro Hjelp</strong>
+    <button class="skattpro-chat-close" id="chatClose">Lukk</button>
+  </div>
+  <div class="skattpro-chat-body" id="chatBody">
+    <div class="skattpro-bubble">Hei! Still spørsmål om skatt, trinn, fradrag eller formuesskatt. Eller velg et forslag nedenfor.</div>
+    <div class="skattpro-chips">
+      <button class="skattpro-chip" data-q="hva er trinnskatt">Hva er trinnskatt?</button>
+      <button class="skattpro-chip" data-q="hva er minstefradrag">Hva er minstefradrag?</button>
+      <button class="skattpro-chip" data-q="hva er formueskatt">Hva er formueskatt?</button>
+      <button class="skattpro-chip" data-q="hva er BSU fradrag">Hva er BSU-fradrag?</button>
+      <button class="skattpro-chip" data-q="hva er marginalskatt">Hva er marginalskatt?</button>
+    </div>
+  </div>
+  <div class="skattpro-chat-foot">
+    <input id="chatInput" placeholder="Skriv spørsmålet ditt..." />
+    <button id="chatSend">Send</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  function byId(id){return document.getElementById(id);}
+  const toggle = byId('chatToggle') || document.querySelector('.skattpro-chat-toggle');
+  const panel = byId('chatPanel');
+  const closeBtn = byId('chatClose');
+  const sendBtn = byId('chatSend');
+  const input = byId('chatInput');
+  const body = byId('chatBody');
+  if(!toggle || !panel){return;}
+
+  function openChat(){panel.classList.add('open');toggle.setAttribute('aria-expanded','true');}
+  function closeChat(){panel.classList.remove('open');toggle.setAttribute('aria-expanded','false');}
+
+  toggle.addEventListener('click', () => panel.classList.contains('open') ? closeChat() : openChat());
+  closeBtn.addEventListener('click', closeChat);
+
+  const replies = {
+    'hva er trinnskatt': 'Trinnskatt er en progressiv skatt på arbeidsinntekt. Jo mer du tjener, desto høyere skattesats på den delen som overstiger hvert trinn.',
+    'hva er minstefradrag': 'Minstefradraget reduserer den skattbare inntekten din. For 2026 er det opptil ca. 104 000 kr, avhengig av alder og inntekt.',
+    'hva er formueskatt': 'Formueskatt beregnes på nettoformue over 1,9 millioner kroner. Kommunen tar 0,35 % og staten tar 0,65 % på den delen over terskelen.',
+    'hva er bsu fradrag': 'BSU-sparande gir et fradrag på maksimalt 2 750 kr for ett års innskudd, så lenge du ikke overstiger sparegrensene.',
+    'hva er marginalskatt': 'Marginalskatt er den totale skattesatsen for den neste tjente kronen, inkludert trinnskatt, trygdeavgift og kommuneskatt.'
+  };
+  const fallback = 'Beklager, jeg er en enkel hjelpebot. For nøyaktig veiledning, sjekk https://www.skatteetaten.no';
+
+  function addBubble(text, user){
+    const div = document.createElement('div');
+    div.className = 'skattpro-bubble' + (user ? ' user' : '');
+    div.textContent = text;
+    body.appendChild(div);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function answer(q){
+    addBubble(q, true);
+    const key = q.toLowerCase().replace(/[^a-zA-ZæøåÆØÅ0-9 ]+/g, '').trim();
+    const text = replies[key] || fallback;
+    setTimeout(() => addBubble(text, false), 250);
+  }
+
+  if(sendBtn && input){
+    sendBtn.addEventListener('click', () => { const q = input.value.trim(); if(!q) return; input.value=''; answer(q); });
+    input.addEventListener('keydown', (e) => { if(e.key === 'Enter'){ const q = input.value.trim(); if(!q) return; input.value=''; answer(q); } });
+  }
+  document.querySelectorAll('.skattpro-chip').forEach((btn) => {
+    btn.addEventListener('click', () => answer(btn.dataset.q));
+  });
 })();
 </script>
 </body>
