@@ -256,6 +256,27 @@ details.faq-item{summary{list-style:none}}
       <div><label>Aksjegevinst (kr)</label><input id="aksje" class="input" type="number" value="0" min="0" step="1000"></div>
     </div>
 
+    <section style="margin-top:18px">
+      <h2 style="font-size:.95rem;font-weight:700;color:#fff;margin:0 0 10px">🚗 Reisefradrag</h2>
+      <div class="row-3">
+        <div>
+          <label>Antall arbeidsdager per år</label>
+          <input id="dager" class="input" type="number" value="0" min="0" max="365" step="1">
+          <p class="kommune-note">Normalt 230 arbeidsdager per år</p>
+        </div>
+        <div>
+          <label>Km tur/retur per dag</label>
+          <input id="km" class="input" type="number" value="0" min="0" step="1">
+          <p class="kommune-note">Sats: 1,90 kr/km for all reisevei</p>
+        </div>
+        <div>
+          <label>Bompenger og fergeutgifter per år</label>
+          <input id="bompenger" class="input" type="number" value="0" min="0" step="100">
+          <p class="kommune-note">Kun beløp over 3 300 kr gir fradrag</p>
+        </div>
+      </div>
+    </section>
+
     <div class="row-3" style="margin-top:14px">
       <div><label>Formue (kr)</label><input id="formue" class="input" type="number" value="0" min="0" step="10000"></div>
       <div><label>Gjeld (kr)</label><input id="gjeld" class="input" type="number" value="0" min="0" step="10000"></div>
@@ -494,6 +515,9 @@ const els = {
   f4: byId('f4'),
   krypto: byId('krypto'),
   aksje: byId('aksje'),
+  dager: byId('dager'),
+  km: byId('km'),
+  bompenger: byId('bompenger'),
   formue: byId('formue'),
   gjeld: byId('gjeld'),
   year: byId('year'),
@@ -570,6 +594,9 @@ function restore(i){
   els.f2.value = h.f2 ?? 0;
   els.f3.value = h.f3 ?? 0;
   els.f4.value = h.f4 ?? 0;
+  if(typeof h.dager !== 'undefined') els.dager.value = h.dager;
+  if(typeof h.kmPerDag !== 'undefined') els.km.value = h.kmPerDag;
+  if(typeof h.bompenger !== 'undefined') els.bompenger.value = h.bompenger;
   els.formue.value = h.formue ?? 0;
   if(h.muniRate) els.kommRate.value = (h.muniRate * 100).toFixed(2);
   els.muniCustom.value = h.muni || '';
@@ -590,6 +617,7 @@ function exportAcct(){
    'Personfradrag: -' + fmt(res.f2),
    'Andre fradrag: -' + fmt(res.f3),
    'BSU-fradrag: -' + fmt(res.f4),
+   ...(res.reiseFradrag > 0 ? ['Reisefradrag: -' + fmt(res.reiseFradrag)] : []),
    ...(res.formSkatt > 0 ? ['Formuesskatt: -' + fmt(res.formSkatt)] : []),
    '= Skattbar inntekt: ' + fmt(res.skattbar),
    '',
@@ -709,7 +737,14 @@ function beregn(){
   const year = parseInt(els.year.value) || 2026;
   const kommRate = getKommuneRate();
 
-  const totalFradrag = f1 + f2 + f3 + f4;
+  const dager = Math.max(0, parseInt(els.dager.value) || 0);
+  const kmPerDag = Math.max(0, parseFloat(els.km.value) || 0);
+  const bompenger = Math.max(0, parseFloat(els.bompenger.value) || 0);
+  const kmFradrag = dager * kmPerDag * 1.90;
+  const bompengerFradrag = Math.max(0, bompenger - 3300);
+  const reiseFradrag = kmFradrag + bompengerFradrag;
+
+  const totalFradrag = f1 + f2 + f3 + f4 + reiseFradrag;
   const skattbar = Math.max(0, income - totalFradrag);
 
   let trinn = 0, marginalRate = 0, bracketParts = [];
@@ -810,6 +845,10 @@ function beregn(){
     muni: getKommuneNavn(),
     muniRate: kommRate,
     f1, f2, f3, f4,
+    dager,
+    kmPerDag,
+    bompenger,
+    reiseFradrag,
     formue,
     gjeld: nettoFormue,
     skattbar, trinn, trygd, trygdRate, kommTotal, formSkatt, total, netto, pct, marginalRate, pd,
