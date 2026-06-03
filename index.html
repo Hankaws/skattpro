@@ -321,6 +321,10 @@ details.faq-item{summary{list-style:none}}
       <div class="kpi"><div class="v" id="r6">0 kr</div><div class="l">Formuesskatt</div></div>
     </div>
 
+    <div id="break" style="margin-top:16px"></div>
+    <div id="calcTable" class="status" style="margin-top:12px"></div>
+    <p id="warn" style="color:var(--warn);margin-top:8px;font-size:.85rem"></p>
+
     <div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px;flex-wrap:wrap;gap:8px">
       <strong style="color:#fff">Fordeling</strong>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -332,10 +336,6 @@ details.faq-item{summary{list-style:none}}
         <button class="btn sm secondary" id="copyBtn">🔗 Kopier</button>
       </div>
     </div>
-
-    <div id="break" style="margin-top:16px"></div>
-    <div id="calcTable" class="status" style="margin-top:12px"></div>
-    <p id="warn" style="color:var(--warn);margin-top:8px;font-size:.85rem"></p>
   </section>
 
   <section id="hist" class="card" style="display:none">
@@ -834,6 +834,8 @@ function beregn(){
     {l:'Personfradrag', v:-f2},
     {l:'Andre fradrag', v:-f3},
     {l:'BSU-fradrag', v:-f4},
+    ...(reiseFradrag > 0 ? [{l:'Reisefradrag', v:-reiseFradrag}] : []),
+    ...(barneFradrag > 0 ? [{l:'Barnefradrag', v:-barneFradrag}] : []),
     ...(nettoFormue > 0 ? [{l:'Formuesskatt (nettoformue over 1,9 mill)', v:-formSkatt}] : []),
     {l:'= Skattbar inntekt', v:skattbar - (nettoFormue > 0 ? formSkatt : 0), b:true},
     {l:'Trinnskatt', v:trinn},
@@ -841,10 +843,13 @@ function beregn(){
     {l:'Kommuneskatt + fellesskatt (' + kommRate.toFixed(3) + ' + 0,185)', v:kommTotal},
     {l:'= Total skatt', v:total, highlight:true}
   ];
-  byId('calcTable').innerHTML = rows.map(r => {
+  let html = rows.map(r => {
     const style = r.highlight ? 'color:#60a5fa' : '';
     return '<div class="line"><div class="lb">' + r.l + '</div><div class="vl" style="' + style + '">' + (r.v >= 0 ? fmt(r.v) : '- ' + fmt(Math.abs(r.v))) + '</div></div>';
   }).join('');
+
+  html += '<div class="line" style="justify-content:flex-end;gap:8px"><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm secondary" data-action="save">💾 Lagre</button><button class="btn sm secondary" data-action="txt">⬇ TXT</button><button class="btn sm secondary" data-action="pdf">⬇ PDF</button><button class="btn sm secondary" data-action="word">⬇ Word</button><button class="btn sm secondary" data-action="acct">📋 Regnskap</button><button class="btn sm secondary" data-action="copy">🔗 Kopier</button></div></div>';
+  byId('calcTable').innerHTML = html;
 
   const warnings = [];
   if(f4 > 27500) warnings.push('BSU er begrenset til 27 500 kr/år.');
@@ -939,6 +944,16 @@ function init(){
     params.set('kommRate', els.kommRate.value);
     const href = location.origin + location.pathname + '?' + params.toString();
     navigator.clipboard && navigator.clipboard.writeText(href).then(() => alert('Lenke kopiert!')).catch(() => prompt('Kopier:', href));
+  });
+  byId('calcTable').addEventListener('click', e => {
+    const action = e.target.closest('button')?.dataset.action;
+    if (!action) return;
+    if (action === 'save') byId('saveBtn').click();
+    else if (action === 'txt') exportTxt();
+    else if (action === 'pdf') exportPdf();
+    else if (action === 'word') exportWord();
+    else if (action === 'acct') exportAcct();
+    else if (action === 'copy') byId('copyBtn').click();
   });
   byId('clearHist').addEventListener('click', () => { if(!confirm('Slett historikk?')) return; localStorage.removeItem(STORE); renderHist(); });
   byId('histList').addEventListener('click', e => {
