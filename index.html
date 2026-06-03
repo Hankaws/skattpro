@@ -296,6 +296,7 @@ details.faq-item{summary{list-style:none}}
         <button class="btn sm secondary" id="txtBtn">⬇ TXT</button>
         <button class="btn sm secondary" id="pdfBtn">⬇ PDF</button>
         <button class="btn sm secondary" id="wordBtn">⬇ Word</button>
+        <button class="btn sm secondary" id="acctBtn">📋 Regnskap</button>
         <button class="btn sm secondary" id="copyBtn">🔗 Kopier</button>
       </div>
     </div>
@@ -575,6 +576,45 @@ function restore(i){
   beregn();
 }
 
+function exportAcct(){
+ const res = window._last || beregn();
+ const lines = [
+   'SkattPro · Regnskapssammendrag · ' + new Date(res.savedAt).toLocaleString('nb-NO'),
+   '',
+   'Inntektstype: ' + (els.incType.value === 'lønn' ? 'Lønn/arbeidsinntekt' : els.incType.value === 'pensjon' ? 'Pensjon/trygd' : els.incType.value === 'næring' ? 'Næringsinntekt' : 'Kapitalinntekt'),
+   'Alder: ' + (els.age.value === 'under17' ? 'Under 17 år' : els.age.value === '17-69' ? '17-69 år' : 'Over 69 år'),
+   'Kommune: ' + (els.muniCustom.value || els.muniSelect.options[els.muniSelect.selectedIndex]?.text || '-'),
+   '',
+   'Brutto inntekt: ' + fmt(res.income),
+   'Minstefradrag: -' + fmt(res.f1),
+   'Personfradrag: -' + fmt(res.f2),
+   'Andre fradrag: -' + fmt(res.f3),
+   'BSU-fradrag: -' + fmt(res.f4),
+   ...(res.formSkatt > 0 ? ['Formuesskatt: -' + fmt(res.formSkatt)] : []),
+   '= Skattbar inntekt: ' + fmt(res.skattbar),
+   '',
+   'Trinnskatt: ' + fmt(res.trinn),
+   'Trygdeavgift (' + (res.trygdRate*100).toFixed(1) + '%): ' + fmt(res.trygd),
+   'Kommuneskatt + fellesskatt (' + (res.kommRate*100).toFixed(1) + '%): ' + fmt(res.kommTotal),
+   '= Totalt skatt: ' + fmt(res.total),
+   '',
+   'Netto: ' + fmt(res.netto),
+   'Skatteprosent: ' + res.pct.toFixed(1) + '%',
+   'Terminbeløp/halvår: ' + fmt(res.pd),
+   'Marginalskatt: ' + (res.marginalRate*100).toFixed(1) + '%',
+   '',
+   'Obs: Dette er et estimat fra SkattPro. Sjekk alltid mot skatteetaten.no.'
+ ];
+ const text = lines.join('\n');
+ const blob = new Blob(['\ufeff', text], {type: 'text/plain;charset=utf-8'});
+ const a = document.createElement('a');
+ a.href = URL.createObjectURL(blob);
+ a.download = 'skattpro-regnskap-' + Date.now() + '.txt';
+ document.body.appendChild(a);
+ a.click();
+ a.remove();
+}
+
 function exportTxt(){
   const res = window._last || beregn();
   const t = [
@@ -835,6 +875,7 @@ function init(){
   byId('txtBtn').addEventListener('click', exportTxt);
   byId('pdfBtn').addEventListener('click', exportPdf);
   byId('wordBtn').addEventListener('click', exportWord);
+  byId('acctBtn').addEventListener('click', exportAcct);
   byId('copyBtn').addEventListener('click', () => {
     const params = new URLSearchParams();
     for(const id of ['income','incType','age','f1','f2','f3','f4','formue','gjeld','year']) params.set(id, els[id].value);
