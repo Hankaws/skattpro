@@ -48,9 +48,11 @@
 .slip-table{width:100%;border-collapse:collapse}
 .slip-table td{padding:8px;border-bottom:1px solid var(--line);text-align:left}
 .slip-table td:last-child{text-align:right;font-weight:700;color:var(--ink)}
-.hint{color:var(--muted);font-size:.82rem;margin-top:6px;line-height:1.35}
+.help-hint{color:var(--muted);font-size:.82rem;line-height:1.35;margin-top:6px}
+.empty-box{text-align:center;padding:24px;color:var(--muted)}
+.empty-box h3{color:var(--ink);font-size:1.05rem;margin:0 0 8px}
+.empty-box p{margin:0 0 14px}
 </style>
-</head>
 <body>
 <div class="wrap">
   <header class="nav" role="banner">
@@ -150,58 +152,58 @@
       <div>
         <label>Bruttolønn (kr/md)</label>
         <input id="empGross" class="input" type="number" value="0" min="0" step="1000">
-        <p class="hint">Fastlønn eller gjennomsnittlig månedslønn før skatt.</p>
+        <p class="help-hint">Fastlønn eller gjennomsnittlig månedslønn før skatt.</p>
       </div>
       <div>
         <label>Fradrag (kr/md)</label>
         <input id="empFradrag" class="input" type="number" value="0" min="0" step="1000">
-        <p class="hint">Andre faste fradrag per måned hvis aktuelt.</p>
+        <p class="help-hint">Andre faste fradrag per måned hvis aktuelt.</p>
       </div>
       <div><label>Koststed</label><input id="empCost" class="input" placeholder="Prosjekt X"></div>
       <div>
         <label>Skatteklasse</label>
         <select id="empKlasse" class="input select"><option value="1">Klasse 1</option><option value="2">Klasse 2</option></select>
-        <p class="hint">Klasse 2 hvis du har dobbelt Trinnskatt.</p>
+        <p class="help-hint">Klasse 2 hvis du har dobbelt Trinnskatt.</p>
       </div>
       <div>
         <label>Alminnelig skatt %</label>
         <input id="empAlmSats" class="input" type="number" step="0.01" value="18.5">
-        <p class="hint">Standard 18,5 % kan endres hvis du bruker en annen kommune.</p>
+        <p class="help-hint">Standard 18,5 % kan endres hvis du bruker en annen kommune.</p>
       </div>
       <div>
         <label>Arbeidsgiveravgift sone I–V</label>
         <select id="empSone" class="input select"><option value="0.141">Sone I 14,1 %</option><option value="0.106">Sone Ia/II 10,6 %</option><option value="0.064">Sone III 6,4 %</option><option value="0.051">Sone IV 5,1 %</option><option value="0.079">Sone IVa 7,9 %</option><option value="0">Sone V 0 %</option></select>
-        <p class="hint">Velg sone etter arbeidssted eller hjemmehørende kommune.</p>
+        <p class="help-hint">Velg sone etter arbeidssted eller hjemmehørende kommune.</p>
       </div>
       <div>
         <label>Feriepenger %</label>
         <input id="empFerie" class="input" type="number" step="0.01" value="10.2">
-        <p class="hint">10,2 % for ansatte over 62 år, 10,2 % i øvrige tilfeller.</p>
+        <p class="help-hint">10,2 % for ansatte over 62 år, 10,2 % i øvrige tilfeller.</p>
       </div>
       <div>
         <label>Timer/uke</label>
         <input id="empTimer" class="input" type="number" value="37.5" step="0.5">
-        <p class="hint">Brukes til å beregne kostnad per time og timebasert utlegg.</p>
+        <p class="help-hint">Brukes til å beregne kostnad per time og timebasert utlegg.</p>
       </div>
       <div>
         <label>Km per dag</label>
         <input id="empKm" class="input" type="number" value="0" step="1">
-        <p class="hint">Reiseruten hjemme-arbeid + arbeidsreiser i løpet av dagen.</p>
+        <p class="help-hint">Reiseruten hjemme-arbeid + arbeidsreiser i løpet av dagen.</p>
       </div>
       <div>
         <label>Bompenger/ferge (kr/md)</label>
         <input id="empBompenger" class="input" type="number" value="0" step="100">
-        <p class="hint">Kun hvis arbeidsgiver dekker bompenger eller ferge.</p>
+        <p class="help-hint">Kun hvis arbeidsgiver dekker bompenger eller ferge.</p>
       </div>
       <div>
         <label>Utlegg (kr/md)</label>
         <input id="empUtlegg" class="input" type="number" value="0" step="100">
-        <p class="hint">Andre utlegg dekket av arbeidsgiver.</p>
+        <p class="help-hint">Andre utlegg dekket av arbeidsgiver.</p>
       </div>
       <div>
         <label>Arbeidsdager/år</label>
         <input id="empDager" class="input" type="number" value="0" step="1">
-        <p class="hint">Brukes ved reisefradrag-kalkyle.</p>
+        <p class="help-hint">Brukes ved reisefradrag-kalkyle.</p>
       </div>
     </div>
 
@@ -226,6 +228,7 @@
         <div class="feature"><div class="feature-icon">🔁</div><h3>JSON</h3><p>For videre behandling eller import til andre systemer.</p></div>
         <div class="feature"><div class="feature-icon">📄</div><h3>TXT</h3><p>Til enkel lesing, deling eller utskrift.</p></div>
       </div>
+      <div id="inlineAlert" aria-live="polite" style="margin:10px 0;font-size:.9rem;color:#b91c1c"></div>
     </div>
 
     <div class="status" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px">
@@ -256,10 +259,10 @@
       </table>
     </div>
 
-    <div id="emptyState" class="section" style="text-align:center;padding:24px;color:var(--muted)">
-      <p style="font-size:1.1rem;font-weight:700;color:var(--ink);margin:0 0 6px">Ingen ansatte lagt til ennå</p>
-      <p style="margin:0 0 12px">Start med å fylle inn skjemaet over, deretter kan du eksportere til regnskap eller dele lønnsslipp.</p>
-      <a href="#funksjoner" class="btn sm">Se hva du får i Pro</a>
+    <div class="empty-box">
+      <h3>Ingen ansatte lagt til ennå</h3>
+      <p>Start med å fylle inn skjemaet over. Når du har lagt til ansatte, kan du eksportere til regnskap eller dele lønnsslipp.</p>
+      <button class="btn secondary" onclick="fillExample()">Vis rask demo – fyll eksempel</button>
     </div>
 
     <div id="overviewKpi" class="kpis" style="margin-top:14px"></div>
