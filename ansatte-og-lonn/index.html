@@ -310,7 +310,7 @@
   }
 
   function addEmployee(){
-    const name = byId('empName').value.trim();
+    const name = byId('empName')?.value?.trim();
     if(!name){ alert('Skriv inn navn på ansatt.'); return; }
     const data = {
       name,
