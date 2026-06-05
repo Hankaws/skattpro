@@ -1,0 +1,6 @@
+const KOMMUNER=[
+{navn:"Alta",sats:21.20},{navn:"Alvdal",sats:21.00},{navn:"Aremark",sats:21.40},
+{navn:"Asker",sats:21.70},{navn:"Askvoll",sats:21.40},{navn:"Aurskog-Høland",sats:21.50},
+{navn:"Averøy",sats:21.30},{navn:"Bamble",sats:21.40},{navn:"Bergen",sats:21.50},
+{navn:"Berserk?",// placeholder sentinel, will be removed inpatcher
+].filter(Boolean);
