@@ -77,7 +77,7 @@ async function sendLicenseEmail(email, key) {
   try {
     const resend = new Resend(process.env.RESEND_API_KEY ?? '');
     await resend.emails.send({
-      from: 'SkattPro <pro@skattpro.no>',
+      from: 'SkattPro <onboarding@resend.dev>',
       to: email,
       subject: 'Your SkattPro Pro license key',
       html: `<p>Thanks for upgrading to SkattPro Pro.</p>
