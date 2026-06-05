@@ -300,14 +300,14 @@
     byId('empBody').innerHTML = list.length ? list.map(e => `
       <tr>
         <td><strong>${escapeHtml(e.name)}</strong>${e.cost ? `<div style="font-size:.78rem;color:#64748b">${escapeHtml(e.cost)}</div>` : ''}</td>
-        <td class="num">${fmt(e.grossMonthly)}</td>
+        <td class="num">${fmt(e.gross)}</td>
         <td class="num">${fmt(e.arb/12)}</td>
         <td class="num">${fmt(e.trekkMonthly)}</td>
         <td class="num">${fmt(e.nettoMonthly)}</td>
         <td class="num">${fmt(e.ferie/12)}</td>
         <td class="num">${fmt(e.reiseMonthly)}</td>
-        <td class="num">${e.timerWeekly.toFixed(1)}</td>
-        <td class="num">${fmt(e.grossMonthly + e.arb/12 + e.reiseMonthly)}</td>
+        <td class="num">${(e.timer || 0).toFixed(1)}</td>
+        <td class="num">${fmt(e.gross + e.arb/12 + e.reiseMonthly)}</td>
         <td><button class="btn sm" data-slip="${e.id}">Lønnsslipp</button> <button class="btn sm secondary" data-delete="${e.id}">Slett</button></td>
       </tr>
     `).join('') : `<tr><td colspan="10" style="text-align:center;color:#64748b;padding:24px">Ingen ansatte funnet. Legg til din første ansatt under.</td></tr>`;
