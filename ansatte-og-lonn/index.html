@@ -48,6 +48,7 @@
 .slip-table{width:100%;border-collapse:collapse}
 .slip-table td{padding:8px;border-bottom:1px solid var(--line);text-align:left}
 .slip-table td:last-child{text-align:right;font-weight:700;color:var(--ink)}
+.hint{color:var(--muted);font-size:.82rem;margin-top:6px;line-height:1.35}
 </style>
 </head>
 <body>
@@ -136,18 +137,62 @@
 
     <div class="row-3" style="margin-bottom:12px">
       <div><label>Navn</label><input id="empName" class="input" placeholder="Ola Nordmann"></div>
-      <div><label>Bruttolønn (kr/md)</label><input id="empGross" class="input" type="number" value="0" min="0" step="1000"></div>
-      <div><label>Fradrag (kr/md)</label><input id="empFradrag" class="input" type="number" value="0" min="0" step="1000"></div>
+      <div>
+        <label>Bruttolønn (kr/md)</label>
+        <input id="empGross" class="input" type="number" value="0" min="0" step="1000">
+        <p class="hint">Fastlønn eller gjennomsnittlig månedslønn før skatt.</p>
+      </div>
+      <div>
+        <label>Fradrag (kr/md)</label>
+        <input id="empFradrag" class="input" type="number" value="0" min="0" step="1000">
+        <p class="hint">Andre faste fradrag per måned hvis aktuelt.</p>
+      </div>
       <div><label>Koststed</label><input id="empCost" class="input" placeholder="Prosjekt X"></div>
-      <div><label>Skatteklasse</label><select id="empKlasse" class="input select"><option value="1">Klasse 1</option><option value="2">Klasse 2</option></select></div>
-      <div><label>Alminnelig skatt %</label><input id="empAlmSats" class="input" type="number" step="0.01" value="18.5"></div>
-      <div><label>Arbeidsgiveravgift sone I–V</label><select id="empSone" class="input select"><option value="0.141">Sone I 14,1 %</option><option value="0.106">Sone Ia/II 10,6 %</option><option value="0.064">Sone III 6,4 %</option><option value="0.051">Sone IV 5,1 %</option><option value="0.079">Sone IVa 7,9 %</option><option value="0">Sone V 0 %</option></select></div>
-      <div><label>Feriepenger %</label><input id="empFerie" class="input" type="number" step="0.01" value="10.2"></div>
-      <div><label>Timer/uke</label><input id="empTimer" class="input" type="number" value="37.5" step="0.5"></div>
-      <div><label>Km per dag</label><input id="empKm" class="input" type="number" value="0" step="1"></div>
-      <div><label>Bompenger/ferge (kr/md)</label><input id="empBompenger" class="input" type="number" value="0" step="100"></div>
-      <div><label>Utlegg (kr/md)</label><input id="empUtlegg" class="input" type="number" value="0" step="100"></div>
-      <div><label>Arbeidsdager/år</label><input id="empDager" class="input" type="number" value="0" step="1"></div>
+      <div>
+        <label>Skatteklasse</label>
+        <select id="empKlasse" class="input select"><option value="1">Klasse 1</option><option value="2">Klasse 2</option></select>
+        <p class="hint">Klasse 2 hvis du har dobbelt Trinnskatt.</p>
+      </div>
+      <div>
+        <label>Alminnelig skatt %</label>
+        <input id="empAlmSats" class="input" type="number" step="0.01" value="18.5">
+        <p class="hint">Standard 18,5 % kan endres hvis du bruker en annen kommune.</p>
+      </div>
+      <div>
+        <label>Arbeidsgiveravgift sone I–V</label>
+        <select id="empSone" class="input select"><option value="0.141">Sone I 14,1 %</option><option value="0.106">Sone Ia/II 10,6 %</option><option value="0.064">Sone III 6,4 %</option><option value="0.051">Sone IV 5,1 %</option><option value="0.079">Sone IVa 7,9 %</option><option value="0">Sone V 0 %</option></select>
+        <p class="hint">Velg sone etter arbeidssted eller hjemmehørende kommune.</p>
+      </div>
+      <div>
+        <label>Feriepenger %</label>
+        <input id="empFerie" class="input" type="number" step="0.01" value="10.2">
+        <p class="hint">10,2 % for ansatte over 62 år, 10,2 % i øvrige tilfeller.</p>
+      </div>
+      <div>
+        <label>Timer/uke</label>
+        <input id="empTimer" class="input" type="number" value="37.5" step="0.5">
+        <p class="hint">Brukes til å beregne kostnad per time og timebasert utlegg.</p>
+      </div>
+      <div>
+        <label>Km per dag</label>
+        <input id="empKm" class="input" type="number" value="0" step="1">
+        <p class="hint">Reiseruten hjemme-arbeid + arbeidsreiser i løpet av dagen.</p>
+      </div>
+      <div>
+        <label>Bompenger/ferge (kr/md)</label>
+        <input id="empBompenger" class="input" type="number" value="0" step="100">
+        <p class="hint">Kun hvis arbeidsgiver dekker bompenger eller ferge.</p>
+      </div>
+      <div>
+        <label>Utlegg (kr/md)</label>
+        <input id="empUtlegg" class="input" type="number" value="0" step="100">
+        <p class="hint">Andre utlegg dekket av arbeidsgiver.</p>
+      </div>
+      <div>
+        <label>Arbeidsdager/år</label>
+        <input id="empDager" class="input" type="number" value="0" step="1">
+        <p class="hint">Brukes ved reisefradrag-kalkyle.</p>
+      </div>
     </div>
 
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px">
