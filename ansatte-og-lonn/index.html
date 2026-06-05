@@ -233,8 +233,25 @@
 
   let employees = [];
   let company = JSON.parse(localStorage.getItem('skattProCompany_v1') || '{}');
-  try { employees = JSON.parse(localStorage.getItem('skattProEmployees_v1') || '[]'); } catch(e){}
-  function save(){ localStorage.setItem('skattProCompany_v1', JSON.stringify(company)); localStorage.setItem('skattProEmployees_v1', JSON.stringify(employees)); }
+  try {
+    const raw = localStorage.getItem('skattProEmployees_v1');
+    console.log('[skattpro] raw localStorage employees:', raw);
+    employees = raw ? JSON.parse(raw) : [];
+    console.log('[skattpro] employees loaded:', employees.length);
+  } catch(err) {
+    console.error('[skattpro] load employees failed:', err);
+    employees = [];
+  }
+  function save(){
+    try {
+      console.log('[skattpro] save employees:', employees.length);
+      localStorage.setItem('skattProCompany_v1', JSON.stringify(company));
+      localStorage.setItem('skattProEmployees_v1', JSON.stringify(employees));
+    } catch(err) {
+      console.error('[skattpro] save failed:', err);
+      alert('Lagring feilet: ' + err.message);
+    }
+  }
 
   function calcEmployee(data){
     const gross = data.gross || 0;
