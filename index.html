@@ -1066,11 +1066,6 @@ function exportExcel(){
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'skattpro-' + Date.now() + '.xls'; document.body.appendChild(a); a.click(); a.remove();
 }
 
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-}
-
 function beregn(){
   const income = Math.max(0, parseFloat(els.income.value) || 0);
   const age = els.age.value;
