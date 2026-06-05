@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Aktiver SkattPro Pro</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="./skattpro-common.css" />
+<style>
+  .activate-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 24px 16px 64px;
+  }
+  .activate-wrap h1 {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+  }
+  .activate-wrap .sub {
+    color: #6b7280;
+    margin-bottom: 22px;
+  }
+  .card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 18px 18px 14px;
+    box-shadow: 0 4px 14px rgba(16, 24, 40, 0.06);
+    margin-bottom: 16px;
+  }
+  .card h2 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+  .features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 14px;
+  }
+  .features li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    font-size: 0.98rem;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  .features li:last-child {
+    border-bottom: 0;
+  }
+  .features li::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: #16a34a;
+    display: inline-block;
+  }
+  .activation-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .activation-form input[type="text"] {
+    width: 100%;
+    max-width: 480px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    font-size: 0.95rem;
+  }
+  .activation-form button,
+  .activation-form .hint {
+    margin-top: 10px;
+  }
+  .hint {
+    font-size: 0.85rem;
+    color: #6b7280;
+  }
+  .btn-row {
+    margin-top: 12px;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 9999px;
+    background: #ecfdf5;
+    color: #166534;
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 14px;
+    border: 1px solid #bbf7d0;
+  }
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="./index.html" class="logo">← SkattPro</a>
+      <nav class="nav">
+        <a href="./ansatte-og-lonn/">Lønn</a>
+        <a href="./index.html">Kalkulator</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="activate-wrap">
+    <h1>Aktiver SkattPro Pro</h1>
+    <p class="sub">Bruk lisensnøkkelen du har mottatt etter betaling for å låse opp alle Pro-funksjoner.</p>
+
+    <div class="card">
+      <h2>Hva du får i Pro</h2>
+      <ul class="features">
+        <li>Ubegrenset beregninger og lagrede ansatte</li>
+        <li>Utvidet lønnseksport og lønnsslipper</li>
+        <li>Bedre informasjon og strukturert PDF/CSV-eksport</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Skriv inn lisensnøkkel</h2>
+      <form id="activateForm" class="activation-form" autocomplete="off">
+        <label for="proKey">Lisensnøkkel</label>
+        <input id="proKey" type="text" maxlength="28" placeholder="SKATTPRO-PRO-2026A-0001" autocorrect="off" autocapitalize="none" spellcheck="false" />
+        <div class="hint">Nøkkelen er digital og knyttet til din betalingsordre. Du finner den i ordrebekreftelsen.</div>
+        <div class="btn-row">
+          <button type="submit" class="btn primary">🔐 Aktiver Pro</button>
+        </div>
+        <div id="activationMsg" class="hint" aria-live="polite"></div>
+      </form>
+    </div>
+
+    <p class="hint">Pro-tilgang er lagret lokalt i denne nettleseren. Hvis du bytter enhet eller nettleser, aktiverer du Pro på nytt med samme nøkkel.</p>
+  </main>
+</body>
+<script>
+(function() {
+  const LS_KEY = 'skattProPro_v1';
+
+  function isPro() {
+    try {
+      const v = localStorage.getItem(LS_KEY);
+      if (!v) return false;
+      const value = JSON.parse(v || '{}');
+      return value && value.key && (value.active === true || value.active === 'true');
+    } catch (err) {
+      return false;
+    }
+  }
+
+  function activate() {
+    return {
+      active: true,
+      key: (document.getElementById('proKey') || {}).value || '',
+      activatedAt: new Date().toISOString()
+    };
+  }
+
+  function savePro(state) {
+    localStorage.setItem(LS_KEY, JSON.stringify(state || { active: false }));
+  }
+
+  function setMessage(text) {
+    const el = document.getElementById('activationMsg');
+    if (!el) return;
+    el.textContent = text;
+    el.style.color = '#374151';
+  }
+
+  function setError(text) {
+    const el = document.getElementById('activationMsg');
+    if (!el) return;
+    el.textContent = text;
+    el.style.color = '#b91c1c';
+  }
+
+  function setSuccess(text) {
+    const el = document.getElementById('activationMsg');
+    if (!el) return;
+    el.textContent = text;
+    el.style.color = '#166534';
+  }
+
+  const form = document.getElementById('activateForm');
+  if (!form) return;
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const keyInput = (document.getElementById('proKey') || {}).value || '';
+    const trimmed = String(keyInput).trim().toUpperCase();
+
+    // Minimal sanity check; exact batch validation lives on purchase.
+    if (!trimmed) {
+      setError('Skriv inn lisensnøkkelen før du aktiverer.');
+      return;
+    }
+
+    if (!(trimmed.startsWith('SKATTPRO-PRO-') || trimmed.startsWith('SKATTPRO-PRO-'))) {
+      setError('Ugyldig format. Lisensnøkler ser typisk ut som SKATTPRO-PRO-2026A-0001.');
+      return;
+    }
+
+    const state = {
+      active: true,
+      key: trimmed,
+      activatedAt: new Date().toISOString()
+    };
+    savePro(state);
+    setSuccess('Pro er aktivert. Du kan gå tilbake til lønnssiden.');
+  });
+})();
+</script>
+</html>
