@@ -395,7 +395,7 @@
       <a href="#skattekalkulator">Kalkulator</a>
       <a href="#hvordan">Hvordan det fungerer</a>
       <a href="#faq">Ofte stilte spørsmål</a>
-      <a href="#pro">Priser</a>
+      <a href="ansatte-og-lonn/">Priser</a>
       <button class="btn ghost sm" id="footerPrivacy">📄 Personvernerklæring</button>
       <a href="https://www.skatteetaten.no" target="_blank" rel="noopener">Skatteetaten</a>
     </div>
@@ -789,8 +789,9 @@ const els = {
 };
 
 const STORE = 'skattPro2026_v1';
-const USED_CALC = 'skattProUsedFreeCalc';
-const USED_PDF = 'skattProUsedFreePdf';
+const CALC_DATE_KEY = 'skattProCalcDate';
+const CALC_COUNT_KEY = 'skattProCalcCount';
+const FREE_CALC_LIMIT = 5;
 const CONSENT_KEY = 'skattProConsent';
 
 function fmt(n){ return Math.round(n||0).toLocaleString('nb-NO') + ' kr'; }
@@ -937,7 +938,7 @@ function exportTxt(){
   a.remove();
 }
 function exportPdf(){
-  if(used(USED_PDF)){ alert('Du har brukt gratis PDF-eksport en gang. Kjøp Pro for ubegrenset eksport.'); byId('pro').scrollIntoView({behavior:'smooth'}); return; }
+  if(used(USED_PDF)){ alert('Gratis PDF-eksport er brukt. Få ubegrenset eksport og lønnsslipp i Pro.'); window.location.href = 'ansatte-og-lonn/'; return; }
   markUsed(USED_PDF);
   const res = window._last || beregn();
   const w = window.open('', '_blank');
@@ -1242,9 +1243,19 @@ function init(){
     if(btn.dataset.del !== undefined){ const h = load(); h.splice(parseInt(btn.dataset.del), 1); localStorage.setItem(STORE, JSON.stringify(h)); renderHist(); }
   });
   els.regnKnapp.addEventListener('click', () => {
-    if(used(USED_CALC) && !confirm('Du har brukt gratisberegningen en gang. Last inn siden på nytt for å resette i denne nettleseren, eller kjøp Pro for ubegrenset tilgang.')) return;
-    if(used(USED_CALC)) return;
-    markUsed(USED_CALC);
+const today = new Date().toISOString().slice(0,10);
+  if(localStorage.getItem(CALC_DATE_KEY) === today){
+    const count = parseInt(localStorage.getItem(CALC_COUNT_KEY) || '0', 10);
+    if(count >= FREE_CALC_LIMIT){
+      alert('Du har brukt de 5 gratis beregningene for i dag. Få ubegrenset tilgang i Pro.');
+      window.location.href = 'ansatte-og-lonn/';
+      return;
+    }
+    localStorage.setItem(CALC_COUNT_KEY, String(count + 1));
+  } else {
+    localStorage.setItem(CALC_DATE_KEY, today);
+    localStorage.setItem(CALC_COUNT_KEY, '1');
+  }
     beregn();
   });
   els.sisteKnapp.addEventListener('click', () => { if(load().length) restore(0); else alert('Ingen lagret beregning.'); });
@@ -1280,9 +1291,9 @@ function init(){
     });
   }
 
-  byId('buyBtnNav').addEventListener('click', () => byId('pro').scrollIntoView({behavior:'smooth'}));
-  byId('buyBtn').addEventListener('click', () => byId('pro').scrollIntoView({behavior:'smooth'}));
-  byId('startFree').addEventListener('click', () => byId('calc').scrollIntoView({behavior:'smooth'}));
+  byId('buyBtnNav').addEventListener('click', () => (window.location.href = 'ansatte-og-lonn/'));
+  if (byId('buyBtn')) byId('buyBtn').addEventListener('click', () => (window.location.href = 'ansatte-og-lonn/'));
+  if (byId('startFree')) byId('startFree').addEventListener('click', () => byId('calc').scrollIntoView({behavior:'smooth'}));
   byId('privacyLink').addEventListener('click', e => { e.preventDefault(); openPrivacy(); });
   byId('footerPrivacy').addEventListener('click', e => { e.preventDefault(); openPrivacy(); });
   byId('privacyClose').addEventListener('click', closePrivacy);
