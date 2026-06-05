@@ -4,7 +4,6 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Aktiver SkattPro Pro</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
 <link rel="stylesheet" href="./skattpro-common.css" />
 <style>
   .activate-wrap {
@@ -73,10 +72,6 @@
   .activation-form .hint {
     margin-top: 10px;
   }
-  .hint {
-    font-size: 0.85rem;
-    color: #6b7280;
-  }
   .btn-row {
     margin-top: 12px;
   }
@@ -93,6 +88,18 @@
     margin-bottom: 14px;
     border: 1px solid #bbf7d0;
   }
+  .help {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 12px;
+    padding: 14px;
+    color: #1e3a8a;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  .help a {
+    color: #1d4ed8;
+  }
 </style>
 </head>
 <body>
@@ -107,8 +114,20 @@
   </header>
 
   <main class="activate-wrap">
-    <h1>Aktiver SkattPro Pro</h1>
-    <p class="sub">Bruk lisensnøkkelen du har mottatt etter betaling for å låse opp alle Pro-funksjoner.</p>
+    <h1>Få tilgang til SkattPro Pro</h1>
+    <p class="sub">Betal med Stripe, så aktiverer du Pro med lisensnøkkelen du får tilsendt.</p>
+
+    <div class="card">
+      <h2>Slik får du Pro</h2>
+      <ol style="line-height:1.7">
+        <li>Kjøp abonnementet via Stripe nedenfor.</li>
+        <li>Du får nøkkelen i en e-post etter betaling.</li>
+        <li>Skriv inn nøkkelen her for å låse opp Pro.</li>
+      </ol>
+      <div class="btn-row">
+        <a class="btn" href="https://buy.stripe.com/9B600jd2cb7s3HS17k4c802" target="_blank" rel="noopener">💳 Kjøp / abonner</a>
+      </div>
+    </div>
 
     <div class="card">
       <h2>Hva du får i Pro</h2>
@@ -132,7 +151,12 @@
       </form>
     </div>
 
-    <p class="hint">Pro-tilgang er lagret lokalt i denne nettleseren. Hvis du bytter enhet eller nettleser, aktiverer du Pro på nytt med samme nøkkel.</p>
+    <div class="help">
+      <strong>Lurer du på noe?</strong><br />
+      Kontakt oss dersom betalingen er gjennomført, men du ikke har mottatt nøkkelen enda.
+    </div>
+
+    <p class="hint" style="margin-top:18px">Pro-tilgang er lagret lokalt i denne nettleseren. Hvis du bytter enhet eller nettleser, aktiverer du Pro på nytt med samme nøkkel.</p>
   </main>
 </body>
 <script>
@@ -148,14 +172,6 @@
     } catch (err) {
       return false;
     }
-  }
-
-  function activate() {
-    return {
-      active: true,
-      key: (document.getElementById('proKey') || {}).value || '',
-      activatedAt: new Date().toISOString()
-    };
   }
 
   function savePro(state) {
@@ -191,14 +207,13 @@
     const keyInput = (document.getElementById('proKey') || {}).value || '';
     const trimmed = String(keyInput).trim().toUpperCase();
 
-    // Minimal sanity check; exact batch validation lives on purchase.
     if (!trimmed) {
       setError('Skriv inn lisensnøkkelen før du aktiverer.');
       return;
     }
 
-    if (!(trimmed.startsWith('SKATTPRO-PRO-') || trimmed.startsWith('SKATTPRO-PRO-'))) {
-      setError('Ugyldig format. Lisensnøkler ser typisk ut som SKATTPRO-PRO-2026A-0001.');
+    if (!(trimmed.startsWith('SKATTPRO-PRO-') || trimmed.startsWith('SKATTPRO-PROS-'))) {
+      setError('Ugyldig format. Lisensnøkler ser typisk ut som SKATTPRO-PRO-YYYYX-0001.');
       return;
     }
 
