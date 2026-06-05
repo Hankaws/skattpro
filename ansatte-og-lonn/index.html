@@ -316,7 +316,7 @@
     const totalTrekk = employees.reduce((s,e)=>s+e.trekkMonthly*12,0);
     const totalNetto = employees.reduce((s,e)=>s+e.nettoMonthly*12,0);
     const totalArb = employees.reduce((s,e)=>s+e.arb,0);
-    const totalKost = employees.reduce((s,e)=>s+(e.grossMonthly + e.arb/12 + e.reiseMonthly),0);
+    const totalKost = employees.reduce((s,e)=>s+(e.gross + e.arb/12 + e.reiseMonthly),0);
     byId('overviewKpi').innerHTML = [
       ['Total lønnskostnad/md', totalKost],
       ['Brutto lønn/år', totalBrutto],
@@ -369,7 +369,7 @@
     if(!e) return;
     const monthLabel = e.month ? new Date(e.month + '-01').toLocaleString('nb-NO', { month:'long', year:'numeric' }) : 'Uten måned';
     const rows = [
-      ['Bruttolønn', fmt(e.grossMonthly)],
+      ['Bruttolønn', fmt(e.gross)],
       ['Feriepenger', fmt(e.ferie/12)],
       ['Arbeidsgiveravgift', fmt(e.arb/12)],
       ['Trygdeavgift (7,6%)', fmt(e.trygd/12)],
@@ -378,7 +378,7 @@
       ['Samlet trekk', fmt(e.trekkMonthly)],
       ['Netto utbetalt', fmt(e.nettoMonthly)],
       ...(e.reiseMonthly ? [['Reise/utlegg', fmt(e.reiseMonthly)]] : []),
-      ['Kostnad for bedriften', fmt(e.grossMonthly + e.arb/12 + e.reiseMonthly)]
+      ['Kostnad for bedriften', fmt(e.gross + e.arb/12 + e.reiseMonthly)]
     ].map(r => `<tr><td>${r[0]}</td><td style="text-align:right">${r[1]}</td></tr>`).join('');
     const html = `<!DOCTYPE html><html lang="no"><head><meta charset="UTF-8"><title>Lønnsslipp - ${escapeHtml(e.name)}</title><style>body{font-family:Arial,sans-serif;padding:32px;max-width:600px;margin:0 auto;color:#111}h1{font-size:1.3rem}.meta{color:#555;font-size:.9rem;margin-bottom:14px}table{width:100%;border-collapse:collapse}th,td{padding:8px;border-bottom:1px solid #e5e7eb;text-align:left}td:last-child{text-align:right}.footer{margin-top:30px;font-size:.8rem;color:#666}</style></head><body><h1>Lønnsslipp</h1><div class="meta"><strong>${escapeHtml(company.name || 'Firma')}</strong>${company.org ? ' · Org.nr ' + escapeHtml(company.org) : ''}<br>Ansatt: <strong>${escapeHtml(e.name)}</strong><br>Måned: ${monthLabel}</div><table>${rows}</table><p class="footer">SkattPro · estimat · Sjekk mot skatteetaten.no</p></body></html>`;
     const w = window.open('', '_blank');
@@ -391,7 +391,7 @@
     if(!employees.length){ alert('Ingen ansatte å eksportere.'); return; }
     const meta = [['SkattPro Ansatt-oversikt'],['Firma', company.name || '-'],['Org.nr', company.org || '-'],['Avdeling', company.dept || '-'],['Generert', new Date().toLocaleString('nb-NO')]];
     const headers = ['Ansatt','Måned','Koststed','Brutto/md','Arbgiveravg/md','Trekk/md','Netto/md','Feriepenger','Reise/utlegg','Timer/uke','Kostnad/md'];
-    const rows = employees.map(e => [e.name, e.month||'', e.cost||'', fmt(e.grossMonthly), fmt(e.arb/12), fmt(e.trekkMonthly), fmt(e.nettoMonthly), fmt(e.ferie/12), fmt(e.reiseMonthly), e.timerWeekly.toFixed(1), fmt(e.grossMonthly + e.arb/12 + e.reiseMonthly)]);
+    const rows = employees.map(e => [e.name, e.month||'', e.cost||'', fmt(e.gross), fmt(e.arb/12), fmt(e.trekkMonthly), fmt(e.nettoMonthly), fmt(e.ferie/12), fmt(e.reiseMonthly), (e.timer || 0).toFixed(1), fmt(e.gross + e.arb/12 + e.reiseMonthly)]);
     const lines = [...meta, headers, ...rows].map(r => r.map(v => '"' + String(v).replace(/"/g,'""') + '"').join(';')).join('\n');
     const blob = new Blob(['\ufeff', lines], {type:'text/csv;charset=utf-8'});
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'skattpro-ansatte-' + Date.now() + '.csv'; document.body.appendChild(a); a.click(); a.remove();
@@ -401,7 +401,7 @@
     if(!employees.length){ alert('Ingen ansatte å eksportere.'); return; }
     const header = ['SkattPro Ansatt-oversikt','Firma: ' + (company.name || '-'),'Org.nr: ' + (company.org || '-'),'Avdeling: ' + (company.dept || '-'),'Generert: ' + new Date().toLocaleString('nb-NO'),'Satser 2026',''];
     const rows = employees.map(e => {
-      const info = {Ansatt: e.name, Måned: e.month||'-', Koststed: e.cost||'-', 'Brutto/md': fmt(e.grossMonthly), 'Arbgiveravg/md': fmt(e.arb/12), 'Trekk/md': fmt(e.trekkMonthly), 'Netto/md': fmt(e.nettoMonthly), Feriepenger: fmt(e.ferie/12), 'Reise/utlegg': fmt(e.reiseMonthly), 'Timer/uke': e.timerWeekly.toFixed(1), 'Kostnad/md': fmt(e.grossMonthly + e.arb/12 + e.reiseMonthly)};
+      const info = {Ansatt: e.name, Måned: e.month||'-', Koststed: e.cost||'-', 'Brutto/md': fmt(e.gross), 'Arbgiveravg/md': fmt(e.arb/12), 'Trekk/md': fmt(e.trekkMonthly), 'Netto/md': fmt(e.nettoMonthly), Feriepenger: fmt(e.ferie/12), 'Reise/utlegg': fmt(e.reiseMonthly), 'Timer/uke': (e.timer || 0).toFixed(1), 'Kostnad/md': fmt(e.gross + e.arb/12 + e.reiseMonthly)};
       return Object.entries(info).map(([k,v]) => `${k}: ${v}`).join(' | ');
     });
     const blob = new Blob(['\ufeff', header.concat(rows).join('\n')], {type:'text/plain;charset=utf-8'});
@@ -412,7 +412,7 @@
     if(!employees.length){ alert('Ingen ansatte å eksportere.'); return; }
     const meta = ['SkattPro Ansatt-oversikt','','Firma: ' + (company.name || '-'),'Org.nr: ' + (company.org || '-'),'Avdeling: ' + (company.dept || '-'),'Generert: ' + new Date().toLocaleString('nb-NO'),''];
     const headers = ['Ansatt','Måned','Koststed','Brutto/md','Arbgiveravg/md','Trekk/md','Netto/md','Feriepenger','Reise/utlegg','Timer/uke','Kostnad/md'];
-    const rows = employees.map(e => [e.name, e.month||'', e.cost||'', fmt(e.grossMonthly), fmt(e.arb/12), fmt(e.trekkMonthly), fmt(e.nettoMonthly), fmt(e.ferie/12), fmt(e.reiseMonthly), e.timerWeekly.toFixed(1), fmt(e.grossMonthly + e.arb/12 + e.reiseMonthly)]);
+    const rows = employees.map(e => [e.name, e.month||'', e.cost||'', fmt(e.gross), fmt(e.arb/12), fmt(e.trekkMonthly), fmt(e.nettoMonthly), fmt(e.ferie/12), fmt(e.reiseMonthly), (e.timer || 0).toFixed(1), fmt(e.gross + e.arb/12 + e.reiseMonthly)]);
     const table = [meta, headers, ...rows].map(r => r.map(v => `<td>${v}</td>`).join('')).map(row => `<tr>${row}</tr>`).join('');
     const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"></head><body><table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse;font-family:Arial,sans-serif">${table}</table></body></html>`;
     const blob = new Blob(['\ufeff', html], {type:'application/vnd.ms-excel'});
@@ -430,14 +430,14 @@
         name: e.name,
         month: e.month,
         costCenter: e.cost || '',
-        grossMonthly: e.grossMonthly,
+        grossMonthly: e.gross,
         employerTaxMonthly: +(e.arb/12).toFixed(2),
         deductionsMonthly: +(e.trekkMonthly).toFixed(2),
         netMonthly: +(e.nettoMonthly).toFixed(2),
         holidayPayMonthly: +(e.ferie/12).toFixed(2),
         travelExpensesMonthly: +(e.reiseMonthly).toFixed(2),
-        hoursPerWeek: +e.timerWeekly.toFixed(1),
-        totalMonthlyCost: +(e.grossMonthly + e.arb/12 + e.reiseMonthly).toFixed(2)
+        hoursPerWeek: +(e.timer || 0).toFixed(1),
+        totalMonthlyCost: +(e.gross + e.arb/12 + e.reiseMonthly).toFixed(2)
       }))
     };
     const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
