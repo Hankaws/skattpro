@@ -4,3 +4,4 @@ package-lock.json
 .vercelignore
 pro-keys.json
 *.log
+.vercel
