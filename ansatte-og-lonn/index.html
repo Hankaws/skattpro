@@ -205,7 +205,10 @@
     </div>
 
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px">
-      <button class="btn" id="addEmpBtn">+ Legg til ansatt</button>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn sm secondary" id="fillExampleBtn">Fyll eksempel</button>
+        <button class="btn" id="addEmpBtn">+ Legg til ansatt</button>
+      </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button class="btn sm secondary" id="exportCsvBtn">CSV</button>
         <button class="btn sm secondary" id="exportTxtBtn">TXT</button>
@@ -450,6 +453,42 @@
     byId('empCost').value = '';
   }
 
+  function fillExample(){
+    const now = new Date();
+    byId('empMonth').value = now.toISOString().slice(0,7);
+    byId('firmName').value = 'Eksempel AS';
+    byId('firmOrg').value = '999999999';
+    byId('firmDept').value = 'Regnskap';
+    const samples = [
+      { name:'Ola Nordmann', gross:55000, fradrag:0, koststed:'Salg', klasse:'1', alm:'18.5', sone:'0.141', ferie:'10.2', timer:37.5, km:12, bompenger:400, utlegg:0, dager:230 },
+      { name:'Kari Hansen', gross:62000, fradrag:0, koststed:'IT', klasse:'1', alm:'18.5', sone:'0.141', ferie:'10.2', timer:37.5, km:8, bompenger:0, utlegg:200, dager:230 },
+      { name:'Ali Youssef', gross:72000, fradrag:4800, koststed:'Operasjoner', klasse:'2', alm:'18.5', sone:'0.106', ferie:'10.2', timer:40, km:0, bompenger:0, utlegg:0, dager:230 }
+    ];
+    employees = [];
+    samples.forEach(s => {
+      const data = {
+        name: s.name,
+        gross: s.gross,
+        andre: s.fradrag,
+        cost: s.koststed,
+        klasse: s.klasse,
+        alm: s.alm,
+        sone: s.sone,
+        ferie: s.ferie,
+        timer: s.timer,
+        km: s.km,
+        bompenger: s.bompenger,
+        utlegg: s.utlegg,
+        dager: s.dager,
+        month: byId('empMonth').value || new Date().toISOString().slice(0,7)
+      };
+      const calc = calcEmployee(data);
+      employees.push({ id: uid(), ...calc });
+    });
+    save();
+    render();
+  }
+
   function removeEmployee(id){ if(confirm('Slette denne ansatten?')){ employees = employees.filter(e => e.id !== id); save(); render(); } }
 
   function openSlip(id){
@@ -542,6 +581,7 @@
         save();
       });
     });
+    byId('fillExampleBtn').addEventListener('click', fillExample);
     byId('addEmpBtn').addEventListener('click', addEmployee);
     byId('exportCsvBtn').addEventListener('click', exportCsv);
     byId('exportTxtBtn').addEventListener('click', exportTxt);
