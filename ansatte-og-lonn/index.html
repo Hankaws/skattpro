@@ -132,6 +132,7 @@
       <div class="setup-step"><div class="step-num">2</div><div><strong>Legg til ansatte</strong><p>Fyll inn lønn, skatteklasse og sone. Vi beregner resten.</p></div></div>
       <div class="setup-step"><div class="step-num">3</div><div><strong>Eksporter til regnskap</strong><p>Én klikk og du har all data klargjort for bokføring.</p></div></div>
     </div>
+    <p class="section-lead" style="margin-top:12px">Ingen kredittkort · Ingen binding · Alt lagres lokalt i din nettleser</p>
   </section>
 
   <section class="section">
@@ -213,6 +214,16 @@
       </div>
     </div>
 
+    <div class="section" style="margin-top:-4px">
+      <p class="section-lead" style="margin-bottom:6px">Eksportguide</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px">
+        <div class="feature"><div class="feature-icon">📊</div><h3>CSV</h3><p>Enkelt importformat for regnskap.</p></div>
+        <div class="feature"><div class="feature-icon">🧾</div><h3>Excel</h3><p>Klar for manuell gjennomgang og arkivering.</p></div>
+        <div class="feature"><div class="feature-icon">🔁</div><h3>JSON</h3><p>For videre behandling eller import til andre systemer.</p></div>
+        <div class="feature"><div class="feature-icon">📄</div><h3>TXT</h3><p>Til enkel lesing, deling eller utskrift.</p></div>
+      </div>
+    </div>
+
     <div class="status" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px">
       <span id="tableHint">Ingen ansatte enda.</span>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -239,6 +250,12 @@
         </thead>
         <tbody id="empBody"></tbody>
       </table>
+    </div>
+
+    <div id="emptyState" class="section" style="text-align:center;padding:24px;color:var(--muted)">
+      <p style="font-size:1.1rem;font-weight:700;color:var(--ink);margin:0 0 6px">Ingen ansatte lagt til ennå</p>
+      <p style="margin:0 0 12px">Start med å fylle inn skjemaet over, deretter kan du eksportere til regnskap eller dele lønnsslipp.</p>
+      <a href="#funksjoner" class="btn sm">Se hva du får i Pro</a>
     </div>
 
     <div id="overviewKpi" class="kpis" style="margin-top:14px"></div>
