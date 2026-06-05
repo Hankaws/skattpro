@@ -344,7 +344,7 @@
       localStorage.setItem('skattProEmployees_v1', JSON.stringify(employees));
     } catch(err) {
       console.error('[skattpro] save failed:', err);
-      alert('Lagring feilet: ' + err.message);
+      setInlineMessage('Lagring feilet: ' + err.message);
     }
   }
 
@@ -423,7 +423,7 @@
 
   function addEmployee(){
     const name = byId('empName')?.value?.trim();
-    if(!name){ alert('Skriv inn navn på ansatt.'); return; }
+    if(!name){ setInlineMessage('Skriv inn navn på ansatt.'); return; }
     const data = {
       name,
       gross: Math.max(0, parseFloat(byId('empGross').value) || 0),
@@ -519,7 +519,7 @@
   }
 
   function exportCsv(){
-    if(!employees.length){ alert('Ingen ansatte å eksportere.'); return; }
+    if(!employees.length){ setInlineMessage('Ingen ansatte å eksportere.'); return; }
     const meta = [['SkattPro Ansatt-oversikt'],['Firma', company.name || '-'],['Org.nr', company.org || '-'],['Avdeling', company.dept || '-'],['Generert', new Date().toLocaleString('nb-NO')]];
     const headers = ['Ansatt','Måned','Koststed','Brutto/md','Arbgiveravg/md','Trekk/md','Netto/md','Feriepenger','Reise/utlegg','Timer/uke','Kostnad/md'];
     const rows = employees.map(e => [e.name, e.month||'', e.cost||'', fmt(e.gross), fmt(e.arb/12), fmt(e.trekkMonthly), fmt(e.nettoMonthly), fmt(e.ferie/12), fmt(e.reiseMonthly), (e.timer || 0).toFixed(1), fmt(e.gross + e.arb/12 + e.reiseMonthly)]);
@@ -529,7 +529,7 @@
   }
 
   function exportTxt(){
-    if(!employees.length){ alert('Ingen ansatte å eksportere.'); return; }
+    if(!employees.length){ setInlineMessage('Ingen ansatte å eksportere.'); return; }
     const header = ['SkattPro Ansatt-oversikt','Firma: ' + (company.name || '-'),'Org.nr: ' + (company.org || '-'),'Avdeling: ' + (company.dept || '-'),'Generert: ' + new Date().toLocaleString('nb-NO'),'Satser 2026',''];
     const rows = employees.map(e => {
       const info = {Ansatt: e.name, Måned: e.month||'-', Koststed: e.cost||'-', 'Brutto/md': fmt(e.gross), 'Arbgiveravg/md': fmt(e.arb/12), 'Trekk/md': fmt(e.trekkMonthly), 'Netto/md': fmt(e.nettoMonthly), Feriepenger: fmt(e.ferie/12), 'Reise/utlegg': fmt(e.reiseMonthly), 'Timer/uke': (e.timer || 0).toFixed(1), 'Kostnad/md': fmt(e.gross + e.arb/12 + e.reiseMonthly)};
@@ -540,7 +540,7 @@
   }
 
   function exportExcel(){
-    if(!employees.length){ alert('Ingen ansatte å eksportere.'); return; }
+    if(!employees.length){ setInlineMessage('Ingen ansatte å eksportere.'); return; }
     const meta = ['SkattPro Ansatt-oversikt','','Firma: ' + (company.name || '-'),'Org.nr: ' + (company.org || '-'),'Avdeling: ' + (company.dept || '-'),'Generert: ' + new Date().toLocaleString('nb-NO'),''];
     const headers = ['Ansatt','Måned','Koststed','Brutto/md','Arbgiveravg/md','Trekk/md','Netto/md','Feriepenger','Reise/utlegg','Timer/uke','Kostnad/md'];
     const rows = employees.map(e => [e.name, e.month||'', e.cost||'', fmt(e.gross), fmt(e.arb/12), fmt(e.trekkMonthly), fmt(e.nettoMonthly), fmt(e.ferie/12), fmt(e.reiseMonthly), (e.timer || 0).toFixed(1), fmt(e.gross + e.arb/12 + e.reiseMonthly)]);
@@ -551,7 +551,7 @@
   }
 
   function exportJson(){
-    if(!employees.length){ alert('Ingen ansatte å eksportere.'); return; }
+    if(!employees.length){ setInlineMessage('Ingen ansatte å eksportere.'); return; }
     const payload = {
       company: company.name || '-',
       orgNo: company.org || '-',
@@ -575,6 +575,12 @@
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'skattpro-ansatte-' + Date.now() + '.json'; document.body.appendChild(a); a.click(); a.remove();
   }
 
+  function setInlineMessage(msg){
+    const el = document.getElementById('inlineAlert');
+    if(!el) return;
+    el.textContent = msg || '';
+  }
+
   function init(){
     ['firmName','firmOrg','firmDept','empMonth','empGross','empAlmSats','empSone','empFerie','empFradrag','empTimer','empKm','empBompenger','empUtlegg','empDager'].forEach(id => {
       const el = byId(id); if(!el) return;
@@ -585,7 +591,7 @@
         save();
       });
     });
-    byId('fillExampleBtn').addEventListener('click', fillExample);
+    byId('fillExampleBtn').addEventListener('click', () => { setInlineMessage(''); fillExample(); });
     byId('addEmpBtn').addEventListener('click', addEmployee);
     byId('exportCsvBtn').addEventListener('click', exportCsv);
     byId('exportTxtBtn').addEventListener('click', exportTxt);
@@ -597,6 +603,7 @@
       if(btn.dataset.delete) removeEmployee(btn.dataset.delete);
     });
     ['searchInput','filterMonth'].forEach(id => { const el = byId(id); if(el) el.addEventListener('input', render); });
+    setInlineMessage('');
     render();
   }
 
