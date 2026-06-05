@@ -506,34 +506,27 @@ function markUsed(key){ localStorage.setItem(key, '1'); }
 function getConsent(){ return localStorage.getItem(CONSENT_KEY) === '1'; }
 function setConsent(v){ localStorage.setItem(CONSENT_KEY, v ? '1' : '0'); }
 
-async function fetchKOMMUNER() {
-  try {
-    const url = new URL('kommuner.json', window.location.href).href;
-    const res = await fetch(url, {cache: 'no-cache'});
-    if (!res.ok) throw new Error('fetchKOMMUNER failed');
-    return await res.json();
-  } catch {
-    return [];
-  }
-}
-
 function fillKommuneSelect(){
+  const url = 'kommuner.json';
   const sel = els.muniSelect;
   if(!sel) return;
-  sel.innerHTML = '<option value=\"\">Velg kommune...</option>';
-  fetchKOMMUNER().then(list => {
-    const seen = new Set();
-    KOMMUNER = (Array.isArray(list) ? list : []).slice();
-    KOMMUNER.forEach(k => {
-      const key = `${k.navn}::${k.sats}`;
-      if (seen.has(key)) return;
-      seen.add(key);
-      const opt = document.createElement('option');
-      opt.value = String(k.sats);
-      opt.textContent = `${k.navn} (${Number(k.sats).toFixed(2)}%)`;
-      sel.appendChild(opt);
+  sel.innerHTML = '<option value="">Velg kommune...</option>';
+  fetch(url, {cache: 'no-cache'}).then(res => {
+    if(!res.ok) throw new Error('Missing kommuner.json');
+    return res.json().then(data => {
+      const seen = new Set();
+      KOMMUNER = data.slice();
+      KOMMUNER.forEach(k => {
+        const key = `${k.navn}::${k.sats}`;
+        if (seen.has(key)) return;
+        seen.add(key);
+        const opt = document.createElement('option');
+        opt.value = String(k.sats);
+        opt.textContent = `${k.navn} (${Number(k.sats).toFixed(2)}%)`;
+        sel.appendChild(opt);
+      });
     });
-  });
+  }).catch(() => {});
 }
 function getKommuneRate(){
   const selVal = parseFloat(els.muniSelect.value);
