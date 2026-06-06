@@ -18,12 +18,11 @@ html,body{
   flex-wrap:wrap;gap:12px;
 }
 @media(max-width:720px){
-  .nav{flex-direction:column;align-items:center;padding:12px 0;text-align:center}
+  .nav{flex-direction:column;align-items:flex-start;padding:12px 0}
   .menu{order:2;width:100%;flex-direction:column;gap:6px;margin-top:8px}
   .menu a{display:block;padding:10px 12px;width:100%}
   .nav-actions{order:3;width:100%;flex-direction:column;margin-top:8px}
   .nav-actions .btn{width:100%;justify-content:center}
-  .logo{margin-bottom:8px}
 }
 .logo{font-weight:800;font-size:1.3rem;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px}
 @media(max-width:480px){.logo{font-size:1.1rem}}
