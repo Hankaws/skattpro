@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="canonical" href="https://skattpro.no/utgiftssporing.html">
+<meta name="description" content="Spor dine fradragsberettigede utgifter som ENK. Oversikt over driftskostnader som reduserer skatten.">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Utgiftssporing for ENK – SkattPro">
+<meta property="og:description" content="Hold oversikt over driftskostnader og reduser skatten din lovlig.">
+<meta property="og:url" content="https://skattpro.no/utgiftssporing.html">
+<meta name="twitter:card" content="summary_large_image">
+<title>Utgiftssporing for ENK – SkattPro</title>
+<link rel="stylesheet" href="skattpro-common.css">
+<style>
+.expense-container { max-width: 900px; margin: 0 auto; padding: 20px; }
+.expense-header { text-align: center; margin-bottom: 30px; }
+.expense-header h1 { font-size: 32px; margin-bottom: 12px; }
+.expense-header p { color: #666; font-size: 16px; }
+.expense-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 720px) { .expense-grid { grid-template-columns: 1fr; } }
+.expense-card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 24px; }
+.expense-card h3 { font-size: 18px; margin-bottom: 16px; color: var(--ink); }
+.input-row { margin-bottom: 16px; }
+.input-row label { display: block; font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+.input-row input, .input-row select { width: 100%; padding: 10px; border: 1px solid var(--line); border-radius: 8px; font-size: 14px; background: var(--panel2); color: var(--ink); }
+.input-row input:focus, .input-row select:focus { outline: 2px solid var(--a); border-color: transparent; }
+.btn-row { display: flex; gap: 10px; margin-top: 16px; }
+.expense-list { margin-top: 20px; max-height: 400px; overflow-y: auto; }
+.expense-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border: 1px solid var(--line); border-radius: 8px; margin-bottom: 8px; background: var(--panel2); }
+.expense-item .info { flex: 1; }
+.expense-item .name { font-weight: 600; color: var(--ink); }
+.expense-item .category { font-size: 12px; color: var(--muted); }
+.expense-item .amount { font-weight: 700; color: var(--a); margin-right: 12px; }
+.expense-item .delete { background: #fee; color: #c00; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+.expense-item .delete:hover { background: #fcc; }
+.total-box { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); color: white; border-radius: 12px; padding: 20px; margin-top: 20px; }
+.total-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.total-row:last-child { margin-bottom: 0; font-size: 20px; font-weight: 700; }
+.category-tag { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-left: 8px; }
+.cat-reise { background: #dbeafe; color: #1d4ed8; }
+.cat-utstyr { background: #dcfce7; color: #15803d; }
+.cat-kontor { background: #fef3c7; color: #b45309; }
+.cat-markedsforing { background: #fce7f3; color: #be185d; }
+.cat-annet { background: #f3f4f6; color: #374151; }
+.hint-box { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 16px; margin-top: 20px; font-size: 14px; }
+.hint-box h4 { margin-bottom: 8px; color: #0369a1; }
+.hint-box ul { margin: 8px 0 0 20px; color: #0c4a6e; }
+.hint-box li { margin-bottom: 4px; }
+.empty-state { text-align: center; padding: 40px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="nav" role="banner">
+    <a href="index.html" class="logo">
+      <svg width="28" height="28" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="20" cy="20" r="20" fill="url(#logoGrad)"/>
+        <defs>
+          <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#2563eb"/>
+            <stop offset="100%" style="stop-color:#7c3aed"/>
+          </linearGradient>
+        </defs>
+        <rect x="10" y="22" width="5" height="10" rx="1.5" fill="white" opacity="0.9"/>
+        <rect x="17" y="16" width="5" height="16" rx="1.5" fill="white"/>
+        <rect x="24" y="12" width="5" height="20" rx="1.5" fill="white" opacity="0.9"/>
+        <path d="M28 14l-8 8-4-4" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      SkattPro
+    </a>
+    <nav class="menu" aria-label="Hovedmeny">
+      <a href="index.html">Skatt</a>
+      <a href="ansatte-og-lonn/">Ansatte</a>
+      <a href="faktura-kalkulator.html">Faktura</a>
+      <a href="forskuddsskatt.html">Forskudd</a>
+      <a href="skattefrister.html">Frister</a>
+      <a href="sammenligning.html">Sammenligning</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="ansatte-og-lonn/" class="btn sm upgrade">Priser</a>
+      <a href="ansatte-og-lonn/" class="btn sm">Kjøp Pro</a>
+    </div>
+  </header>
+
+  <main class="expense-container">
+    <div class="expense-header">
+      <h1>📋 Utgifter for ENK</h1>
+      <p>Spor driftskostnader som reduserer din skattepliktige inntekt. Alle beløp er i kroner.</p>
+    </div>
+
+    <div class="expense-grid">
+      <div class="expense-card">
+        <h3>Legg til utgift</h3>
+        <div class="input-row">
+          <label for="expenseName">Beskrivelse</label>
+          <input type="text" id="expenseName" placeholder="f.eks. Bærbar PC, Kontorleie, Drivstoff">
+        </div>
+        <div class="input-row">
+          <label for="expenseAmount">Beløp (kr)</label>
+          <input type="number" id="expenseAmount" placeholder="0" min="0" step="1">
+        </div>
+        <div class="input-row">
+          <label for="expenseCategory">Kategori</label>
+          <select id="expenseCategory">
+            <option value="reise">Reise og kjøring</option>
+            <option value="utstyr">Utstyr og inventar</option>
+            <option value="kontor">Kontor og hjemmekontor</option>
+            <option value="markedsforing">Markedsføring</option>
+            <option value="annet">Annet</option>
+          </select>
+        </div>
+        <div class="input-row">
+          <label for="expenseDate">Dato</label>
+          <input type="date" id="expenseDate">
+        </div>
+        <div class="btn-row">
+          <button class="btn primary" onclick="addExpense()">Legg til utgift</button>
+          <button class="btn secondary" onclick="clearForm()">Nullstill</button>
+        </div>
+
+        <div class="hint-box">
+          <h4>💡 Fradragsberettigede utgifter</h4>
+          <ul>
+            <li><strong>Reise:</strong> Kjøring til kunder, fly, tog, taxi</li>
+            <li><strong>Utstyr:</strong> PC, mobil, verktøy, maskiner (over 3000 kr avskrives)</li>
+            <li><strong>Kontor:</strong> Leie, strøm, internett, hjemmekontor (sats: 5400 kr/år)</li>
+            <li><strong>Markedsføring:</strong> Annonser, nettsted, visitkort</li>
+          </ul>
+          <p style="margin-top:12px;font-size:13px;color:#0c4a6e"><strong>Merk:</strong> Må være dokumentert med kvittering og nødvendig for driften.</p>
+        </div>
+      </div>
+
+      <div class="expense-card">
+        <h3>Dine utgifter <span id="expenseCount" style="font-weight:400;font-size:14px;color:var(--muted)">(0 stk)</span></h3>
+        <div id="expenseList" class="expense-list">
+          <div class="empty-state">
+            <p>Ingen utgifter registrert enda.</p>
+            <p style="font-size:13px">Legg til dine første driftskostnader i skjemaet.</p>
+          </div>
+        </div>
+
+        <div class="total-box">
+          <div class="total-row">
+            <span>Totale utgifter:</span>
+            <span id="totalExpenses">0 kr</span>
+          </div>
+          <div class="total-row">
+            <span>Estimert skattereduksjon:</span>
+            <span id="taxReduction">0 kr</span>
+          </div>
+        </div>
+
+        <div class="btn-row" style="margin-top:20px">
+          <button class="btn secondary" onclick="exportExpenses()">Eksporter CSV</button>
+          <button class="btn secondary" onclick="clearAll()">Slett alle</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <div class="footer-content">
+      <p>&copy; 2026 SkattPro. Alle rettigheter reservert.</p>
+      <p style="margin-top:8px;font-size:13px;color:#666">
+        <a href="index.html">Skatt</a> ·
+        <a href="ansatte-og-lonn/">Ansatte</a> ·
+        <a href="faktura-kalkulator.html">Faktura</a> ·
+        <a href="forskuddsskatt.html">Forskudd</a> ·
+        <a href="skattefrister.html">Frister</a> ·
+        <a href="sammenligning.html">Sammenligning</a> ·
+        <a href="utgiftssporing.html">Utgifter</a>
+      </p>
+    </div>
+  </footer>
+</div>
+
+<script>
+let expenses = JSON.parse(localStorage.getItem('skattpro_expenses') || '[]');
+
+function getCategoryName(cat) {
+  const names = { reise: 'Reise', utstyr: 'Utstyr', kontor: 'Kontor', markedsforing: 'Markedsføring', annet: 'Annet' };
+  return names[cat] || cat;
+}
+
+function getCategoryClass(cat) {
+  return 'cat-' + cat;
+}
+
+function renderExpenses() {
+  const list = document.getElementById('expenseList');
+  const count = document.getElementById('expenseCount');
+  const totalEl = document.getElementById('totalExpenses');
+  const reductionEl = document.getElementById('taxReduction');
+
+  count.textContent = `(${expenses.length} stk)`;
+
+  if (expenses.length === 0) {
+    list.innerHTML = '<div class="empty-state"><p>Ingen utgifter registrert enda.</p><p style="font-size:13px">Legg til dine første driftskostnader i skjemaet.</p></div>';
+    totalEl.textContent = '0 kr';
+    reductionEl.textContent = '0 kr';
+    return;
+  }
+
+  let total = 0;
+  list.innerHTML = expenses.map((e, i) => {
+    total += e.amount;
+    return `<div class="expense-item">
+      <div class="info">
+        <div class="name">${e.name} <span class="category-tag ${getCategoryClass(e.category)}">${getCategoryName(e.category)}</span></div>
+        <div class="category">${e.date}</div>
+      </div>
+      <div class="amount">${e.amount.toLocaleString()} kr</div>
+      <button class="delete" onclick="deleteExpense(${i})">Slett</button>
+    </div>`;
+  }).join('');
+
+  const taxRate = 0.474;
+  const reduction = Math.round(total * taxRate);
+
+  totalEl.textContent = total.toLocaleString() + ' kr';
+  reductionEl.textContent = reduction.toLocaleString() + ' kr';
+}
+
+function addExpense() {
+  const name = document.getElementById('expenseName').value.trim();
+  const amount = parseFloat(document.getElementById('expenseAmount').value);
+  const category = document.getElementById('expenseCategory').value;
+  const date = document.getElementById('expenseDate').value;
+
+  if (!name || isNaN(amount) || amount <= 0 || !date) {
+    alert('Vennligst fyll ut alle felt korrekt.');
+    return;
+  }
+
+  expenses.push({ name, amount, category, date });
+  expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
+  localStorage.setItem('skattpro_expenses', JSON.stringify(expenses));
+  
+  clearForm();
+  renderExpenses();
+}
+
+function deleteExpense(index) {
+  if (confirm('Slett denne utgiften?')) {
+    expenses.splice(index, 1);
+    localStorage.setItem('skattpro_expenses', JSON.stringify(expenses));
+    renderExpenses();
+  }
+}
+
+function clearForm() {
+  document.getElementById('expenseName').value = '';
+  document.getElementById('expenseAmount').value = '';
+  document.getElementById('expenseCategory').value = 'reise';
+  document.getElementById('expenseDate').value = new Date().toISOString().split('T')[0];
+}
+
+function clearAll() {
+  if (confirm('Er du sikker på at du vil slette ALLE utgifter? Dette kan ikke angres.')) {
+    expenses = [];
+    localStorage.setItem('skattpro_expenses', JSON.stringify(expenses));
+    renderExpenses();
+  }
+}
+
+function exportExpenses() {
+  if (expenses.length === 0) {
+    alert('Ingen utgifter å eksportere.');
+    return;
+  }
+
+  const headers = ['Dato', 'Beskrivelse', 'Kategori', 'Beløp (kr)'];
+  const rows = expenses.map(e => [e.date, e.name, getCategoryName(e.category), e.amount.toString().replace('.', ',')]);
+  const csv = [headers, ...rows].map(r => r.join(';')).join('\n');
+
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `skattpro-utgifter-${new Date().toISOString().split('T')[0]}.csv`;
+  link.click();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (!document.getElementById('expenseDate').value) {
+    document.getElementById('expenseDate').value = new Date().toISOString().split('T')[0];
+  }
+  renderExpenses();
+});
+</script>
+</body>
+</html>
