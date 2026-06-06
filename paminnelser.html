@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="canonical" href="https://skattpro.no/paminnelser.html">
+<meta name="description" content="Skattefrister og betalingspåminnelser for ENK. Last ned kalenderfiler for forskuddsskatt, mva, og A-melding.">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Skattefrister og Påminnelser – SkattPro">
+<meta property="og:description" content="Hold oversikt over alle skattefrister. Last ned .ics filer til kalenderen din.">
+<meta property="og:url" content="https://skattpro.no/paminnelser.html">
+<meta name="twitter:card" content="summary_large_image">
+<title>Skattefrister og Påminnelser – SkattPro</title>
+<link rel="stylesheet" href="skattpro-common.css">
+<style>
+.reminder-container { max-width: 900px; margin: 0 auto; padding: 20px; }
+.reminder-header { text-align: center; margin-bottom: 30px; }
+.reminder-header h1 { font-size: 32px; margin-bottom: 12px; }
+.reminder-header p { color: #666; font-size: 16px; }
+.reminder-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 30px; }
+.reminder-card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 24px; }
+.reminder-card h3 { font-size: 18px; margin-bottom: 12px; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+.reminder-card .icon { font-size: 24px; }
+.reminder-card p { color: var(--muted); font-size: 14px; margin-bottom: 16px; line-height: 1.6; }
+.deadline-list { margin: 16px 0; }
+.deadline-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.deadline-item:last-child { border-bottom: none; }
+.deadline-item .date { font-weight: 600; color: var(--a); }
+.deadline-item .label { color: var(--ink); }
+.deadline-item.urgent { background: #fef2f2; padding: 10px; border-radius: 6px; margin: 8px -10px; }
+.deadline-item.urgent .date { color: #dc2626; }
+.btn-full { width: 100%; text-align: center; margin-top: 16px; }
+.info-box { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 16px; margin-top: 30px; font-size: 14px; }
+.info-box h4 { color: #0369a1; margin-bottom: 8px; }
+.info-box ul { margin: 8px 0 0 20px; color: #0c4a6e; }
+.info-box li { margin-bottom: 4px; }
+.calendar-types { display: grid; gap: 12px; margin-top: 16px; }
+.calendar-btn { display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel2); cursor: pointer; text-align: left; font-size: 14px; }
+.calendar-btn:hover { background: var(--panel); border-color: var(--a); }
+.calendar-btn .icon { font-size: 20px; }
+.days-badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.badge-soon { background: #fee2e2; color: #dc2626; }
+.badge-ok { background: #fef3c7; color: #b45309; }
+.badge-later { background: #dcfce7; color: #15803d; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="nav" role="banner">
+    <a href="index.html" class="logo">
+      <svg width="28" height="28" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="20" cy="20" r="20" fill="url(#logoGrad)"/>
+        <defs>
+          <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#2563eb"/>
+            <stop offset="100%" style="stop-color:#7c3aed"/>
+          </linearGradient>
+        </defs>
+        <rect x="10" y="22" width="5" height="10" rx="1.5" fill="white" opacity="0.9"/>
+        <rect x="17" y="16" width="5" height="16" rx="1.5" fill="white"/>
+        <rect x="24" y="12" width="5" height="20" rx="1.5" fill="white" opacity="0.9"/>
+        <path d="M28 14l-8 8-4-4" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      SkattPro
+    </a>
+    <nav class="menu" aria-label="Hovedmeny">
+      <a href="index.html">Skatt</a>
+      <a href="ansatte-og-lonn/">Ansatte</a>
+      <a href="faktura-kalkulator.html">Faktura</a>
+      <a href="forskuddsskatt.html">Forskudd</a>
+      <a href="skattefrister.html">Frister</a>
+      <a href="utgiftssporing.html">Utgifter</a>
+      <a href="sammenligning.html">Sammenligning</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="ansatte-og-lonn/" class="btn sm upgrade">Priser</a>
+      <a href="ansatte-og-lonn/" class="btn sm">Kjøp Pro</a>
+    </div>
+  </header>
+
+  <main class="reminder-container">
+    <div class="reminder-header">
+      <h1>📅 Skattefrister og Påminnelser</h1>
+      <p>Last ned kalenderfiler med alle frister for forskuddsskatt, mva, og A-melding. Få varsler før forfall.</p>
+    </div>
+
+    <div class="reminder-grid">
+      <!-- Forskuddsskatt -->
+      <div class="reminder-card">
+        <h3><span class="icon">💰</span> Forskuddsskatt</h3>
+        <p>4 terminer i året for ENK. Betalingsfrister er 15. mars, 15. mai, 15. september og 15. november.</p>
+        <div class="deadline-list" id="forskuddList"></div>
+        <div class="calendar-types">
+          <button class="calendar-btn" onclick="downloadCalendar('forskudd')">
+            <span class="icon">📲</span>
+            <div>
+              <div style="font-weight:600">Last ned .ics</div>
+              <div style="font-size:12px;color:var(--muted)">Google Calendar, Outlook, Apple</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- MVA -->
+      <div class="reminder-card">
+        <h3><span class="icon">🧾</span> MVA (Merverdiavgift)</h3>
+        <p>5 terminer i året. Frist for innlevering og betaling er vanligvis 2 måneder etter terminens slutt.</p>
+        <div class="deadline-list" id="mvaList"></div>
+        <div class="calendar-types">
+          <button class="calendar-btn" onclick="downloadCalendar('mva')">
+            <span class="icon">📲</span>
+            <div>
+              <div style="font-weight:600">Last ned .ics</div>
+              <div style="font-size:12px;color:var(--muted)">Alle kalenderapper</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- A-melding -->
+      <div class="reminder-card">
+        <h3><span class="icon">👥</span> A-melding</h3>
+        <p>12 ganger i året. Frist er den 5. i hver måned for lønn utbetalt i forrige måned.</p>
+        <div class="deadline-list" id="ameldingList"></div>
+        <div class="calendar-types">
+          <button class="calendar-btn" onclick="downloadCalendar('amelding')">
+            <span class="icon">📲</span>
+            <div>
+              <div style="font-weight:600">Last ned .ics</div>
+              <div style="font-size:12px;color:var(--muted)">Alle kalenderapper</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Skattemelding -->
+      <div class="reminder-card">
+        <h3><span class="icon">📋</span> Skattemelding</h3>
+        <p>3 viktige frister for innlevering og klage på skattemelding for 2025.</p>
+        <div class="deadline-list" id="skattList"></div>
+        <div class="calendar-types">
+          <button class="calendar-btn" onclick="downloadCalendar('skatt')">
+            <span class="icon">📲</span>
+            <div>
+              <div style="font-weight:600">Last ned .ics</div>
+              <div style="font-size:12px;color:var(--muted)">Alle kalenderapper</div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alle frister samlet -->
+    <div style="margin-top:40px; text-align:center">
+      <button class="btn primary" onclick="downloadCalendar('alle')" style="padding:16px 32px; font-size:16px">
+        📥 Last ned ALLE frister (kombinert .ics)
+      </button>
+      <p style="margin-top:12px; font-size:13px; color:var(--muted)">
+        Inneholder 24 frister for 2026: 4x forskuddsskatt, 5x mva, 12x A-melding, 3x skattemelding
+      </p>
+    </div>
+
+    <div class="info-box">
+      <h4>💡 Slik bruker du .ics filene</h4>
+      <ul>
+        <li><strong>Google Calendar:</strong> Åpne .ics filen i Google Calendar («Fra fil» under «Legg til kalender»)</li>
+        <li><strong>Outlook:</strong> Dobbeltklikk på .ics filen, velg «Lagre og lukk»</li>
+        <li><strong>Apple Calendar:</strong> Dobbeltklikk på .ics filen, bekreft import</li>
+        <li><strong>Mobil:</strong> Last ned filen på telefonen og åpne i kalender-appen</li>
+      </ul>
+      <p style="margin-top:12px; font-size:13px; color:#0c4a6e">
+        <strong>Tips:</strong> Sett opp varsler i kalender-appen din (f.eks. 1 uke og 1 dag før forfall).
+      </p>
+    </div>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <div class="footer-content">
+      <p>&copy; 2026 SkattPro. Alle rettigheter reservert.</p>
+      <p style="margin-top:8px;font-size:13px;color:#666">
+        <a href="index.html">Skatt</a> ·
+        <a href="ansatte-og-lonn/">Ansatte</a> ·
+        <a href="faktura-kalkulator.html">Faktura</a> ·
+        <a href="forskuddsskatt.html">Forskudd</a> ·
+        <a href="skattefrister.html">Frister</a> ·
+        <a href="utgiftssporing.html">Utgifter</a> ·
+        <a href="sammenligning.html">Sammenligning</a> ·
+        <a href="paminnelser.html">Påminnelser</a>
+      </p>
+    </div>
+  </footer>
+</div>
+
+<script>
+// 2026 deadlines
+const deadlines = {
+  forskudd: [
+    { date: '2026-03-15', label: 'Forskuddsskatt termin 1', hours: 0 },
+    { date: '2026-05-15', label: 'Forskuddsskatt termin 2', hours: 0 },
+    { date: '2026-09-15', label: 'Forskuddsskatt termin 3', hours: 0 },
+    { date: '2026-11-15', label: 'Forskuddsskatt termin 4', hours: 0 }
+  ],
+  mva: [
+    { date: '2026-02-28', label: 'MVA termin 1 (jan-feb)', hours: 0 },
+    { date: '2026-04-30', label: 'MVA termin 2 (mar-apr)', hours: 0 },
+    { date: '2026-06-30', label: 'MVA termin 3 (mai-jun)', hours: 0 },
+    { date: '2026-08-31', label: 'MVA termin 4 (jul-aug)', hours: 0 },
+    { date: '2026-10-31', label: 'MVA termin 5 (sep-okt)', hours: 0 }
+  ],
+  amelding: [
+    { date: '2026-01-05', label: 'A-melding januar', hours: 0 },
+    { date: '2026-02-05', label: 'A-melding februar', hours: 0 },
+    { date: '2026-03-05', label: 'A-melding mars', hours: 0 },
+    { date: '2026-04-05', label: 'A-melding april', hours: 0 },
+    { date: '2026-05-05', label: 'A-melding mai', hours: 0 },
+    { date: '2026-06-05', label: 'A-melding juni', hours: 0 },
+    { date: '2026-07-05', label: 'A-melding juli', hours: 0 },
+    { date: '2026-08-05', label: 'A-melding august', hours: 0 },
+    { date: '2026-09-05', label: 'A-melding september', hours: 0 },
+    { date: '2026-10-05', label: 'A-melding oktober', hours: 0 },
+    { date: '2026-11-05', label: 'A-melding november', hours: 0 },
+    { date: '2026-12-05', label: 'A-melding desember', hours: 0 }
+  ],
+  skatt: [
+    { date: '2026-03-31', label: 'Skattemelding innlevering (ENK)', hours: 0 },
+    { date: '2026-05-31', label: 'Skattemelding klagefrist', hours: 0 },
+    { date: '2026-12-31', label: 'Oppgjør restskatt 3. termin', hours: 0 }
+  ]
+};
+
+function getDaysUntil(dateStr) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const deadline = new Date(dateStr);
+  const diff = deadline - today;
+  return Math.ceil(diff / (1000 * 60 * 60 * 24));
+}
+
+function getBadgeClass(days) {
+  if (days < 0) return 'badge-later';
+  if (days <= 14) return 'badge-soon';
+  return 'badge-ok';
+}
+
+function getBadgeText(days) {
+  if (days < 0) return 'Utløpt';
+  if (days === 0) return 'I dag';
+  if (days === 1) return '1 dag';
+  if (days <= 14) return `${days} dager`;
+  return 'Senere';
+}
+
+function renderDeadlineList(type, containerId) {
+  const container = document.getElementById(containerId);
+  const items = deadlines[type];
+  
+  container.innerHTML = items.map(item => {
+    const days = getDaysUntil(item.date);
+    const badgeClass = getBadgeClass(days);
+    const badgeText = getBadgeText(days);
+    const urgentClass = days >= 0 && days <= 7 ? 'urgent' : '';
+    
+    return `<div class="deadline-item ${urgentClass}">
+      <span class="label">${item.label}</span>
+      <div>
+        <span class="days-badge ${badgeClass}">${badgeText}</span>
+        <span class="date" style="margin-left:8px">${new Date(item.date).toLocaleDateString('nb-NO')}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function generateICS(events) {
+  const lines = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//SkattPro//NO',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'X-WR-CALNAME:SkattPro Frister 2026',
+    'X-WR-CALDESC:Skattefrister for forskuddsskatt, MVA, A-melding og skattemelding'
+  ];
+
+  events.forEach(event => {
+    const dateStr = event.date.replace(/-/g, '');
+    lines.push('BEGIN:VEVENT');
+    lines.push(`UID:${event.date}-${event.label.replace(/\s/g, '')}@skattpro.no`);
+    lines.push(`DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`);
+    lines.push(`DTSTART;VALUE=DATE:${dateStr}`);
+    lines.push(`SUMMARY:${event.label}`);
+    lines.push(`DESCRIPTION:Forfall for ${event.label}\\n\\nSjekk skattpro.no for mer info.`);
+    lines.push('TRANSP:OPAQUE');
+    lines.push('END:VEVENT');
+  });
+
+  lines.push('END:VCALENDAR');
+  return lines.join('\r\n');
+}
+
+function downloadCalendar(type) {
+  let events = [];
+  
+  if (type === 'alle') {
+    events = [...deadlines.forskudd, ...deadlines.mva, ...deadlines.amelding, ...deadlines.skatt];
+    events.sort((a, b) => new Date(a.date) - new Date(b.date));
+  } else {
+    events = deadlines[type];
+  }
+
+  const icsContent = generateICS(events);
+  const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `skattpro-frister-${type}-${new Date().toISOString().split('T')[0]}.ics`;
+  link.click();
+}
+
+// Render all lists on load
+document.addEventListener('DOMContentLoaded', function() {
+  renderDeadlineList('forskudd', 'forskuddList');
+  renderDeadlineList('mva', 'mvaList');
+  renderDeadlineList('amelding', 'ameldingList');
+  renderDeadlineList('skatt', 'skattList');
+});
+</script>
+</body>
+</html>
