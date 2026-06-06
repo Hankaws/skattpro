@@ -1,0 +1,10 @@
+{
+  "name": "skattpro-webhook",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "stripe": "^16.0.0",
+    "resend": "^4.0.0"
+  }
+}
