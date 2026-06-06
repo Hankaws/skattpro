@@ -85,12 +85,7 @@ input:focus,select:focus{outline:2px solid var(--a);border-color:transparent}
       <div>
         <label for="kommune">Kommune</label>
         <select id="kommune" onchange="updateCalculation()">
-          <option value="0.228" selected>Oslo (22,8 %)</option>
-          <option value="0.215">Bergen (21,5 %)</option>
-          <option value="0.207">Trondheim (20,7 %)</option>
-          <option value="0.199">Stavanger (19,9 %)</option>
-          <option value="0.235">Høyeste (23,5 %)</option>
-          <option value="0.190">Laveste (19,0 %)</option>
+          <option value="">Laster kommuner...</option>
         </select>
         <div class="hint">Kommuneskatt varierer</div>
       </div>
@@ -271,6 +266,32 @@ function resetDefaults(){
   document.getElementById('otherIncome').value = '0';
   updateCalculation();
 }
+
+// Load kommuner from JSON file
+let kommuneData = [];
+fetch('kommuner.json')
+  .then(res => res.json())
+  .then(data => {
+    kommuneData = data;
+    const select = document.getElementById('kommune');
+    select.innerHTML = '<option value="">Velg kommune...</option>';
+    
+    // Sort by name and add options
+    data.sort((a,b) => a.navn.localeCompare(b.navn)).forEach(k => {
+      const opt = document.createElement('option');
+      opt.value = (k.sats / 100).toFixed(3);
+      opt.textContent = `${k.navn} (${k.sats} %)`;
+      if(k.navn === 'Oslo') opt.selected = true;
+      select.appendChild(opt);
+    });
+    
+    // Trigger initial calculation after loading
+    updateCalculation();
+  })
+  .catch(err => {
+    console.error('Failed to load kommuner.json:', err);
+    document.getElementById('kommune').innerHTML = '<option value=\"0.228\">Oslo (22,8 %)</option>';
+  });
 
 // Auto-calculate on load
 updateCalculation();
