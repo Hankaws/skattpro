@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkattPro – Faktura-kalkulator | Hva beholder du etter skatt?</title>
+<meta name="description" content="Beregn hva du faktisk beholder etter skatt når du sender en faktura. Inkluderer mva, trygdeavgift, trinnskatt og kommuneskatt for 2026.">
+<link rel="canonical" href="https://skattpro.no/faktura-kalkulator.html">
+<link rel="stylesheet" href="skattpro-common.css">
+<style>
+.wrap{max-width:720px;margin:0 auto;padding:20px}
+.section{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;margin:20px 0}
+.section h2{font-size:1.2rem;font-weight:800;color:var(--ink);margin:0 0 8px}
+.section-lead{color:var(--muted);font-size:.95rem;margin-bottom:20px}
+.input-group{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+@media(max-width:600px){.input-group{grid-template-columns:1fr}}
+label{display:block;font-size:.9rem;font-weight:600;color:var(--ink);margin-bottom:6px}
+input,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:1rem;background:var(--panel2);color:var(--ink)}
+input:focus,select:focus{outline:2px solid var(--a);border-color:transparent}
+.hint{font-size:.8rem;color:var(--muted);margin-top:4px}
+.result-box{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:20px;margin-top:20px}
+.result-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)}
+.result-row:last-child{border-bottom:none}
+.result-row .label{color:var(--muted)}
+.result-row .value{font-weight:700;color:var(--ink)}
+.result-row.highlight{background:var(--a);border-radius:8px;padding:12px;margin:10px -8px}
+.result-row.highlight .label,.result-row.highlight .value{color:#fff}
+.breakdown{margin-top:16px;font-size:.9rem}
+.breakdown-item{display:flex;justify-content:space-between;padding:6px 0;color:var(--muted)}
+.breakdown-item .value{color:var(--ink)}
+.cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.btn{display:inline-block;padding:12px 20px;border-radius:10px;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-size:1rem}
+.btn.primary{background:var(--a);color:#fff}
+.btn.secondary{background:var(--panel2);color:var(--ink);border:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--line)}
+.nav .logo{font-weight:800;font-size:1.1rem;color:var(--ink);text-decoration:none}
+.nav .menu{display:flex;gap:16px}
+.nav .menu a{color:var(--muted);text-decoration:none;font-size:.95rem}
+.nav .menu a:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="nav">
+  <a href="index.html" class="logo">← SkattPro</a>
+  <nav class="menu">
+    <a href="index.html">Skatt</a>
+    <a href="ansatte-og-lonn/">Ansatte</a>
+    <a href="#kalkulator">Kalkulator</a>
+  </nav>
+</div>
+
+<div class="wrap">
+  <div class="section">
+    <h2>🧾 Faktura-kalkulator</h2>
+    <p class="section-lead">Se hva du faktisk beholder etter skatt når du sender en faktura. Beregner mva, trygdeavgift, trinnskatt og kommuneskatt automatisk.</p>
+    
+    <div class="input-group">
+      <div>
+        <label for="invoiceAmount">Fakturabeløp (inkl. mva)</label>
+        <input type="number" id="invoiceAmount" value="10000" min="0" step="100">
+        <div class="hint">Beløpet klienten betaler totalt</div>
+      </div>
+      <div>
+        <label for="mvaRate">Mva-sats</label>
+        <select id="mvaRate">
+          <option value="0.25" selected>25 % (standard)</option>
+          <option value="0.15">15 % (matvarer, transport)</option>
+          <option value="0.12">12 % (kultur, reiser)</option>
+          <option value="0">0 % (eksport, helse)</option>
+        </select>
+        <div class="hint">De fleste bruker 25 %</div>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <div>
+        <label for="personType">Velg din situasjon</label>
+        <select id="personType" onchange="updateCalculation()">
+          <option value="enk">Enkeltpersonforetak (hovedinntekt)</option>
+          <option value="hobby">Enkeltpersonforetak (hobby ved siden av)</option>
+          <option value="as">AS (daglig leder, utbytte)</option>
+        </select>
+        <div class="hint">Påvirker skatt og trygdeavgift</div>
+      </div>
+      <div>
+        <label for="kommune">Kommune</label>
+        <select id="kommune" onchange="updateCalculation()">
+          <option value="0.228" selected>Oslo (22,8 %)</option>
+          <option value="0.215">Bergen (21,5 %)</option>
+          <option value="0.207">Trondheim (20,7 %)</option>
+          <option value="0.199">Stavanger (19,9 %)</option>
+          <option value="0.235">Høyeste (23,5 %)</option>
+          <option value="0.190">Laveste (19,0 %)</option>
+        </select>
+        <div class="hint">Kommuneskatt varierer</div>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <div>
+        <label for="deductions">Årlige fradrag</label>
+        <input type="number" id="deductions" value="103050" min="0" step="1000">
+        <div class="hint">Standard fradrag 2026: 103 050 kr</div>
+      </div>
+      <div>
+        <label for="otherIncome">Annen inntekt (år)</label>
+        <input type="number" id="otherIncome" value="0" min="0" step="1000">
+        <div class="hint">Lønn, pensjon, etc.</div>
+      </div>
+    </div>
+
+    <div class="cta-row">
+      <button class="btn primary" onclick="updateCalculation()">🔢 Beregn nå</button>
+      <button class="btn secondary" onclick="resetDefaults()">Nullstill</button>
+    </div>
+
+    <div id="result" class="result-box" style="display:none">
+      <div class="result-row highlight">
+        <span class="label">Du beholder (etter alt)</span>
+        <span class="value" id="youKeep">0 kr</span>
+      </div>
+      
+      <div class="breakdown">
+        <div class="breakdown-item"><span>Fakturabeløp (inkl. mva)</span><span class="value" id="resInvoice">0 kr</span></div>
+        <div class="breakdown-item"><span>– Mva (til staten)</span><span class="value" id="resMva">0 kr</span></div>
+        <div class="breakdown-item" style="font-weight:600"><span>= Din inntekt (før skatt)</span><span class="value" id="resIncome">0 kr</span></div>
+        <div class="breakdown-item"><span>– Trygdeavgift 15,6 %</span><span class="value" id="resTrygd">0 kr</span></div>
+        <div class="breakdown-item"><span>– Kommuneskatt</span><span class="value" id="resKommune">0 kr</span></div>
+        <div class="breakdown-item"><span>– Trinnskatt</span><span class="value" id="resTrinn">0 kr</span></div>
+        <div class="breakdown-item"><span>– Alminnelig skatt 22 %</span><span class="value" id="resAlm">0 kr</span></div>
+      </div>
+
+      <div class="result-row" style="margin-top:16px">
+        <span class="label">Effektiv skatteprosent</span>
+        <span class="value" id="effectiveTax">0 %</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Hvordan dette fungerer</h2>
+    <p style="color:var(--muted);font-size:.95rem;line-height:1.6">
+      Kalkulatoren viser hva du sitter igjen med etter <strong>alle</strong> kostnader:
+    </p>
+    <ul style="color:var(--muted);font-size:.95rem;line-height:1.8">
+      <li><strong>Mva</strong> går direkte til staten – dette er aldri dine penger</li>
+      <li><strong>Trygdeavgift</strong> (15,6 % for ENK) betales av personinntekt</li>
+      <li><strong>Trinnskatt</strong> rammer inntekt over 200 150 kr (2026)</li>
+      <li><strong>Kommuneskatt</strong> varierer fra 19–23,5 % avhengig av hvor du bor</li>
+      <li><strong>Alminnelig skatt</strong> (22 %) på overskudd etter fradrag</li>
+    </ul>
+    <p style="color:var(--muted);font-size:.85rem;margin-top:12px">
+      <strong>Merk:</strong> AS-beregningen er forenklet og viser utbytte-skatt (22 % selskap + 33,3 % utbytte). Konsulter regnskapsfører for nøyaktig AS-kalkyle.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>Sammenlign: SkattPro vs regnskapsfører</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
+      <div style="background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:16px">
+        <div style="font-weight:700;color:var(--ink);margin-bottom:8px">Med regnskapsfører</div>
+        <div style="font-size:1.5rem;font-weight:900;color:var(--a)">5 000–15 000 kr/år</div>
+        <div style="color:var(--muted);font-size:.85rem;margin-top:6px">Typisk pris for ENK med 10–20 fakturaer</div>
+      </div>
+      <div style="background:var(--panel2);border:1px solid var(--a);border-radius:12px;padding:16px">
+        <div style="font-weight:700;color:var(--ink);margin-bottom:8px">Med SkattPro</div>
+        <div style="font-size:1.5rem;font-weight:900;color:var(--a)">0 kr</div>
+        <div style="color:var(--muted);font-size:.85rem;margin-top:6px">Gratis kalkulator · Pro: 149 kr/md</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const TRINN_LEVELS_2026 = [
+  { limit: 200150, rate: 0.17 },
+  { limit: 279450, rate: 0.238 },
+  { limit: 677900, rate: 0.338 },
+  { limit: 966750, rate: 0.358 },
+  { limit: 1336350, rate: 0.378 }
+];
+
+function calcTrinntax(inntekt){
+  let tax = 0;
+  let prevLimit = 0;
+  for(const level of TRINN_LEVELS_2026){
+    if(inntekt > prevLimit){
+      const taxableInLevel = Math.min(inntekt, level.limit) - prevLimit;
+      tax += taxableInLevel * level.rate;
+      prevLimit = level.limit;
+    }
+  }
+  if(inntekt > prevLimit){
+    tax += (inntekt - prevLimit) * 0.378;
+  }
+  return tax;
+}
+
+function updateCalculation(){
+  const invoiceAmount = parseFloat(document.getElementById('invoiceAmount').value) || 0;
+  const mvaRate = parseFloat(document.getElementById('mvaRate').value);
+  const personType = document.getElementById('personType').value;
+  const kommuneRate = parseFloat(document.getElementById('kommune').value);
+  const deductions = parseFloat(document.getElementById('deductions').value) || 0;
+  const otherIncome = parseFloat(document.getElementById('otherIncome').value) || 0;
+
+  // Step 1: Remove VAT
+  const mvaAmount = invoiceAmount - (invoiceAmount / (1 + mvaRate));
+  const incomeBeforeTax = invoiceAmount - mvaAmount;
+
+  // Step 2: Calculate trygdeavgift (only for ENK)
+  let trygdeavgift = 0;
+  let taxableIncome = incomeBeforeTax;
+  
+  if(personType === 'enk' || personType === 'hobby'){
+    trygdeavgift = incomeBeforeTax * 0.156; // 15.6% for 2026
+    taxableIncome = incomeBeforeTax - trygdeavgift; // Trygdeavgift er fradragsberettiget
+  }
+
+  // Step 3: Calculate net income after deductions
+  const totalIncome = taxableIncome + otherIncome;
+  const netIncomeForTax = Math.max(0, totalIncome - deductions);
+
+  // Step 4: Calculate taxes
+  let trinntax = 0;
+  let kommuneskatt = 0;
+  let almSkatt = 0;
+
+  if(personType === 'enk' || personType === 'hobby'){
+    trinntax = calcTrinntax(netIncomeForTax);
+    kommuneskatt = netIncomeForTax * kommuneRate;
+    almSkatt = netIncomeForTax * 0.22;
+  } else if(personType === 'as'){
+    // Simplified AS: 22% corporate tax, then 33.3% dividend tax on remainder
+    const corporateTax = incomeBeforeTax * 0.22;
+    const afterCorpTax = incomeBeforeTax - corporateTax;
+    const dividendTax = afterCorpTax * 0.333;
+    trygdeavgift = 0; // No trygdeavgift for AS salary (handled separately)
+    trinntax = 0;
+    kommuneskatt = 0;
+    almSkatt = corporateTax + dividendTax;
+  }
+
+  const totalTax = trygdeavgift + trinntax + kommuneskatt + almSkatt;
+  const youKeep = incomeBeforeTax - totalTax;
+  const effectiveRate = incomeBeforeTax > 0 ? (totalTax / incomeBeforeTax * 100) : 0;
+
+  // Display results
+  document.getElementById('result').style.display = 'block';
+  document.getElementById('youKeep').textContent = formatNumber(youKeep);
+  document.getElementById('resInvoice').textContent = formatNumber(invoiceAmount);
+  document.getElementById('resMva').textContent = formatNumber(mvaAmount);
+  document.getElementById('resIncome').textContent = formatNumber(incomeBeforeTax);
+  document.getElementById('resTrygd').textContent = formatNumber(trygdeavgift);
+  document.getElementById('resKommune').textContent = formatNumber(kommuneskatt);
+  document.getElementById('resTrinn').textContent = formatNumber(trinntax);
+  document.getElementById('resAlm').textContent = formatNumber(almSkatt);
+  document.getElementById('effectiveTax').textContent = effectiveRate.toFixed(1) + ' %';
+}
+
+function formatNumber(n){
+  return n.toLocaleString('nb-NO', { style: 'currency', currency: 'NOK', maximumFractionDigits: 0 });
+}
+
+function resetDefaults(){
+  document.getElementById('invoiceAmount').value = '10000';
+  document.getElementById('mvaRate').value = '0.25';
+  document.getElementById('personType').value = 'enk';
+  document.getElementById('kommune').value = '0.228';
+  document.getElementById('deductions').value = '103050';
+  document.getElementById('otherIncome').value = '0';
+  updateCalculation();
+}
+
+// Auto-calculate on load
+updateCalculation();
+
+// Add input listeners
+['invoiceAmount', 'mvaRate', 'personType', 'kommune', 'deductions', 'otherIncome'].forEach(id => {
+  document.getElementById(id).addEventListener('input', updateCalculation);
+});
+</script>
+</body>
+</html>
