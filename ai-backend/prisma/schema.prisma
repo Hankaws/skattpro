@@ -1,0 +1,134 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// Users (ENK freelancers)
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // bcrypt hashed
+  name      String?
+  enkNumber String?  // Norwegian ENK organization number
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  transactions Transaction[]
+  receipts     Receipt[]
+  corrections  Correction[]
+  
+  @@map("users")
+}
+
+/// Bank transactions
+model Transaction {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  amount      Decimal  @db.Decimal(10, 2)
+  description String
+  date        DateTime
+  merchant    String?
+  
+  // AI categorization
+  category    String?
+  account     String?  // 4-digit kontonummer
+  vatCode     String?  // H1, H0, F, I
+  confidence  Float?
+  method      String?  // 'rule', 'llm', 'hybrid'
+  explanation String?
+  
+  // User override
+  isReviewed  Boolean  @default(false)
+  isCorrected Boolean  @default(false)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([date])
+  @@index([account])
+  @@map("transactions")
+}
+
+/// Receipt images
+model Receipt {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  imageUrl    String   // S3/Railway storage URL
+  originalName String
+  
+  // OCR extraction
+  merchant    String?
+  date        DateTime?
+  amount      Decimal? @db.Decimal(10, 2)
+  vatAmount   Decimal? @db.Decimal(10, 2)
+  vatRate     Float?
+  
+  // Linked transaction (if matched)
+  transactionId String?
+  transaction   Transaction? @relation(fields: [transactionId], references: [id])
+  
+  ocrText     String?  // Full OCR output
+  confidence  Float?
+  
+  createdAt   DateTime @default(now())
+  
+  @@index([userId])
+  @@map("receipts")
+}
+
+/// User corrections (for model improvement)
+model Correction {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  
+  transactionId   String
+  originalCategory String
+  originalAccount  String
+  originalConfidence Float
+  
+  correctedCategory String
+  correctedAccount  String
+  userFeedback      String?
+  
+  // Used for model training
+  wasUsedInTraining Boolean @default(false)
+  
+  createdAt   DateTime @default(now())
+  
+  @@index([userId])
+  @@index([transactionId])
+  @@map("corrections")
+}
+
+/// API keys for external integrations
+model ApiKey {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  key       String   @unique
+  name      String
+  isActive  Boolean  @default(true)
+  
+  // Optional: track usage
+  lastUsedAt DateTime?
+  
+  createdAt DateTime @default(now())
+  expiresAt DateTime?
+  
+  @@index([userId])
+  @@map("api_keys")
+}
