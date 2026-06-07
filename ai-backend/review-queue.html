@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkattPro AI - Review Queue</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 16px;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .stat-card {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 32px;
+      font-weight: bold;
+      color: #667eea;
+    }
+    .stat-label {
+      color: #666;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+    .review-item {
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      background: #fff;
+      transition: all 0.3s;
+    }
+    .review-item:hover {
+      border-color: #667eea;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+    }
+    .transaction-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .amount {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .amount.expense { color: #dc3545; }
+    .amount.income { color: #28a745; }
+    .confidence-badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .confidence-low { background: #ffebee; color: #c62828; }
+    .confidence-medium { background: #fff3e0; color: #e65100; }
+    .confidence-high { background: #e8f5e9; color: #2e7d32; }
+    .details {
+      margin-bottom: 15px;
+      color: #666;
+      font-size: 14px;
+    }
+    .details p {
+      margin: 5px 0;
+    }
+    .current-category {
+      background: #fff3e0;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+    }
+    .category-select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+    }
+    button {
+      flex: 1;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-approve {
+      background: #28a745;
+      color: white;
+    }
+    .btn-approve:hover {
+      background: #218838;
+    }
+    .btn-flag {
+      background: #ffc107;
+      color: #333;
+    }
+    .btn-flag:hover {
+      background: #ffca2c;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #666;
+    }
+    .empty-state h2 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .upload-section {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .upload-btn {
+      background: #667eea;
+      color: white;
+      padding: 12px 30px;
+      border-radius: 6px;
+      text-decoration: none;
+      display: inline-block;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .upload-btn:hover {
+      background: #5568d3;
+    }
+    input[type="file"] {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 Review Queue</h1>
+    <p class="subtitle">Manually review transactions that AI couldn't categorize with high confidence</p>
+    
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-value" id="pendingCount">0</div>
+        <div class="stat-label">Pending Review</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="autoRate">0%</div>
+        <div class="stat-label">Auto-categorized</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="avgConfidence">0%</div>
+        <div class="stat-label">Avg Confidence</div>
+      </div>
+    </div>
+    
+    <!-- Receipt Upload -->
+    <div class="upload-section">
+      <h3>📷 Upload Receipt</h3>
+      <p style="color: #666; margin: 10px 0;">Upload a receipt image to auto-extract merchant, amount, and category</p>
+      <label for="receiptUpload" class="upload-btn">Choose Image</label>
+      <input type="file" id="receiptUpload" accept="image/*">
+      <p id="uploadStatus" style="margin-top: 10px; font-size: 14px;"></p>
+    </div>
+    
+    <!-- Review Items -->
+    <div id="reviewQueue">
+      <div class="empty-state">
+        <h2>🎉 All caught up!</h2>
+        <p>No transactions need review right now.</p>
+        <p style="margin-top: 10px;">Upload transactions to see them here.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'http://localhost:3001/api';
+    
+    // Mock data for demo
+    const mockTransactions = [
+      {
+        id: 'txn_001',
+        amount: -1500,
+        description: 'MENY STAVANGER',
+        date: '2026-06-05',
+        category: 'Kontorutstyr',
+        account: '5400',
+        confidence: 0.50,
+        explanation: 'Unknown expense categorized as office supplies (needs manual review)'
+      },
+      {
+        id: 'txn_002',
+        amount: -12500,
+        description: 'UKJENT BUTIKK AS',
+        date: '2026-06-04',
+        category: 'Kontorutstyr',
+        account: '5400',
+        confidence: 0.40,
+        explanation: 'Unknown transaction - needs manual categorization'
+      }
+    ];
+    
+    const categories = [
+      { account: '3000', name: 'Salgsinntekt varer' },
+      { account: '3010', name: 'Salgsinntekt tjenester' },
+      { account: '5050', name: 'Varekjøp' },
+      { account: '5400', name: 'Kontorutstyr' },
+      { account: '5420', name: 'Datautstyr' },
+      { account: '5440', name: 'Litteratur og fagtidsskrifter' },
+      { account: '6050', name: 'Husleie' },
+      { account: '6100', name: 'Strøm' },
+      { account: '6110', name: 'Telefon og porto' },
+      { account: '6130', name: 'Edb-utgifter' },
+      { account: '6190', name: 'Andre driftskostnader' },
+      { account: '6200', name: 'Reklame og annonsering' },
+      { account: '6210', name: 'Webutvikling og hosting' },
+      { account: '6290', name: 'Møter og representasjon' },
+      { account: '6300', name: 'Kontingenter' },
+      { account: '6350', name: 'Trygdeavgift og skatt' },
+      { account: '6400', name: 'Reise og diett' },
+      { account: '6450', name: 'Bil og transport' },
+      { account: '6470', name: 'Drivstoff' },
+      { account: '7100', name: 'Lønnskostnader' },
+      { account: '8000', name: 'Finanskostnader' }
+    ];
+    
+    function renderQueue(transactions) {
+      const queueDiv = document.getElementById('reviewQueue');
+      
+      if (transactions.length === 0) {
+        queueDiv.innerHTML = `
+          <div class="empty-state">
+            <h2>🎉 All caught up!</h2>
+            <p>No transactions need review right now.</p>
+          </div>
+        `;
+        return;
+      }
+      
+      queueDiv.innerHTML = transactions.map(txn => `
+        <div class="review-item" data-id="${txn.id}">
+          <div class="transaction-header">
+            <div class="amount ${txn.amount > 0 ? 'income' : 'expense'}">
+              ${txn.amount > 0 ? '+' : ''}${txn.amount.toLocaleString('no-NO')} kr
+            </div>
+            <span class="confidence-badge ${getConfidenceClass(txn.confidence)}">
+              ${(txn.confidence * 100).toFixed(0)}% confidence
+            </span>
+          </div>
+          
+          <div class="details">
+            <p><strong>Description:</strong> ${txn.description}</p>
+            <p><strong>Date:</strong> ${txn.date || 'Unknown'}</p>
+            <p><strong>AI Explanation:</strong> ${txn.explanation}</p>
+          </div>
+          
+          <div class="current-category">
+            <strong>Current categorization:</strong> ${txn.account} - ${txn.category}
+          </div>
+          
+          <label><strong>Correct category:</strong></label>
+          <select class="category-select" id="category-${txn.id}">
+            ${categories.map(cat => `
+              <option value="${cat.account}" ${cat.account === txn.account ? 'selected' : ''}>
+                ${cat.account} - ${cat.name}
+              </option>
+            `).join('')}
+          </select>
+          
+          <div class="actions">
+            <button class="btn-approve" onclick="approve('${txn.id}')">✅ Approve</button>
+            <button class="btn-flag" onclick="flag('${txn.id}')">🚩 Needs Attention</button>
+          </div>
+        </div>
+      `).join('');
+      
+      updateStats(transactions);
+    }
+    
+    function getConfidenceClass(confidence) {
+      if (confidence >= 0.7) return 'confidence-high';
+      if (confidence >= 0.5) return 'confidence-medium';
+      return 'confidence-low';
+    }
+    
+    function updateStats(transactions) {
+      document.getElementById('pendingCount').textContent = transactions.length;
+      
+      // Mock stats
+      document.getElementById('autoRate').textContent = '88%';
+      document.getElementById('avgConfidence').textContent = '85%';
+    }
+    
+    async function approve(transactionId) {
+      const categorySelect = document.getElementById(`category-${transactionId}`);
+      const selectedAccount = categorySelect.value;
+      const selectedCategory = categories.find(c => c.account === selectedAccount);
+      
+      // Send correction to API
+      try {
+        const response = await fetch(`${API_BASE}/correction`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            transactionId,
+            correctCategory: selectedCategory.name,
+            correctAccount: selectedAccount
+          })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          // Remove from queue
+          const item = document.querySelector(`[data-id="${transactionId}"]`);
+          item.style.opacity = '0';
+          item.style.transform = 'translateX(100px)';
+          setTimeout(() => item.remove(), 300);
+          
+          alert('✅ Thank you! Your correction will improve SkattPro AI.');
+        }
+      } catch (error) {
+        alert('❌ Failed to submit correction. Please try again.');
+        console.error(error);
+      }
+    }
+    
+    function flag(transactionId) {
+      alert('🚩 This transaction has been flagged for manual review. You can skip it for now.');
+    }
+    
+    // Receipt upload handler
+    document.getElementById('receiptUpload').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      const statusDiv = document.getElementById('uploadStatus');
+      statusDiv.textContent = '⏳ Uploading and processing...';
+      statusDiv.style.color = '#667eea';
+      
+      const formData = new FormData();
+      formData.append('receipt', file);
+      
+      try {
+        const response = await fetch(`${API_BASE}/receipt`, {
+          method: 'POST',
+          body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          const receipt = result.receipt;
+          statusDiv.innerHTML = `
+            ✅ <strong>${receipt.merchant}</strong><br>
+            Amount: ${Math.abs(receipt.amount).toFixed(2)} kr | 
+            Date: ${receipt.date || 'N/A'}<br>
+            Category: ${receipt.category?.name} (${(receipt.confidence * 100).toFixed(0)}% confidence)
+          `;
+          statusDiv.style.color = '#28a745';
+        } else {
+          statusDiv.textContent = `❌ Failed: ${result.error}`;
+          statusDiv.style.color = '#dc3545';
+        }
+      } catch (error) {
+        statusDiv.textContent = `❌ Upload failed: ${error.message}`;
+        statusDiv.style.color = '#dc3545';
+      }
+    });
+    
+    // Load queue on page load
+    renderQueue(mockTransactions);
+  </script>
+</body>
+</html>

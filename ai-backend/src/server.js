@@ -1,9 +1,29 @@
 const express = require('express');
 const cors = require('cors');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 const { categorizeBatch, CATEGORIES } = require('./categorizer');
+const HybridCategorizer = require('./hybrid-categorizer');
+const { parseReceipt } = require('./receipts/ocr');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Configure multer for file uploads
+const upload = multer({
+  dest: 'uploads/',
+  limits: { fileSize: 10 * 1024 * 1024 }  // 10MB max
+});
+
+// Initialize hybrid categorizer
+const hybrid = new HybridCategorizer({
+  llmThreshold: 0.85,
+  amountThreshold: 1000,
+  llmOptions: {
+    apiKey: process.env.LLM_API_KEY
+  }
+});
 
 app.use(cors());
 app.use(express.json());
@@ -19,7 +39,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // Categorize transactions
-app.post('/api/categorize', (req, res) => {
+app.post('/api/categorize', async (req, res) => {
   try {
     const { transactions } = req.body;
     
@@ -31,7 +51,7 @@ app.post('/api/categorize', (req, res) => {
     
     console.log(`📥 Received ${transactions.length} transactions for categorization`);
     
-    const results = categorizeBatch(transactions);
+    const results = await hybrid.categorizeBatch(transactions);
     
     // Calculate stats
     const avgConfidence = results.reduce((sum, r) => sum + r.confidence, 0) / results.length;
@@ -54,6 +74,72 @@ app.post('/api/categorize', (req, res) => {
     console.error('❌ Categorization error:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
+});
+
+// Upload and parse receipt
+app.post('/api/receipt', upload.single('receipt'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No receipt file uploaded' });
+    }
+    
+    console.log(`📷 Receipt uploaded: ${req.file.originalname} (${req.file.size} bytes)`);
+    
+    const result = await parseReceipt(req.file.path);
+    
+    // Clean up uploaded file
+    fs.unlink(req.file.path, err => {
+      if (err) console.error('Failed to delete temp file:', err);
+    });
+    
+    if (result.success) {
+      res.json({
+        success: true,
+        receipt: result
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        error: result.error
+      });
+    }
+  } catch (error) {
+    console.error('❌ Receipt processing error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Get review queue (transactions needing manual review)
+app.get('/api/review-queue', (req, res) => {
+  // In production, this would query a database
+  // For now, return mock data structure
+  res.json({
+    success: true,
+    queue: [],
+    stats: {
+      pending: 0,
+      reviewed: 0
+    }
+  });
+});
+
+// Submit manual correction (to improve the model)
+app.post('/api/correction', (req, res) => {
+  const { transactionId, correctCategory, correctAccount, userFeedback } = req.body;
+  
+  console.log(`✏️  User correction received:`, {
+    transactionId,
+    correctCategory,
+    correctAccount,
+    feedback: userFeedback
+  });
+  
+  // In production, save to database for model training
+  
+  res.json({
+    success: true,
+    message: 'Correction saved - thank you for improving SkattPro AI!'
+  });
 });
 
 // Get available categories
