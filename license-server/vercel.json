@@ -1,13 +1,12 @@
 {
   "functions": {
-    "api/**/*.js": {
-      "runtime": "@vercel/node@3.0.0",
+    "api/generate-key.js": {
+      "runtime": "@vercel/node@3.2.0",
       "maxDuration": 10
-    }
-  },
-  "build": {
-    "env": {
-      "NODE_VERSION": "18"
+    },
+    "api/validate-key.js": {
+      "runtime": "@vercel/node@3.2.0",
+      "maxDuration": 5
     }
   }
 }
