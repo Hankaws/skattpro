@@ -1,4 +1,3 @@
-// Vercel configuration for serverless functions
 {
   "functions": {
     "api/**/*.js": {
@@ -6,9 +5,9 @@
       "maxDuration": 10
     }
   },
-  "env": {
-    "STRIPE_SECRET_KEY": "@stripe-secret-key",
-    "SENDGRID_API_KEY": "@sendgrid-api-key",
-    "DATABASE_URL": "@database-url"
+  "build": {
+    "env": {
+      "NODE_VERSION": "18"
+    }
   }
 }
