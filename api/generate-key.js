@@ -163,16 +163,26 @@ exports.default = async (req, res) => {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  // Parse request body
+  let body;
+  try {
+    body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+  } catch (err) {
+    console.error('Failed to parse request body:', err);
+    return res.status(400).json({ error: 'Invalid JSON' });
+  }
+
   // Verify Stripe webhook signature (production only)
   const sig = req.headers['stripe-signature'];
   let event;
 
   try {
     if (process.env.STRIPE_WEBHOOK_SECRET && sig) {
-      event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+      // In production, verify signature with raw body
+      event = stripe.webhooks.constructEvent(JSON.stringify(body), sig, process.env.STRIPE_WEBHOOK_SECRET);
     } else {
       // Development mode - skip signature verification
-      event = req.body;
+      event = body;
     }
   } catch (err) {
     console.error('Webhook signature verification failed:', err.message);
