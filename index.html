@@ -520,19 +520,31 @@ const BRACKETS_2026 = [
 ];
 
 // Load kommuner from JSON file (same as faktura-kalkulator.html)
-let KOMMUNER = [];
+// Inline backup for reliability
+let KOMMUNER = [
+  {navn:"Oslo",sats:22.8},
+  {navn:"Bergen",sats:22.0},
+  {navn:"Trondheim",sats:22.0},
+  {navn:"Stavanger",sats:22.0},
+  {navn:"Drammen",sats:22.0},
+  {navn:"Tromsø",sats:22.0},
+  {navn:"Alta",sats:21.2},
+  {navn:"Berlevåg",sats:18.5},
+  {navn:"Båtsfjord",sats:18.5},
+  {navn:"Gamvik",sats:18.5}
+];
+fillKommuneSelect();
+console.log('Loaded', KOMMUNER.length, 'kommuner inline');
+// Also try async load for full list
 fetch('kommuner.json')
   .then(res => res.json())
   .then(data => {
     KOMMUNER = data;
     fillKommuneSelect();
-    console.log('Loaded', KOMMUNER.length, 'kommuner from JSON');
+    console.log('Loaded full list:', KOMMUNER.length, 'kommuner from JSON');
   })
   .catch(err => {
-    console.error('Failed to load kommuner.json:', err);
-    // Fallback to Oslo default
-    KOMMUNER = [{navn:"Oslo",sats:22.8}];
-    fillKommuneSelect();
+    console.warn('Using inline fallback - JSON load failed:', err.message);
   });
 
 
