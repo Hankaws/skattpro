@@ -69,8 +69,21 @@
 
   <div id="alreadyActive" class="already-active">
     <h2>✅ Pro er allerede aktivert</h2>
-    <p style="color:var(--muted);margin-bottom:20px">Du har allerede en aktiv Pro-lisens på denne enheten.</p>
-    <a href="index.html" class="btn">Gå til kalkulatoren</a>
+    <p style="color:var(--muted);margin-bottom:20px">Du har en aktiv Pro-lisens på denne enheten.</p>
+    
+    <div style="background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:20px;margin:20px 0;text-align:left">
+      <div style="font-size:.85rem;color:var(--muted);margin-bottom:8px">Din lisensnøkkel:</div>
+      <div style="font-family:monospace;font-size:1.2rem;font-weight:700;color:var(--ink);letter-spacing:1px" id="displayKey"></div>
+      <div style="margin-top:12px;font-size:.9rem;color:var(--muted)">
+        <div>Registrert på: <strong id="displayEmail"></strong></div>
+        <div>Aktivert: <strong id="displayDate"></strong></div>
+      </div>
+    </div>
+    
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="index.html" class="btn">Gå til kalkulatoren</a>
+      <button class="btn secondary" onclick="deactivateLicense()" style="color:var(--err);border-color:var(--err)">Deaktiver lisens</button>
+    </div>
   </div>
 
   <div id="activationForm" class="activate-card">
@@ -114,6 +127,11 @@ window.addEventListener('DOMContentLoaded', () => {
   if (activated === 'true' && licenseKey) {
     document.getElementById('activationForm').style.display = 'none';
     document.getElementById('alreadyActive').style.display = 'block';
+    
+    // Display license details
+    document.getElementById('displayKey').textContent = licenseKey;
+    document.getElementById('displayEmail').textContent = localStorage.getItem('skattpro_pro_email') || 'Ukjent';
+    document.getElementById('displayDate').textContent = localStorage.getItem('skattpro_pro_activated_date') || 'Ukjent';
   }
   
   // Auto-fill if key in URL (e.g., from email link)
@@ -123,6 +141,21 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('licenseKey').value = keyParam;
   }
 });
+
+function deactivateLicense() {
+  if (!confirm('Er du sikker på at du vil deaktivere Pro? Du mister tilgangen til Pro-funksjoner på denne enheten, men lisensnøkkelen din er fortsatt gyldig og kan aktiveres på nytt senere.')) {
+    return;
+  }
+  
+  // Clear all Pro data from localStorage
+  localStorage.removeItem('skattpro_pro_activated');
+  localStorage.removeItem('skattpro_license_key');
+  localStorage.removeItem('skattpro_pro_email');
+  localStorage.removeItem('skattpro_pro_activated_date');
+  
+  // Reload page to show activation form
+  window.location.reload();
+}
 
 async function activateLicense() {
   const keyInput = document.getElementById('licenseKey');
