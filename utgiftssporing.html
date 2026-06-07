@@ -13,6 +13,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <title>Utgiftssporing for ENK – SkattPro</title>
 <link rel="stylesheet" href="skattpro-common.css">
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
 .expense-container { max-width: 900px; margin: 0 auto; padding: 20px; }
 .expense-header { text-align: center; margin-bottom: 30px; }
@@ -49,6 +50,25 @@
 .hint-box ul { margin: 8px 0 0 20px; color: #0c4a6e; }
 .hint-box li { margin-bottom: 4px; }
 .empty-state { text-align: center; padding: 40px; color: var(--muted); }
+
+/* Receipt OCR styles */
+.ocr-section { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line); }
+.ocr-upload-area { border: 2px dashed var(--line); border-radius: 12px; padding: 24px; text-align: center; background: var(--panel2); cursor: pointer; transition: all 0.2s; }
+.ocr-upload-area:hover { border-color: var(--a); background: #f0f4ff; }
+.ocr-upload-area.dragover { border-color: var(--a); background: #e0e7ff; }
+.ocr-upload-area input[type="file"] { display: none; }
+.ocr-preview { margin-top: 16px; max-width: 100%; border-radius: 8px; display: none; }
+.ocr-progress { margin-top: 16px; display: none; }
+.ocr-progress-bar { height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden; }
+.ocr-progress-fill { height: 100%; background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); width: 0%; transition: width 0.3s; }
+.ocr-progress-text { font-size: 13px; color: var(--muted); margin-top: 8px; }
+.ocr-result { margin-top: 20px; padding: 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; display: none; }
+.ocr-result h4 { color: #166534; margin-bottom: 12px; font-size: 16px; }
+.ocr-field { margin-bottom: 12px; }
+.ocr-field label { display: block; font-size: 12px; color: #6b7280; margin-bottom: 4px; }
+.ocr-field input { width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; }
+.ocr-confidence { font-size: 12px; color: #6b7280; margin-top: 8px; }
+.ocr-extracted-text { margin-top: 12px; padding: 12px; background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 12px; font-family: monospace; max-height: 150px; overflow-y: auto; white-space: pre-wrap; }
 </style>
 </head>
 <body>
@@ -133,6 +153,59 @@
           </ul>
           <p style="margin-top:12px;font-size:13px;color:#0c4a6e"><strong>Merk:</strong> Må være dokumentert med kvittering og nødvendig for driften.</p>
         </div>
+
+        <!-- Receipt OCR Section - Pro Feature -->
+        <div class="ocr-section">
+          <h3>📷 Skann kvittering (Pro)</h3>
+          <div class="ocr-upload-area" id="ocrUploadArea" onclick="document.getElementById('ocrInput').click()">
+            <input type="file" id="ocrInput" accept="image/jpeg,image/png" onchange="handleImageUpload(event)">
+            <div style="font-size: 48px; color: var(--muted);">📸</div>
+            <p style="margin-top: 12px; font-weight: 600;">Last opp kvittering</p>
+            <p style="font-size: 13px; color: var(--muted);">Dra og slipp eller klikk for å velge (JPG/PNG)</p>
+          </div>
+          <img id="ocrPreview" class="ocr-preview" alt="Preview">
+          <div class="ocr-progress" id="ocrProgress">
+            <div class="ocr-progress-bar">
+              <div class="ocr-progress-fill" id="ocrProgressFill"></div>
+            </div>
+            <div class="ocr-progress-text" id="ocrProgressText">Behandler kvittering...</div>
+          </div>
+          <div class="ocr-result" id="ocrResult">
+            <h4>✅ Kvittering analizert</h4>
+            <div class="ocr-field">
+              <label>Forhandler / Beskrivelse</label>
+              <input type="text" id="ocrMerchant" placeholder="F.eks. Kiwi, Joker, Staples">
+            </div>
+            <div class="ocr-field">
+              <label>Beløp (kr)</label>
+              <input type="number" id="ocrAmount" placeholder="0" min="0" step="1">
+            </div>
+            <div class="ocr-field">
+              <label>Dato</label>
+              <input type="date" id="ocrDate">
+            </div>
+            <div class="ocr-field">
+              <label>MVA (kr)</label>
+              <input type="number" id="ocrVat" placeholder="0" min="0" step="1">
+            </div>
+            <div class="ocr-field">
+              <label>Kategori</label>
+              <select id="ocrCategory">
+                <option value="reise">Reise og kjøring</option>
+                <option value="utstyr">Utstyr og inventar</option>
+                <option value="kontor">Kontor og hjemmekontor</option>
+                <option value="markedsforing">Markedsføring</option>
+                <option value="annet">Annet</option>
+              </select>
+            </div>
+            <div class="ocr-confidence" id="ocrConfidence"></div>
+            <div class="ocr-extracted-text" id="ocrExtractedText"></div>
+            <div class="btn-row" style="margin-top: 16px;">
+              <button class="btn primary" onclick="addExpenseFromOCR()">Legg til utgift</button>
+              <button class="btn secondary" onclick="clearOCR()">Nullstill</button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="expense-card">
@@ -182,115 +255,7 @@
 <script>
 let expenses = JSON.parse(localStorage.getItem('skattpro_expenses') || '[]');
 
-function getCategoryName(cat) {
-  const names = { reise: 'Reise', utstyr: 'Utstyr', kontor: 'Kontor', markedsforing: 'Markedsføring', annet: 'Annet' };
-  return names[cat] || cat;
-}
-
-function getCategoryClass(cat) {
-  return 'cat-' + cat;
-}
-
-function renderExpenses() {
-  const list = document.getElementById('expenseList');
-  const count = document.getElementById('expenseCount');
-  const totalEl = document.getElementById('totalExpenses');
-  const reductionEl = document.getElementById('taxReduction');
-
-  count.textContent = `(${expenses.length} stk)`;
-
-  if (expenses.length === 0) {
-    list.innerHTML = '<div class="empty-state"><p>Ingen utgifter registrert enda.</p><p style="font-size:13px">Legg til dine første driftskostnader i skjemaet.</p></div>';
-    totalEl.textContent = '0 kr';
-    reductionEl.textContent = '0 kr';
-    return;
-  }
-
-  let total = 0;
-  list.innerHTML = expenses.map((e, i) => {
-    total += e.amount;
-    return `<div class="expense-item">
-      <div class="info">
-        <div class="name">${e.name} <span class="category-tag ${getCategoryClass(e.category)}">${getCategoryName(e.category)}</span></div>
-        <div class="category">${e.date}</div>
-      </div>
-      <div class="amount">${e.amount.toLocaleString()} kr</div>
-      <button class="delete" onclick="deleteExpense(${i})">Slett</button>
-    </div>`;
-  }).join('');
-
-  const taxRate = 0.474;
-  const reduction = Math.round(total * taxRate);
-
-  totalEl.textContent = total.toLocaleString() + ' kr';
-  reductionEl.textContent = reduction.toLocaleString() + ' kr';
-}
-
-function addExpense() {
-  const name = document.getElementById('expenseName').value.trim();
-  const amount = parseFloat(document.getElementById('expenseAmount').value);
-  const category = document.getElementById('expenseCategory').value;
-  const date = document.getElementById('expenseDate').value;
-
-  if (!name || isNaN(amount) || amount <= 0 || !date) {
-    alert('Vennligst fyll ut alle felt korrekt.');
-    return;
-  }
-
-  expenses.push({ name, amount, category, date });
-  expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
-  localStorage.setItem('skattpro_expenses', JSON.stringify(expenses));
-  
-  clearForm();
-  renderExpenses();
-}
-
-function deleteExpense(index) {
-  if (confirm('Slett denne utgiften?')) {
-    expenses.splice(index, 1);
-    localStorage.setItem('skattpro_expenses', JSON.stringify(expenses));
-    renderExpenses();
-  }
-}
-
-function clearForm() {
-  document.getElementById('expenseName').value = '';
-  document.getElementById('expenseAmount').value = '';
-  document.getElementById('expenseCategory').value = 'reise';
-  document.getElementById('expenseDate').value = new Date().toISOString().split('T')[0];
-}
-
-function clearAll() {
-  if (confirm('Er du sikker på at du vil slette ALLE utgifter? Dette kan ikke angres.')) {
-    expenses = [];
-    localStorage.setItem('skattpro_expenses', JSON.stringify(expenses));
-    renderExpenses();
-  }
-}
-
-function exportExpenses() {
-  if (expenses.length === 0) {
-    alert('Ingen utgifter å eksportere.');
-    return;
-  }
-
-  const headers = ['Dato', 'Beskrivelse', 'Kategori', 'Beløp (kr)'];
-  const rows = expenses.map(e => [e.date, e.name, getCategoryName(e.category), e.amount.toString().replace('.', ',')]);
-  const csv = [headers, ...rows].map(r => r.join(';')).join('\n');
-
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = `skattpro-utgifter-${new Date().toISOString().split('T')[0]}.csv`;
-  link.click();
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  if (!document.getElementById('expenseDate').value) {
-    document.getElementById('expenseDate').value = new Date().toISOString().split('T')[0];
-  }
-  renderExpenses();
-});
-</script>
-</body>
-</html>
+// Merchant patterns for auto-categorization
+const merchantPatterns = {
+  reise: ['shell', 'esso', 'yq', 'circle k', 'borealis', 'drivstoff', 'bensin', 'diesel', 'fly', 'sas', 'norwegian', 'ryg', 'tog', 'vy', 'taxi', 'uber', 'bolt'],
+  utstyr: ['komplett', 'power', 'elkjøp', 'clas ohlson', 'biltema', 'jula', ' Clas', 'ikea', 'office', 'staples', 'komplett.no', 'pow
