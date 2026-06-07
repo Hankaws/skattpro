@@ -3,54 +3,96 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="canonical" href="https://skattpro.no/">
+<title>SkattPro 2026 - Norges skattekalkulator</title>
 <meta name="description" content="Beregn skatt, trinnskatt, trygdeavgift og nettoinntekt for 2026. Eksporter PDF og TXT. Alle norske kommuner.">
-<meta name="keywords" content="skattekalkulator, skatt 2026, trinnskatt, trygdeavgift, nettoinntekt, forenklet skattekalkulator, selvangivelse, norsk skatt">
-<meta name="robots" content="index, follow">
-<meta property="og:type" content="website">
-<meta property="og:title" content="SkattPro 2026 – Norges skattekalkulator">
-<meta property="og:description" content="Beregn skatt, trinnskatt, trygdeavgift og nettoinntekt for 2026. Gratis og enkel.">
-<meta property="og:url" content="https://skattpro.no/">
-<meta property="og:image" content="https://skattpro.no/og-image.png">
-<meta name="twitter:card" content="summary_large_image">
-<title>SkattPro 2026 – Norges skattekalkulator</title>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "SkattPro",
-  "url": "https://skattpro.no/",
-  "logo": "https://skattpro.no/og-image.png",
-  "sameAs": []
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0b0f1a;--panel:#111827;--panel2:#0f172a;--line:#1e293b;
+  --ink:#f1f5f9;--muted:#94a3b8;--dim:#64748b;
+  --a:#60a5fa;--a2:#818cf8;--ok:#34d399;--warn:#fbbf24;--err:#f87171;
+  --gd:linear-gradient(180deg,#0b1220,#0a101d);
 }
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "url": "https://skattpro.no/",
-  "name": "SkattPro",
-  "description": "Norsk skattekalkulator for 2026.",
-  "inLanguage": "nb-NO",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https://skattpro.no/?q={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
+html,body{
+  background:radial-gradient(1200px 800px at 10% -10%, #1e3a8a 0%, transparent 60%),
+  radial-gradient(1000px 700px at 110% 10%, #4c1d95 0%, transparent 55%),
+  var(--bg);
+  color:var(--ink); font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  line-height:1.5; min-height:100vh;
 }
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "SkattPro",
-  "applicationCategory": "FinanceApplication",
-  "operatingSystem": "Any",
-  "browserRequirements": "Requires JavaScript",
-  "description": "Beregn skatt, trinnskatt, trygdeavgift og nettoinntekt for 2026."
-}
-</script>
-<link rel="stylesheet" href="skattpro-common.css">
+.wrap{max-width:1200px;margin:0 auto;padding:22px 18px 80px}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:10px 0 14px;flex-wrap:wrap;gap:10px}
+.logo{font-weight:800;font-size:1.3rem;color:#fff;display:flex;align-items:center;gap:10px}
+.logo i{font-style:normal;font-size:1.3rem}
+.nav-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.badge{padding:6px 10px;border-radius:999px;background:#0f172a;border:1px solid #1e293b;font-size:.82rem;color:var(--muted)}
+.hero{text-align:center;padding:28px 0 16px;color:#fff;background:var(--bg)}
+.hero h1{font-size:2.4rem;font-weight:900;letter-spacing:-.6px;line-height:1.15;margin-bottom:10px}
+.hero p{color:var(--muted);font-size:1.05rem;max-width:720px;margin:0 auto}
+.cta-row{display:flex;gap:12px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+.card{background:var(--gd);border:1px solid #1e293b;border-radius:18px;padding:22px;margin:16px 0}
+.card h2{font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #1e293b;background:#0a101d;color:#e5e7eb;font-size:.95rem}
+.input:focus{outline:none;border-color:#60a5fa;box-shadow:0 0 0 3px #60a5fa44}
+label{font-size:.82rem;color:#cbd5e1;display:block;margin:8px 0 5px;font-weight:600}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.row-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px}
+@media(max-width:780px){.row,.row-3,.row-4{grid-template-columns:1fr}}
+.select{appearance:none;background:#0a101d url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 12px center no-repeat;padding-right:38px}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;padding:11px 16px;border-radius:10px;font-weight:700;cursor:pointer;color:#fff;background:#2563eb;font-size:.92rem;font-family:inherit}
+.btn:hover{filter:brightness(1.08)}
+.btn.secondary{background:#0f172a;border:1px solid #1e293b;color:#e5e7eb}
+.btn.ghost{background:transparent;color:#e5e7eb;border:1px solid transparent;padding:8px 10px}
+.btn.ghost:hover{border-color:#1e293b}
+.btn.sm{padding:6px 10px;font-size:.82rem}
+.btn.upgrade{background:linear-gradient(135deg,#60a5fa,#818cf8);color:#0b0f1a}
+.kpi{background:#0a101d;border:1px solid #1e293b;border-radius:12px;padding:14px;text-align:center}
+.kpi .v{font-size:1.15rem;font-weight:800;color:#fff}
+.kpi .l{font-size:.78rem;color:var(--muted)}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+@media(max-width:520px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.bracket{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#0a101d;border:1px solid #1e293b;border-radius:10px;margin:8px 0;flex-wrap:wrap}
+.bracket .nm{min-width:160px;font-weight:700;color:#fff;font-size:.9rem}
+.bracket .rt{min-width:48px;text-align:right;font-weight:800;color:#60a5fa}
+.bar{flex:1;height:8px;background:#1e293b;border-radius:4px;overflow:hidden;min-width:80px}
+.bar-fill{height:100%;background:linear-gradient(90deg,#60a5fa,#818cf8);border-radius:4px}
+.bracket .am{min-width:100px;text-align:right;font-weight:700;color:#e5e7eb}
+.line{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:#0a101d;border:1px solid #1e293b;border-radius:10px;margin:7px 0}
+.line .lb{color:#cbd5e1;font-weight:600}
+.line .vl{font-weight:800;color:#fff}
+.status{font-size:.85rem;color:var(--muted);background:#0f172a;border:1px solid #1e293b;border-radius:10px;padding:10px 12px}
+.hint{font-size:.8rem;color:var(--dim);background:#0f172a;border:1px dashed #1e293b;border-radius:10px;padding:10px;margin-top:8px}
+.hist{display:flex;align-items:center;justify-content:space-between;padding:10px;border-bottom:1px solid #1e293b;gap:10px}
+.hist .t{color:#94a3b8;font-size:.82rem;margin-top:2px}
+.toggle{display:flex;background:#0f172a;border-radius:8px;padding:3px;gap:3px}
+.toggle button{flex:1;padding:8px;border:0;background:transparent;color:#94a3b8;border-radius:6px;font-weight:600;cursor:pointer;font-size:.88rem;font-family:inherit}
+.toggle button.on{background:#1e293b;color:#f1f5f9;box-shadow:0 1px 2px rgba(0,0,0,.3)}
+.footer{text-align:center;color:var(--dim);padding:30px 20px;font-size:.82rem}
+.footer a{color:var(--muted);text-decoration:underline;margin:0 6px}
+.pro-card{background:linear-gradient(135deg,#1e3a8a,#4c1d95);border:1px solid #312e81;border-radius:18px;padding:22px;margin:16px 0;color:#fff}
+.pro-card h2{font-size:1.25rem;font-weight:800;margin-bottom:8px}
+.price{font-size:2rem;font-weight:900;color:#fff;margin:8px 0}
+.pro-features{list-style:none;padding:0;margin:12px 0}
+.pro-features li{padding:5px 0;font-size:.9rem;color:#e2e8f0}
+.pro-features li::before{content:"✓ ";color:#34d399}
+hr.divider{border:0;border-top:1px solid #1e293b;margin:18px 0}
+.input-row{display:flex;gap:10px;align-items:center}
+.input-row .input{flex:1}
+.kommune-note{font-size:.78rem;color:var(--muted);margin-top:6px}
+.faq-list{display:flex;flex-direction:column;gap:10px}
+.faq-item{background:#0a101d;border:1px solid #1e293b;border-radius:12px;padding:10px 12px}
+details.faq-item{summary::-webkit-details-marker{content:""}summary{list-style:none}}
+.faq-q{width:100%;text-align:left;background:transparent;border:0;color:#fff;font-weight:700;font-size:.95rem;padding:10px 0;cursor:pointer;font-family:inherit;display:flex;justify-content:space-between;align-items:center}
+.faq-a{color:#cbd5e1;font-size:.9rem;padding:8px 0 4px;line-height:1.55}
+.privacy-modal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px}
+.privacy-box{background:var(--panel2);border:1px solid #1e293b;border-radius:18px;max-width:720px;width:100%;max-height:85vh;overflow:auto;padding:24px;color:#e5e7eb}
+.privacy-box h2{margin-bottom:10px;color:#fff}
+.privacy-box a{color:#60a5fa}
+.cookie-banner{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#0f172a;border:1px solid #1e293b;border-radius:14px;padding:14px 18px;max-width:860px;width:calc(100% - 28px);z-index:900;display:none;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;color:#e5e7eb;font-size:.9rem}
+.cookie-banner button{padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;font-family:inherit;font-size:.88rem}
+.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+</style>
 </head>
 <body>
 <div class="privacy-modal" id="privacyModal" role="dialog" aria-modal="true" aria-labelledby="privacyTitle">
@@ -59,7 +101,7 @@
     <p><strong>SkattPro</strong> er en klient-side skattekalkulator. Unntatt annet enn det du velger selv, behandler vi ingen personopplysninger.</p>
     <p>Vi bruker kun lokal lagring i din egen nettleser (<em>localStorage</em>) for historikk og eksportfunksjoner. Disse dataene forlater aldri din enhet.</p>
     <p>Du kan når som helst slette historikken eller fjerne lagrede data fra nettleseren. Betalingsabonnement prosseseres av Stripe fullstendig utenfor dette nettstedet.</p>
-    <p>For spørsmål om skatt, se <a href="https://www.skatteetaten.no" target="_blank" rel="noopener">Skatteetaten</a>.</p>
+    <p>For spørsmål: skattpro@example.com</p>
     <button class="btn sm" id="privacyClose">Lukk</button>
   </div>
 </div>
@@ -71,123 +113,25 @@
   </div>
 </div>
 <div class="wrap">
-  <header class="nav" role="banner">
-      <a href="#" class="logo">
-              <svg width="28" height="28" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="20" fill="url(#logoGrad)"/>
-                <defs>
-                  <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:#2563eb"/>
-                    <stop offset="100%" style="stop-color:#7c3aed"/>
-                  </linearGradient>
-                </defs>
-                <rect x="10" y="22" width="5" height="10" rx="1.5" fill="white" opacity="0.9"/>
-                <rect x="17" y="16" width="5" height="16" rx="1.5" fill="white"/>
-                <rect x="24" y="12" width="5" height="20" rx="1.5" fill="white" opacity="0.9"/>
-                <path d="M28 14l-8 8-4-4" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-              </svg>
-              SkattPro
-            </a>
-      <nav class="menu" aria-label="Hovedmeny" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-                          <a href="#calc">Skatt</a>
-                          <a href="ansatte-og-lonn/">Ansatte</a>
-                          <a href="faktura-kalkulator.html">Faktura</a>
-                          <a href="forskuddsskatt.html">Forskudd</a>
-                          <a href="skattefrister.html">Frister</a>
-                          <a href="utgiftssporing.html">Utgifter</a>
-                          <a href="paminnelser.html">Påminnelser</a>
-                          <a href="pro-features.html" style="color:var(--a);font-weight:600">Pro</a>
-                        </nav>
-      <div class="nav-actions">
-              <a href="ansatte-og-lonn/" class="btn sm upgrade">Priser</a>
-              <a href="pro-features.html" class="btn sm" id="proBtn">Kjøp Pro</a>
-            </div>
-    </header>
+  <nav class="nav">
+    <div class="logo"><i>🧮</i> SkattPro 2026</div>
+    <div class="nav-actions">
+      <span class="badge" id="planBadge">Gratis</span>
+      <a href="#pro" class="btn sm upgrade">Oppgrader</a>
+      <button class="btn sm" id="buyBtnNav">Kjøp Pro</button>
+    </div>
+  </nav>
 
-  <div class="hero" id="skattekalkulator">
+  <div class="hero">
     <h1>Norges skattekalkulator 2026</h1>
     <p>Beregn trinnskatt, trygdeavgift, kommuneskatt, fellesskatt, formuesskatt og nettoinntekt. Eksporter PDF og TXT. Alle norske kommuner støttes.</p>
     <div class="cta-row">
-      <a href="#calc" class="btn">🔢 Beregn skatt nå</a>
-      <a href="#hvordan" class="btn secondary">Se hvordan det fungerer</a>
+      <a href="#calc" class="btn">🔢 Beregn nå</a>
+      <a href="#pro" class="btn secondary">Se Priser</a>
     </div>
   </div>
 
-  <div class="trust-bar" aria-label="Trovekd signaller">
-    <span>Over 45 000 beregninger hver måned</span>
-    <span class="trust-dot"></span>
-    <span>4.8 / 5</span>
-    <span class="trust-dot"></span>
-    <span>Basert på brukeranmeldelser</span>
-    <span class="trust-dot"></span>
-    <span>100 % i nettleseren – ingen innlogging påkrevd</span>
-  </div>
-
-  <section id="steg" class="h2-section" style="margin-top:22px">
-    <h2>Alt du trenger for å beregne skatt for 2026</h2>
-    <div class="nytte-grid">
-      <div class="nytte"><div class="ic">🔄</div><div class="tt">Alltid oppdatert for 2026</div><div class="tx">Både trinnskatt, trygdeavgift og kommunesatser følger gjeldende regler.</div></div>
-      <div class="nytte"><div class="ic">🗂️</div><div class="tt">Full oversikt</div><div class="tx">Beregner trinnskatt, trygdeavgift, formuesskatt, BSU og fradrag.</div></div>
-      <div class="nytte"><div class="ic">📥</div><div class="tt">Eksporterer PDF og TXT</div><div class="tx">Klar til skatteetaten eller regnskapsføreren din.</div></div>
-    </div>
-  </section>
-
-  <section id="calculator" class="h2-section" style="margin-top:22px">
-    <h2>For alle typer inntekt og skatteklasser</h2>
-    <div class="segment-grid">
-      <div class="segment"><div class="tt">Lønnstakere</div><div class="tx">Skatteklasse 1, standard fradrag og trygdeavgift.</div></div>
-      <div class="segment"><div class="tt">Selvstendig næringsdrivende</div><div class="tx">Simpelt budsjett for næringsinntekt og kapital.</div></div>
-      <div class="segment"><div class="tt">Pensjonister</div><div class="tx">Lavere trygdeavgift og justert minstefradrag.</div></div>
-      <div class="segment"><div class="tt">Investorer</div><div class="tx">Kapslat krypto, aksjegevinst og formueskatt.</div></div>
-    </div>
-  </section>
-
-  <section id="hvorfor" class="h2-section" style="margin-top:22px">
-    <h2>Hvorfor velge SkattPro framfor bare Skatteetaten?</h2>
-    <div class="why-grid">
-      <div class="nytte"><div class="tt">Forklarer hva hver linje betyr</div><div class="tx">Ikke bare ett tall – du ser hvordan trinn, fradrag og satser påvirker resultatet.</div></div>
-      <div class="nytte"><div class="tt">Sammenlign skatteklasser</div><div class="tx">Bytt klasse 1/2 og se effekten umiddelbart.</div></div>
-      <div class="nytte"><div class="tt">Ingen innlogging i gratisversjonen</div><div class="tx">Beregningen ligger kun i din egen nettleser.</div></div>
-    </div>
-  </section>
-
-  <section id="hvordan" class="h2-section" style="margin-top:22px">
-    <h2>Slik gjør du beregningen</h2>
-    <div class="steps">
-      <div class="step"><div class="tt">Fyll inntekt og fradrag</div><div class="tx">Velg inntektstype, alder, skatteklasse, kommune og fradrag.</div></div>
-      <div class="step"><div class="tt">Se oppgjøret i sanntid</div><div class="tx">Resultatet viser trinnskatt, trygdeavgift, kommuneskatt og netto per år.</div></div>
-      <div class="step"><div class="tt">Eksporter eller kopier resultatet</div><div class="tx">Lagre TXT/PDF eller kopier direkte til bruk i selvangivelsen.</div></div>
-    </div>
-  </section>
-
-  <section class="h2-section" style="margin-top:22px">
-      <h2>Integrasjoner og eksport til regnskap</h2>
-      <div class="nytte-grid">
-        <div class="nytte"><div class="ic">🧾</div><div class="tt">Regnskapseksport</div><div class="tx">Overfør resultatet direkte til regnskapsføreren uten manuell skriving.</div></div>
-        <div class="nytte"><div class="ic">🔗</div><div class="tt">Koble bank og verktøy</div><div class="tx">Importer posteringsgrunnlag fra vanlige norske bank-/regnskapsløsninger.</div></div>
-        <div class="nytte"><div class="ic">📱</div><div class="tt">Mobilvennlig</div><div class="tx">Beregn skatt på farta – ingen app nedlasting påkrevd.</div></div>
-      </div>
-    </section>
-
-    <section class="h2-section" style="margin-top:22px;background:linear-gradient(135deg, rgba(37,99,235,0.08) 0%, rgba(37,99,235,0.02) 100%);border:1px solid var(--line);border-radius:16px;padding:24px">
-          <h2 style="color:var(--a)">🆲 Nytt: Faktura-kalkulator</h2>
-          <p style="color:var(--muted);font-size:0.95rem;line-height:1.6;margin-bottom:16px">
-            Sender du faktura som freelancer? Se hva du faktisk beholder etter <strong>alle</strong> skatter og avgifter.
-            Inkluderer mva, trygdeavgift, trinnskatt og kommuneskatt.
-          </p>
-          <a href="faktura-kalkulator.html" class="btn">Prøv faktura-kalkulatoren</a>
-        </section>
-
-        <section class="h2-section" style="margin-top:22px;background:linear-gradient(135deg, rgba(16,185,129,0.08) 0%, rgba(16,185,129,0.02) 100%);border:1px solid #10b98140;border-radius:16px;padding:24px">
-          <h2 style="color:#059669">💰 Nytt: Forskuddsskatt-kalkulator</h2>
-          <p style="color:var(--muted);font-size:0.95rem;line-height:1.6;margin-bottom:16px">
-            Driver du enkeltpersonforetak? Beregn hvor mye du bør betale i forskuddsskatt hver av de 4 terminene.
-            Basert på Skatteetatens 40%-regel. Unngå restskatt med renter!
-          </p>
-          <a href="forskuddsskatt.html" class="btn" style="background:#059669">Beregn forskuddsskatt</a>
-        </section>
-
-  <section id="calc" class="card h2-section" style="margin-top:22px">
+  <section id="calc" class="card">
     <h2>📊 Skattekalkulator 2026</h2>
 
     <div class="row">
@@ -222,7 +166,6 @@
       </div>
     </div>
 
-
     <div style="margin-top:14px">
       <label>Bostedskommune</label>
       <select id="muniSelect" class="input select" style="max-width:420px">
@@ -242,42 +185,11 @@
       <div><label>BSU-fradrag</label><input id="f4" class="input" type="number" value="0" min="0" step="1000"></div>
     </div>
 
-    <div class="row-2" style="margin-top:14px">
+    <div class="row-4" style="margin-top:14px">
       <div><label>Krypto gevinst (kr)</label><input id="krypto" class="input" type="number" value="0" min="0" step="1000"></div>
       <div><label>Aksjegevinst (kr)</label><input id="aksje" class="input" type="number" value="0" min="0" step="1000"></div>
+      <div></div><div></div>
     </div>
-
-    <section class="card" style="margin-top:14px">
-      <h2>Reisefradrag</h2>
-      <div class="row-3">
-        <div>
-          <label>Antall arbeidsdager per år</label>
-          <input id="dager" class="input" type="number" value="0" min="0" max="365" step="1">
-          <p class="kommune-note">0 dager</p>
-        </div>
-        <div>
-          <label>Km tur/retur per dag</label>
-          <input id="km" class="input" type="number" value="0" min="0" step="1">
-          <p class="kommune-note">0 km</p>
-        </div>
-        <div>
-          <label>Bompenger og fergeutgifter per år</label>
-          <input id="bompenger" class="input" type="number" value="0" min="0" step="100">
-          <p class="kommune-note">0 kr</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="card" style="margin-top:14px">
-      <h2>Barnefradrag</h2>
-      <div class="row-2">
-        <div>
-          <label>Antall barn (under 12 år i barnehage/SFO)</label>
-          <input id="antallBarn" class="input" type="number" value="0" min="0" max="20" step="1">
-          <p class="kommune-note">0 barn</p>
-        </div>
-      </div>
-    </section>
 
     <div class="row-3" style="margin-top:14px">
       <div><label>Formue (kr)</label><input id="formue" class="input" type="number" value="0" min="0" step="10000"></div>
@@ -295,7 +207,7 @@
     <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;flex-wrap:wrap;gap:10px">
       <label style="display:flex;align-items:center;gap:8px;color:#cbd5e1"><input type="checkbox" id="autoSave" checked> Auto-lagre i nettleseren</label>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn" id="beregnBtn">🔢 Beregn skatt</button>
+        <button class="btn" id="beregn">🔢 Beregn skatt</button>
         <button class="btn secondary" id="lastSaved">Last siste lagret</button>
       </div>
     </div>
@@ -312,10 +224,20 @@
       <div class="kpi"><div class="v" id="r6">0 kr</div><div class="l">Formuesskatt</div></div>
     </div>
 
-    <p id="warn" style="color:var(--warn);margin-top:8px;font-size:.85rem"></p>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px;flex-wrap:wrap;gap:8px">
+      <strong style="color:#fff">Fordeling</strong>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn sm secondary" id="saveBtn">💾 Lagre</button>
+        <button class="btn sm secondary" id="txtBtn">⬇ TXT</button>
+        <button class="btn sm secondary" id="pdfBtn">⬇ PDF</button>
+        <button class="btn sm secondary" id="wordBtn">⬇ Word</button>
+        <button class="btn sm secondary" id="copyBtn">🔗 Kopier</button>
+      </div>
+    </div>
 
     <div id="break" style="margin-top:16px"></div>
     <div id="calcTable" class="status" style="margin-top:12px"></div>
+    <p id="warn" style="color:var(--warn);margin-top:8px;font-size:.85rem"></p>
   </section>
 
   <section id="hist" class="card" style="display:none">
@@ -327,7 +249,27 @@
     </div>
   </section>
 
-
+  <section id="pro" class="pro-card">
+    <h2>💎 SkattPro Pro</h2>
+    <div class="price">149 kr <span style="font-size:1rem;font-weight:500">/ måned</span></div>
+    <p style="color:#e2e8f0">Gratis i 14 dager. Deretter 149 kr/md. Ingen binding.</p>
+    <ul class="pro-features">
+      <li>Ubegrennet lagring i sky (cloud)</li>
+      <li>Eksporter PDF og TXT</li>
+      <li>Del beregning direkte med regnskap</li>
+      <li>Prioritert support</li>
+      <li>Oppdaterte skattesatser hvert år</li>
+    </ul>
+    <hr class="divider">
+    <label style="color:#e2e8f0">Stripe Payment Link</label>
+    <input id="stripeLink" class="input" value="https://buy.stripe.com/9B600jd2cb7s3HS17k4c802" placeholder="Lim inn din Stripe Payment Lenke her..." style="max-width:560px" readonly>
+    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+      <a id="buyBtn" class="btn upgrade" href="https://buy.stripe.com/9B600jd2cb7s3HS17k4c802" target="_blank">💳 Kjøp / abonner</a>
+      <button class="btn secondary" id="startFree" style="background:#0f172a;color:#e5e7eb;border:1px solid #1e293b">Bruk gratis</button>
+    </div>
+    <p class="status" style="margin-top:12px;color:#cbd5e1;background:#0f172a;border:1px solid #1e293b">Betalingsløsning via Stripe. Ingen saving uten godkjennelse.</p>
+    <p style="margin-top:10px"><button class="btn ghost sm" id="privacyLink">📄 Personvernerklæring</button></p>
+  </section>
 
   <section id="faq" class="card">
     <h2>❓ Ofte stilte spørsmål</h2>
@@ -363,154 +305,16 @@
     </div>
   </section>
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "Hva er trinnskatt?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Trinnskatt er en progressiv skatt på arbeidsinntekt. Jo mer du tjener, desto høyere skattesats på den delen som overstiger hvert trinn. Den beregnes kun på skattbar inntekt etter fradrag."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Hva er minstefradrag?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Minstefradraget reduserer den skattbare inntekten din. For 2026 er det opptil omtrent 104 000 kr, avhengig av alder og inntekt. Du kan ikke få tilbake mer enn du skylder i skatt."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Hva er formueskatt?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Formueskatt beregnes på nettoformue over 1,9 millioner kroner. Kommunen tar 0,35 % og staten tar 0,65 % på den delen som overstiger terskelen."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Hva er BSU-skattefradraget?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "BSU-sparande gir et fradrag på maksimalt 2 750 kr for ett års innskudd, så lenge du ikke overstiger sparegrensene i BSU-ordningen."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Får jeg lavere skatt i Finnmark/Nord-Troms?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Noen kommuner i Finnmark og Nord-Troms har lavere kommuneskatt enn i byene. Velg kommune i kalkulatoren for å se den faktiske satsen for ditt område."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Hva er marginalskatt?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Marginalskatt er den totale skattesatsen for den neste tjente kronen. Den tar med trinnskatt, trygdeavgift og kommuneskatt, og er ofte høyere enn gjennomsnittsskatten."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Betaler unge og eldre lavere trygdeavgift?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Ja. Under 17 år og over 69 år betaler vanligvis lavere trygdeavgift enn personer i arbeidsfør alder. Satsene er automatisk valgt etter aldersgruppe."
-        }
-      }
-    ]
-  }
-  </script>
-
   <footer class="footer">
-    <div style="font-weight:800;font-size:1rem;color:var(--ink);margin-bottom:8px">🧮 SkattPro</div>
-    <div class="footer-links">
-          <a href="#skattekalkulator">Kalkulator</a>
-          <a href="#hvordan">Hvordan det fungerer</a>
-          <a href="#faq">Ofte stilte spørsmål</a>
-          <a href="ansatte-og-lonn/">Priser</a>
-          <a href="utgiftssporing.html">Utgifter</a>
-          <button class="btn ghost sm" id="footerPrivacy">📄 Personvernerklæring</button>
-          <a href="https://www.skatteetaten.no" target="_blank" rel="noopener">Skatteetaten</a>
-        </div>
-    <p style="margin-top:10px;color:var(--dim)">
-      100 % klient-side · Ingen data sendes til servere · Kun lokal lagring i din nettleser
-    </p>
-    <p style="color:var(--dim)">© <span id="yr"></span> SkattPro · For estimat – sjekk alltid mot skatteetaten.no</p>
+    <p>SkattPro · Norges skattekalkulator · 2025/2026-satser · For estimat — sjekk alltid mot skatteetaten.no</p>
+    <p style="margin-top:6px">Personvern: gratisversjon lagrer kun lokalt i din nettleser. Pro-versjon lagrer i sky med ditt samtykke. <button class="btn ghost sm" id="footerPrivacy">Personvernerklæring</button></p>
   </footer>
 </div>
 
 <script>
-console.log('🚀 SkattPro script starting...');
-console.log('📄 Document readyState:', document.readyState);
-console.log('🔍 Looking for muniSelect element...');
-
-// Script at end of body - DOM is ready, run directly
-{
-const byId = id => {
-  const el = document.getElementById(id);
-  if (!el) console.error('❌ Element not found:', id);
-  return el;
-};
-
-// ========== PRO LICENSE CHECK ==========
-function isProActivated() {
-  const activated = localStorage.getItem('skattpro_pro_activated');
-  const licenseKey = localStorage.getItem('skattpro_license_key');
-  return activated === 'true' && licenseKey;
-}
-
-function getProStatus() {
-  if (!isProActivated()) {
-    return { active: false };
-  }
-  return {
-    active: true,
-    key: localStorage.getItem('skattpro_license_key'),
-    email: localStorage.getItem('skattpro_pro_email'),
-    activated: localStorage.getItem('skattpro_pro_activated_date')
-  };
-}
-
-function showProRequired(message) {
-  // Show upgrade prompt instead of alert
-  const msg = message || 'Denne funksjonen krever SkattPro Pro. Ønsker du å oppgradere?';
-  if (confirm(msg + '\n\nTrykk OK for å se Pro-funksjoner, eller Avbryt for å bli.')) {
-    window.location.href = 'pro-features.html';
-  }
-}
-
-// Add Pro badge to header if activated
-function updateProBadge() {
-  const proBtn = document.getElementById('proBtn');
-  if (!proBtn) return;
-  
-  const proStatus = getProStatus();
-  if (proStatus.active) {
-    // Change button to show Pro status
-    proBtn.textContent = '✅ Pro aktivert';
-    proBtn.href = 'pro-activate.html';
-    proBtn.title = 'Klikk for å se din lisens';
-    proBtn.style.background = 'linear-gradient(135deg, #059669, #10b981)';
-    proBtn.style.color = '#fff';
-  } else {
-    // Ensure it points to features page
-    proBtn.href = 'pro-features.html';
-  }
-}
-
-// Call on load
-setTimeout(updateProBadge, 100);
-// =======================================
+const $=id=>document.getElementById(id);
 
 const MINSTEFRADRAG_2026_CAP = 104000;
-
 const BRACKETS_2026 = [
   { upto: 0, rate: 0 },
   { upto: 318300, rate: 0.017 },
@@ -519,9 +323,7 @@ const BRACKETS_2026 = [
   { upto: 1467200, rate: 0.168 },
   { upto: Infinity, rate: 0.178 }
 ];
-
-// Load kommuner from JSON file (same as faktura-kalkulator.html)
-// Inline backup for reliability
+// Load kommuner from JSON + inline fallback
 let KOMMUNER = [
   {navn:"Oslo",sats:22.8},
   {navn:"Bergen",sats:22.0},
@@ -534,117 +336,200 @@ let KOMMUNER = [
   {navn:"Båtsfjord",sats:18.5},
   {navn:"Gamvik",sats:18.5}
 ];
+// Fill once with fallback
 fillKommuneSelect();
-console.log('Loaded', KOMMUNER.length, 'kommuner inline');
-// Also try async load for full list
-fetch('kommuner.json')
-  .then(res => res.json())
-  .then(data => {
-    KOMMUNER = data;
-    fillKommuneSelect();
-    console.log('Loaded full list:', KOMMUNER.length, 'kommuner from JSON');
-  })
-  .catch(err => {
-    console.warn('Using inline fallback - JSON load failed:', err.message);
-  });
-
-
-
+// Then try to load full list
+fetch('kommuner.json').then(r => r.json()).then(data => {
+  KOMMUNER = data;
+  fillKommuneSelect();
+  console.log('Loaded', KOMMUNER.length, 'kommuner');
+}).catch(e => console.warn('Using fallback:', e.message));
 const TRYGD_RATES = {
-  lønn: { under17: 0.051, '17-69': 0.076, over69: 0.051 },
-  pensjon: { under17: 0.051, '17-69': 0.051, over69: 0.051 },
-  næring: { under17: 0.051, '17-69': 0.108, over69: 0.051 },
-  kapital: { under17: 0, '17-69': 0, over69: 0 }
+  lønn: { 'under17': 0.051, '17-69': 0.076, 'over69': 0.051 },
+  pensjon: { 'under17': 0.051, '17-69': 0.051, 'over69': 0.051 },
+  næring: { 'under17': 0.051, '17-69': 0.108, 'over69': 0.051 },
+  kapital: { 'under17': 0, '17-69': 0, 'over69': 0 }
 };
 
-const els = {
-  income: byId('income'),
-  incType: byId('incType'),
-  age: byId('age'),
-  klasseToggle: byId('klasseToggle'),
-  klasse: byId('klasse'),
-  muniSelect: byId('muniSelect'),
-  muniCustom: byId('muniCustom'),
-  kommRate: byId('kommRate'),
-  f1: byId('f1'),
-  f2: byId('f2'),
-  f3: byId('f3'),
-  f4: byId('f4'),
-  krypto: byId('krypto'),
-  aksje: byId('aksje'),
-  dager: byId('dager'),
-  km: byId('km'),
-  bompenger: byId('bompenger'),
-  antallBarn: byId('antallBarn'),
-  formue: byId('formue'),
-  gjeld: byId('gjeld'),
-  year: byId('year'),
-  autoSave: byId('autoSave'),
-  regnKnapp: byId('beregnBtn'),
-  sisteKnapp: byId('lastSaved')
-};
-
-const STORE = 'skattPro2026_v1';
-const CALC_DATE_KEY = 'skattProCalcDate';
-const CALC_COUNT_KEY = 'skattProCalcCount';
-const FREE_CALC_LIMIT = 5;
-const CONSENT_KEY = 'skattProConsent';
+const storeKey = 'skattPro2026_v1';
+const usedCalcKey = 'skattProUsedFreeCalc';
+const usedPdfKey = 'skattProUsedFreePdf';
+const consentKey = 'skattProConsent';
 
 function fmt(n){ return Math.round(n||0).toLocaleString('nb-NO') + ' kr'; }
 function fx(n){ return (n||0).toLocaleString('nb-NO'); }
+
 function uid(){ return Math.random().toString(36).slice(2,10) + Date.now().toString(36); }
 
-function load(){ try { return JSON.parse(localStorage.getItem(STORE) || '[]'); } catch(e){ return []; } }
-function used(key){ return localStorage.getItem(key) === '1'; }
+function load(){ try{ return JSON.parse(localStorage.getItem(storeKey)||'[]'); } catch(e){ return []; } }
+function save(){ localStorage.setItem(storeKey, JSON.stringify(load())); }
+
 function markUsed(key){ localStorage.setItem(key, '1'); }
-function getConsent(){ return localStorage.getItem(CONSENT_KEY) === '1'; }
-function setConsent(v){ localStorage.setItem(CONSENT_KEY, v ? '1' : '0'); }
+function hasUsed(key){ return localStorage.getItem(key) === '1'; }
+function getConsent(){ return localStorage.getItem(consentKey) === '1'; }
+function setConsent(val){ localStorage.setItem(consentKey, val ? '1' : '0'); }
 
 function fillKommuneSelect(){
-  const sel = els.muniSelect;
-  if(!sel) {
-    console.error('muniSelect element not found!');
-    return;
-  }
-  console.log('Filling kommune select...', KOMMUNER.length, 'kommuner');
+  const sel = $('muniSelect');
   sel.innerHTML = '<option value="">Velg kommune...</option>';
-  const seen = new Set();
-  let added = 0;
-  KOMMUNER.forEach(k => {
-    const key = `${k.navn}::${k.sats}`;
-    if (seen.has(key)) return;
-    seen.add(key);
+  KOMMUNER.sort((a,b)=>a.navn.localeCompare(b.navn)).forEach(k=>{
     const opt = document.createElement('option');
-    opt.value = String(k.sats);
-    opt.textContent = `${k.navn} (${Number(k.sats).toFixed(2)}%)`;
+    opt.value = k.sats;
+    opt.textContent = k.navn + ' (' + k.sats.toFixed(2) + '%)';
     sel.appendChild(opt);
-    added++;
   });
-  console.log('Added', added, 'kommuner to select');
 }
 function getKommuneRate(){
-  const selVal = parseFloat(els.muniSelect.value);
-  const customVal = parseFloat(els.kommRate.value);
-  if(!isNaN(selVal) && selVal > 0) return selVal / 100;
-  if(!isNaN(customVal) && customVal > 0) return customVal / 100;
+  const selVal = parseFloat($('muniSelect').value);
+  const customVal = parseFloat($('kommRate').value);
+  if(!isNaN(selVal) && selVal > 0) return selVal/100;
+  if(!isNaN(customVal) && customVal > 0) return customVal/100;
   return 0.22;
 }
-function getKommuneNavn(){
-  const custom = (els.muniCustom.value || '').trim();
+function getKommuneName(){
+  const custom = $('muniCustom').value.trim();
   if(custom) return custom;
-  const opt = els.muniSelect.selectedOptions[0];
-  return opt ? opt.textContent.split(' (')[0] : 'Ukjent';
+  const sel = $('muniSelect').selectedOptions[0];
+  return sel ? sel.textContent.split(' (')[0] : 'Ukjent';
+}
+function openPrivacy(){
+  $('privacyModal').style.display = 'flex';
+}
+function closePrivacy(){
+  $('privacyModal').style.display = 'none';
 }
 
-function openPrivacy(){ byId('privacyModal').style.display = 'flex'; }
-function closePrivacy(){ byId('privacyModal').style.display = 'none'; }
+function beregn(){
+  const income = Math.max(0, parseFloat($('income').value) || 0);
+  const age = $('age').value;
+  const incType = $('incType').value;
+  const f1 = Math.min(parseFloat($('f1').value)||0, MINSTEFRADRAG_2026_CAP);
+  const f2 = Math.min(parseFloat($('f2').value)||0, 50000);
+  const f3 = parseFloat($('f3').value)||0;
+  const f4 = Math.min(parseFloat($('f4').value)||0, 27500);
+  const krypto = Math.max(0, parseFloat($('krypto').value)||0);
+  const formue = Math.max(0, parseFloat($('formue').value)||0);
+  const gjeld = Math.max(0, parseFloat($('gjeld').value)||0);
+  const nettoFormue = Math.max(0, formue - gjeld);
+  const year = parseInt($('year').value) || 2026;
+  const kommRate = getKommuneRate();
+
+  const totalFradrag = f1 + f2 + f3 + f4;
+  const skattbar = Math.max(0, income - totalFradrag);
+
+  let trinn = 0, marginalRate = 0, bracketParts = [];
+  let previousTop = 0;
+  for(let i=0; i<BRACKETS_2026.length; i++){
+    const b = BRACKETS_2026[i];
+    if(skattbar <= b.upto){
+      const taxable = skattbar - previousTop;
+      const tax = taxable * b.rate;
+      if(tax > 0) bracketParts.push({label:'Trinn '+(i+1), rate:b.rate, amount:tax});
+      trinn += tax;
+      marginalRate = b.rate;
+      break;
+    } else {
+      const taxable = b.upto - previousTop;
+      const tax = taxable * b.rate;
+      if(tax > 0) bracketParts.push({label:'Trinn '+(i+1), rate:b.rate, amount:tax});
+      trinn += tax;
+      previousTop = b.upto;
+      marginalRate = b.rate;
+    }
+  }
+
+  const trygdRate = (TRYGD_RATES[incType]&&TRYGD_RATES[incType][age])||0;
+  const trygd = income * trygdRate;
+
+  const fellesskatt = skattbar * 0.185;
+  const kommSkatt = skattbar * kommRate;
+  const kommTotal = fellesskatt + kommSkatt;
+
+  let formSkatt = 0;
+  if(nettoFormue > 1900000){
+    const over = nettoFormue - 1900000;
+    formSkatt = over * 0.01;
+  }
+
+  const kryptoSkatt = krypto * 0.37;
+  const aksjeSkatt = Math.max(0, parseFloat($('aksje').value)||0) * 0.37;
+
+  const total = Math.max(0, trinn + trygd + kommTotal + formSkatt + kryptoSkatt + aksjeSkatt);
+  const netto = income - total;
+  const pct = income > 0 ? (total/income)*100 : 0;
+  const pd = Math.round(total/2);
+
+  $('r1').textContent = fx(income);
+  $('r2').textContent = fx(netto);
+  $('r3').textContent = pct.toFixed(1)+'%';
+  $('r4').textContent = fx(pd);
+  $('r5').textContent = (marginalRate*100).toFixed(1)+'%';
+  $('r6').textContent = fx(formSkatt);
+
+  const bk = $('break'); bk.innerHTML='';
+  [
+    {label:'Trinnskatt', amt:trinn, c:'#60a5fa'},
+    {label:'Trygdeavgift ('+(trygdRate*100).toFixed(1)+'%)', amt:trygd, c:'#34d399'},
+    {label:'Kommuneskatt + fellesskatt ('+(kommRate*100).toFixed(1)+'%)', amt:kommTotal, c:'#fbbf24'},
+    ...(nettoFormue > 0 ? [{label:'Formuesskatt (over 1,9 mill netto)', amt:formSkatt, c:'#f87171'}] : [])
+  ].forEach(item=>{
+    const rel = income > 0 ? Math.min(100, (item.amt/income)*3) : 0;
+    const d = document.createElement('div'); d.className='bracket';
+    d.innerHTML = `<div class="nm">${item.label}</div><div class="bar"><div class="bar-fill" style="width:${rel.toFixed(1)}%;background:${item.c}"></div></div><div class="rt">${(item.amt/income*100).toFixed(1)}%</div><div class="am">${fmt(item.amt)}</div>`;
+    bk.appendChild(d);
+  });
+
+  const rows = [
+    {l:'Brutto inntekt ('+year+')', v:income, b:true},
+    {l:'Minstefradrag ('+year+', maks '+MINSTEFRADRAG_2026_CAP.toLocaleString('nb-NO')+' kr)', v:-Math.min(f1, MINSTEFRADRAG_2026_CAP)},
+    {l:'Personfradrag', v:-f2},
+    {l:'Andre fradrag', v:-f3},
+    {l:'BSU-fradrag', v:-f4},
+    ...(nettoFormue > 0 ? [{l:'Formuesskatt (nettoformue over 1,9 mill)', v:-formSkatt}] : []),
+    {l:'= Skattbar inntekt', v:skattbar-(nettoFormue>0?formSkatt:0), b:true},
+    {l:'Trinnskatt', v:trinn},
+    {l:'Trygdeavgift ('+trygdRate.toFixed(3)+' x brutto)', v:trygd},
+    {l:'Kommuneskatt + fellesskatt ('+kommRate.toFixed(3)+' + 0,185)', v:kommTotal},
+    {l:'= Total skatt', v:total, highlight:true}
+  ];
+  $('calcTable').innerHTML = rows.map(r => {
+    const style = r.highlight ? 'color:#60a5fa' : '';
+    return `<div class="line"><div class="lb">${r.l}</div><div class="vl" style="${style}">${r.v>=0?fmt(r.v):'- '+fmt(Math.abs(r.v))}</div></div>`;
+  }).join('');
+
+  const warnings = [];
+  if(f4 > 27500) warnings.push('BSU er begrenset til 27 500 kr/år.');
+  if(f2 > 50000) warnings.push('Personfradrag er typisk ca. 50 000 kr — for høy verdi kan gi feil.');
+  if(f1 > MINSTEFRADRAG_2026_CAP) warnings.push('Minstefradrag for ' + year + ' er maks ca. ' + MINSTEFRADRAG_2026_CAP.toLocaleString('nb-NO') + ' kr.');
+  $('warn').textContent = warnings.join(' ');
+
+  const result = {
+    id: uid(), year, savedAt: new Date().toISOString(), type:'local',
+    income, age, incType, muni: getKommuneName(), muniRate: kommRate,
+    f1, f2, f3, f4, formue, gjeld: nettoFormue,
+    skattbar, trinn, trygd, trygdRate, kommTotal, formSkatt, total, netto, pct, marginalRate, pd,
+    brackets: bracketParts.map(x=>x.label+': '+(x.rate*100).toFixed(1)+'% = '+fmt(x.amount)).join('\n')
+  };
+
+  if($('autoSave').checked && getConsent()){
+    const hist = load();
+    hist.unshift(result);
+    localStorage.setItem(storeKey, JSON.stringify(hist.slice(0,200)));
+    renderHist();
+  }
+  $('result').style.display = 'block';
+  $('result').scrollIntoView({behavior:'smooth', block:'start'});
+  return result;
+}
 
 function renderHist(){
   const hist = load();
-  byId('histCount').textContent = hist.length;
-  const listEl = byId('histList');
-  if(!hist.length){ listEl.innerHTML = '<p class="status">Ingen lagrede beregninger enda.</p>'; return; }
-  listEl.innerHTML = hist.map((h,i) => `
+  $('histCount').textContent = hist.length;
+  if(!hist.length){
+    $('histList').innerHTML = '<p class="status">Ingen lagrede beregninger enda.</p>';
+    return;
+  }
+  $('histList').innerHTML = hist.map((h,i)=>`
     <div class="hist"><div>
       <div style="font-weight:700;color:#fff">${fmt(h.income)} kr · netto ${fmt(h.netto)} · skatt ${fmt(h.total)}</div>
       <div class="t">${new Date(h.savedAt).toLocaleString('nb-NO')} · ${h.muni} (${(h.muniRate*100).toFixed(2)}%) · ${h.incType}</div>
@@ -656,540 +541,250 @@ function renderHist(){
   `).join('');
 }
 function restore(i){
-  const h = load()[i]; if(!h) return;
-  els.income.value = h.income ?? 0;
-  els.age.value = h.age ?? '17-69';
-  els.incType.value = h.incType ?? 'lønn';
-  els.f1.value = h.f1 ?? 0;
-  els.f2.value = h.f2 ?? 0;
-  els.f3.value = h.f3 ?? 0;
-  els.f4.value = h.f4 ?? 0;
-  if(typeof h.dager !== 'undefined') els.dager.value = h.dager;
-  if(typeof h.kmPerDag !== 'undefined') els.km.value = h.kmPerDag;
-  if(typeof h.bompenger !== 'undefined') els.bompenger.value = h.bompenger;
-  els.formue.value = h.formue ?? 0;
-  if(h.muniRate) els.kommRate.value = (h.muniRate * 100).toFixed(2);
-  els.muniCustom.value = h.muni || '';
+  const h=load()[i]; if(!h)return;
+  $('income').value=h.income??0;
+  $('age').value=h.age??'17-69';
+  $('incType').value=h.incType??'lønn';
+  $('f1').value=h.f1??0;
+  $('f2').value=h.f2??0;
+  $('f3').value=h.f3??0;
+  $('f4').value=h.f4??0;
+  $('formue').value=h.formue??0;
+  if(h.muniRate) $('kommRate').value = (h.muniRate*100).toFixed(2);
+  $('muniCustom').value = h.muni || '';
   beregn();
 }
 
-function exportAcct(){
- const res = window._last || beregn();
- const lines = [
-   'SkattPro · Regnskapssammendrag · ' + new Date(res.savedAt).toLocaleString('nb-NO'),
-   '',
-   'Inntektstype: ' + (els.incType.value === 'lønn' ? 'Lønn/arbeidsinntekt' : els.incType.value === 'pensjon' ? 'Pensjon/trygd' : els.incType.value === 'næring' ? 'Næringsinntekt' : 'Kapitalinntekt'),
-   'Alder: ' + (els.age.value === 'under17' ? 'Under 17 år' : els.age.value === '17-69' ? '17-69 år' : 'Over 69 år'),
-   'Kommune: ' + (els.muniCustom.value || els.muniSelect.options[els.muniSelect.selectedIndex]?.text || '-'),
-   '',
-   'Brutto inntekt: ' + fmt(res.income),
-   'Minstefradrag: -' + fmt(res.f1),
-   'Personfradrag: -' + fmt(res.f2),
-   'Andre fradrag: -' + fmt(res.f3),
-   'BSU-fradrag: -' + fmt(res.f4),
-   ...(res.reiseFradrag > 0 ? ['Reisefradrag: -' + fmt(res.reiseFradrag)] : []),
-   ...(res.barneFradrag > 0 ? ['Barnefradrag: -' + fmt(res.barneFradrag)] : []),
-   ...(res.formSkatt > 0 ? ['Formuesskatt: -' + fmt(res.formSkatt)] : []),
-   '= Skattbar inntekt: ' + fmt(res.skattbar),
-   '',
-   'Trinnskatt: ' + fmt(res.trinn),
-   'Trygdeavgift (' + (res.trygdRate*100).toFixed(1) + '%): ' + fmt(res.trygd),
-   'Kommuneskatt + fellesskatt (' + (res.kommRate*100).toFixed(1) + '%): ' + fmt(res.kommTotal),
-   '= Totalt skatt: ' + fmt(res.total),
-   '',
-   'Netto: ' + fmt(res.netto),
-   'Skatteprosent: ' + res.pct.toFixed(1) + '%',
-   'Terminbeløp/halvår: ' + fmt(res.pd),
-   'Marginalskatt: ' + (res.marginalRate*100).toFixed(1) + '%',
-   '',
-   'Obs: Dette er et estimat fra SkattPro. Sjekk alltid mot skatteetaten.no.'
- ];
- const text = lines.join('\n');
- const blob = new Blob(['\ufeff', text], {type: 'text/plain;charset=utf-8'});
- const a = document.createElement('a');
- a.href = URL.createObjectURL(blob);
- a.download = 'skattpro-regnskap-' + Date.now() + '.txt';
- document.body.appendChild(a);
- a.click();
- a.remove();
+function exportTxt(){
+  const res = last || beregn();
+  const t=[
+    'SkattPro 2026 · skatteberegning',
+    'Generert: '+new Date(res.savedAt).toLocaleString('nb-NO'),
+    '',
+    'Brutto inntekt: '+fmt(res.income),
+    'Fradrag totalt: '+fmt(res.f1+res.f2+res.f3+res.f4),
+    'Trinnskatt: '+fmt(res.trinn),
+    'Trygdeavgift: '+fmt(res.trygd),
+    'Kommuneskatt + fellesskatt: '+fmt(res.kommTotal),
+    'Formuesskatt: '+fmt(res.formSkatt),
+    '',
+    'Total skatt: '+fmt(res.total),
+    'Netto: '+fmt(res.netto),
+    'Skatteprosent: '+res.pct.toFixed(1)+'%',
+    'Terminbeløp/halvår: '+fmt(res.pd),
+    'Marginalskatt: '+(res.marginalRate*100).toFixed(1)+'%'
+  ].join('\n');
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([t],{type:'text/plain'})); a.download='skattpro-'+Date.now()+'.txt'; document.body.appendChild(a); a.click(); a.remove();
+}
+function exportPdf(){
+  if(hasUsed(usedPdfKey)){
+    alert('Du har brukt gratis PDF-eksport en gang. Kjøp Pro for ubegrenset eksport.');
+    $('pro').scrollIntoView({behavior:'smooth'});
+    return;
+  }
+  markUsed(usedPdfKey);
+  const res = last || beregn();
+  const w=window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html lang="no"><head><meta charset="UTF-8"><title>SkattPro PDF</title><style>body{font-family:Arial,sans-serif;padding:40px;max-width:600px;margin:0 auto;color:#111}h1{color:#2563eb}.box{background:#eff6ff;padding:20px;border-radius:12px;margin:20px 0}table{width:100%;border-collapse:collapse}th,td{padding:8px;text-align:left;border-bottom:1px solid #e5e7eb}.r{text-align:right}.t{font-size:.85rem;color:#6b7280;margin-top:40px}</style></head><body><h1>SkattPro 2026 · skatteberegning</h1><p>'+new Date(res.savedAt).toLocaleString('nb-NO')+'</p><div class="box"><strong>Inntekt: '+fmt(res.income)+'</strong><br><strong>Total skatt: '+fmt(res.total)+'</strong><br><strong>Netto: '+fmt(res.netto)+'</strong><br><strong>Skatteprosent: '+res.pct.toFixed(1)+'%</strong></div><table>'+
+    ['Brutto inntekt', fmt(res.income)],
+    ['Minstefradrag', '- ' + fmt(res.f1)],
+    ['Personfradrag', '- ' + fmt(res.f2)],
+    ['Andre fradrag', '- ' + fmt(res.f3)],
+    ['BSU-fradrag', '- ' + fmt(res.f4)],
+    res.formSkatt>0 ? ['Formuesskatt', '- ' + fmt(res.formSkatt)] : null,
+    ['Skattbar inntekt', fmt(res.skattbar)],
+    ['Trinnskatt', fmt(res.trinn)],
+    ['Trygdeavgift ('+(res.trygdRate*100).toFixed(1)+'%)', fmt(res.trygd)],
+    ['Kommuneskatt + fellesskatt ('+(res.kommRate*100).toFixed(1)+'%)', fmt(res.kommTotal)],
+    ['<strong>Total skatt</strong>', '<strong>'+fmt(res.total)+'</strong>']
+  ].filter(Boolean).map(r=>'<tr><td>'+r[0]+'</td><td class="r">'+r[1]+'</td></tr>').join('')+'</table><p class="t">SkattPro · estimat · Sjekk mot skatteetaten.no</p></body></html>');
+  w.document.close();
+  setTimeout(()=>w.print(),400);
 }
 
-function exportTxt(){
-  const res = window._last || beregn();
-  const t = [
-    'SkattPro 2026 · skatteberegning',
-    'Generert: ' + new Date(res.savedAt).toLocaleString('nb-NO'),
-    '',
-    'Brutto inntekt: ' + fmt(res.income),
-    'Fradrag totalt: ' + fmt(res.f1 + res.f2 + res.f3 + res.f4 + (res.reiseFradrag||0) + (res.barneFradrag||0)),
-    'Trinnskatt: ' + fmt(res.trinn),
-    'Trygdeavgift: ' + fmt(res.trygd),
-    'Kommuneskatt + fellesskatt: ' + fmt(res.kommTotal),
-    'Formuesskatt: ' + fmt(res.formSkatt),
-    '',
-    'Total skatt: ' + fmt(res.total),
-    'Netto: ' + fmt(res.netto),
-    'Skatteprosent: ' + res.pct.toFixed(1) + '%',
-    'Terminbeløp/halvår: ' + fmt(res.pd),
-    'Marginalskatt: ' + (res.marginalRate*100).toFixed(1) + '%'
-  ].join('\\n');
+function exportWord(){
+  if(hasUsed(usedPdfKey)){
+    alert('Du har brukt gratis eksport en gang. Kjøp Pro for ubegrenset eksport.');
+    $('pro').scrollIntoView({behavior:'smooth'});
+    return;
+  }
+  markUsed(usedPdfKey);
+  const res = last || beregn();
+  const rows = [
+    ['Brutto inntekt', fmt(res.income)],
+    ['Minstefradrag', '- ' + fmt(res.f1)],
+    ['Personfradrag', '- ' + fmt(res.f2)],
+    ['Andre fradrag', '- ' + fmt(res.f3)],
+    ['BSU-fradrag', '- ' + fmt(res.f4)],
+    ...(res.formSkatt > 0 ? [['Formuesskatt', '- ' + fmt(res.formSkatt)]] : []),
+    ['Skattbar inntekt', fmt(res.skattbar)],
+    ['Trinnskatt', fmt(res.trinn)],
+    ['Trygdeavgift (' + (res.trygdRate * 100).toFixed(1) + '%)', fmt(res.trygd)],
+    ['Kommuneskatt + fellesskatt (' + (res.kommRate * 100).toFixed(1) + '%)', fmt(res.kommTotal)],
+    ['Total skatt', fmt(res.total)],
+    ['Netto', fmt(res.netto)],
+    ['Skatteprosent', res.pct.toFixed(1) + '%'],
+    ['Terminbeløp/halvår', fmt(res.pd)],
+    ['Marginalskatt', (res.marginalRate * 100).toFixed(1) + '%']
+  ];
+  const html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><title>SkattPro</title></head><body><h1>SkattPro 2026 · skatteberegning</h1><p>' + new Date(res.savedAt).toLocaleString('nb-NO') + '</p><table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse">' + rows.map(r => '<tr><td>' + r[0] + '</td><td style="text-align:right">' + r[1] + '</td></tr>').join('') + '</table><p style="font-size:.85rem;color:#555;margin-top:20px">SkattPro · estimat · Sjekk mot skatteetaten.no</p></body></html>';
+  const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([t], {type:'text/plain'}));
-  a.download = 'skattpro-' + Date.now() + '.txt';
+  a.href = URL.createObjectURL(blob);
+  a.download = 'skattpro-' + Date.now() + '.doc';
   document.body.appendChild(a);
   a.click();
   a.remove();
 }
-function exportPdf(){
-  if (!isProActivated()) {
-    showProRequired('PDF-eksport krever SkattPro Pro. Få ubegrenset eksport og mye mer!');
-    return;
-  }
-  const res = window._last || beregn();
-  const w = window.open('', '_blank');
-  const html = '<!DOCTYPE html><html lang="no"><head><meta charset="UTF-8"><title>SkattPro PDF</title><style>body{font-family:Arial,sans-serif;padding:40px;max-width:600px;margin:0 auto;color:#111}h1{color:#2563eb}.box{background:#eff6ff;padding:20px;border-radius:12px;margin:20px 0}table{width:100%;border-collapse:collapse}th,td{padding:8px;text-align:left;border-bottom:1px solid #e5e7eb}.r{text-align:right}.t{font-size:.85rem;color:#6b7280;margin-top:40px}</style></head><body><h1>SkattPro 2026 · skatteberegning</h1><p>' + new Date(res.savedAt).toLocaleString('nb-NO') + '</p><div class="box"><strong>Inntekt: ' + fmt(res.income) + '</strong><br><strong>Total skatt: ' + fmt(res.total) + '</strong><br><strong>Netto: ' + fmt(res.netto) + '</strong><br><strong>Skatteprosent: ' + res.pct.toFixed(1) + '%</strong></div><table>' + [
-    ['Brutto inntekt', fmt(res.income)],
-    ['Minstefradrag', '- ' + fmt(res.f1)],
-    ['Personfradrag', '- ' + fmt(res.f2)],
-    ['Andre fradrag', '- ' + fmt(res.f3)],
-    ['BSU-fradrag', '- ' + fmt(res.f4)],
-    res.formSkatt > 0 ? ['Formuesskatt', '- ' + fmt(res.formSkatt)] : null,
-    ['Skattbar inntekt', fmt(res.skattbar)],
-    ['Trinnskatt', fmt(res.trinn)],
-    ['Trygdeavgift (' + (res.trygdRate*100).toFixed(1) + '%)', fmt(res.trygd)],
-    ['Kommuneskatt + fellesskatt (' + (res.kommRate*100).toFixed(1) + '%)', fmt(res.kommTotal)],
-    ['<strong>Total skatt</strong>', '<strong>' + fmt(res.total) + '</strong>']
-  ].filter(Boolean).map(row => '<tr><td>' + row[0] + '</td><td class="r">' + row[1] + '</td></tr>').join('') + '</table><p class="t">SkattPro · estimat · Sjekk mot skatteetaten.no</p></body></html>';
-  w.document.write(html);
-  w.document.close();
-  setTimeout(() => w.print(), 400);
-}
-function exportWord(){
-  if (!isProActivated()) {
-    showProRequired('Word-eksport krever SkattPro Pro. Få ubegrenset eksport og mye mer!');
-    return;
-  }
-  const res = window._last || beregn();
-  const rows = [
-    ['Brutto inntekt', fmt(res.income)],
-    ['Minstefradrag', '- ' + fmt(res.f1)],
-    ['Personfradrag', '- ' + fmt(res.f2)],
-    ['Andre fradrag', '- ' + fmt(res.f3)],
-    ['BSU-fradrag', '- ' + fmt(res.f4)],
-    ...(res.reiseFradrag > 0 ? [['Reisefradrag', '- ' + fmt(res.reiseFradrag)]] : []),
-    ...(res.barneFradrag > 0 ? [['Barnefradrag', '- ' + fmt(res.barneFradrag)]] : []),
-    res.formSkatt > 0 ? ['Formuesskatt', '- ' + fmt(res.formSkatt)] : null,
-    ['Skattbar inntekt', fmt(res.skattbar)],
-    ['Trinnskatt', fmt(res.trinn)],
-    ['Trygdeavgift (' + (res.trygdRate*100).toFixed(1) + '%)', fmt(res.trygd)],
-    ['Kommuneskatt + fellesskatt (' + (res.kommRate*100).toFixed(1) + '%)', fmt(res.kommTotal)],
-    ['Total skatt', fmt(res.total)],
-    ['Netto', fmt(res.netto)],
-    ['Skatteprosent', res.pct.toFixed(1) + '%'],
-    ['Terminbeløp/halvår', fmt(res.pd)],
-    ['Marginalskatt', (res.marginalRate*100).toFixed(1) + '%']
-  ];
-  const html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><title>SkattPro</title></head><body><h1>SkattPro 2026 · skatteberegning</h1><p>' + new Date(res.savedAt).toLocaleString('nb-NO') + '</p><table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse">' + rows.map(r => '<tr><td>' + r[0] + '</td><td style="text-align:right">' + r[1] + '</td></tr>').join('') + '</table><p style="font-size:.85rem;color:#555;margin-top:20px">SkattPro · estimat · Sjekk mot skatteetaten.no</p></body></html>';
-  const blob = new Blob(['\ufeff', html], {type: 'application/msword'});
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'skattpro-' + Date.now() + '.doc'; document.body.appendChild(a); a.click(); a.remove();
-}
 
-function exportJson(){
-  const res = window._last || beregn();
-  const payload = {
-    generated: new Date().toLocaleString('nb-NO'),
-    year: parseInt(els.year.value) || 2026,
-    income: res.income,
-    municipality: res.muni || '-',
-    municipalityRate: res.muniRate,
-    deductions: {
-      minstefradrag: res.f1,
-      personfradrag: res.f2,
-      andreFradrag: res.f3,
-      bsuFradrag: res.f4
-    },
-    taxableIncome: res.skattbar,
-    tax: {
-      trinnskatt: res.trinn,
-      trygdeavgift: res.trygd,
-      trygdeavgiftRate: res.trygdRate,
-      kommuneskatt: res.kommTotal,
-      formuesskatt: res.formSkatt
-    },
-    totalTax: res.total,
-    netIncome: res.netto,
-    effectiveRate: res.pct,
-    installmentPerHalfYear: res.pd,
-    marginalRate: res.marginalRate
-  };
-  const blob = new Blob([JSON.stringify(payload, null, 2)], {type: 'application/json'});
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'skattpro-' + Date.now() + '.json'; document.body.appendChild(a); a.click(); a.remove();
-}
+let last = null;
 
-function exportExcel(){
-  const res = window._last || beregn();
-  const rows = [
-    ['Brutto inntekt', fmt(res.income)],
-    ['Minstefradrag', '- ' + fmt(res.f1)],
-    ['Personfradrag', '- ' + fmt(res.f2)],
-    ['Andre fradrag', '- ' + fmt(res.f3)],
-    ['BSU-fradrag', '- ' + fmt(res.f4)],
-    ...(res.reiseFradrag > 0 ? [['Reisefradrag', '- ' + fmt(res.reiseFradrag)]] : []),
-    ...(res.barneFradrag > 0 ? [['Barnefradrag', '- ' + fmt(res.barneFradrag)]] : []),
-    ...(res.formSkatt > 0 ? [['Formuesskatt', '- ' + fmt(res.formSkatt)]] : []),
-    ['Skattbar inntekt', fmt(res.skattbar)],
-    ['Trinnskatt', fmt(res.trinn)],
-    ['Trygdeavgift', fmt(res.trygd)],
-    ['Kommuneskatt + fellesskatt', fmt(res.kommTotal)],
-    ['Total skatt', fmt(res.total)],
-    ['Netto', fmt(res.netto)],
-    ['Skatteprosent', res.pct.toFixed(1) + '%'],
-    ['Terminbeløp/halvår', fmt(res.pd)],
-    ['Marginalskatt', (res.marginalRate*100).toFixed(1) + '%']
-  ];
-  const table = '<table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse;font-family:Arial,sans-serif">' + rows.map(r => '<tr><td>' + r[0] + '</td><td style="text-align:right">' + r[1] + '</td></tr>').join('') + '</table>';
-  const html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"></head><body>' + table + '</body></html>';
-  const blob = new Blob(['\ufeff', html], {type: 'application/vnd.ms-excel'});
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'skattpro-' + Date.now() + '.xls'; document.body.appendChild(a); a.click(); a.remove();
-}
-
-function beregn(){
-  const income = Math.max(0, parseFloat(els.income.value) || 0);
-  const age = els.age.value;
-  const incType = els.incType.value;
-  const f1 = Math.min(parseFloat(els.f1.value) || 0, MINSTEFRADRAG_2026_CAP);
-  const f2 = Math.min(parseFloat(els.f2.value) || 0, 50000);
-  const f3 = parseFloat(els.f3.value) || 0;
-  const f4 = Math.min(parseFloat(els.f4.value) || 0, 27500);
-  const krypto = Math.max(0, parseFloat(els.krypto.value) || 0);
-  const formue = Math.max(0, parseFloat(els.formue.value) || 0);
-  const gjeld = Math.max(0, parseFloat(els.gjeld.value) || 0);
-  const nettoFormue = Math.max(0, formue - gjeld);
-  const year = parseInt(els.year.value) || 2026;
-  const kommRate = getKommuneRate();
-
-  const dager = Math.max(0, parseInt(els.dager.value) || 0);
-  const kmPerDag = Math.max(0, parseFloat(els.km.value) || 0);
-  const bompenger = Math.max(0, parseFloat(els.bompenger.value) || 0);
-  const kmFradrag = dager * kmPerDag * 1.90;
-  const bompengerFradrag = Math.max(0, bompenger - 3300);
-  const reiseFradrag = kmFradrag + bompengerFradrag;
-
-  const antallBarn = Math.max(0, parseInt(els.antallBarn.value) || 0);
-  const barneFradrag = antallBarn * 4000;
-
-  const totalFradrag = f1 + f2 + f3 + f4 + reiseFradrag + barneFradrag;
-  const skattbar = Math.max(0, income - totalFradrag);
-
-  let trinn = 0, marginalRate = 0, bracketParts = [];
-  let previousTop = 0;
-  for(let i = 0; i < BRACKETS_2026.length; i++){
-    const b = BRACKETS_2026[i];
-    if(skattbar <= b.upto){
-      const taxable = skattbar - previousTop;
-      const tax = taxable * b.rate;
-      if(tax > 0) bracketParts.push({label: 'Trinn ' + (i+1), rate: b.rate, amount: tax});
-      trinn += tax;
-      marginalRate = b.rate;
-      break;
+(function bindFaq(){
+  var list = document.querySelector('.faq-list');
+  if(!list) return;
+  list.addEventListener('click', function(e){
+    var summary = e.target.closest('summary');
+    if(!summary) return;
+    var item = summary.closest('details');
+    if(!item) return;
+    e.preventDefault();
+    if(item.open){
+      item.open = false;
     } else {
-      const taxable = b.upto - previousTop;
-      const tax = taxable * b.rate;
-      if(tax > 0) bracketParts.push({label: 'Trinn ' + (i+1), rate: b.rate, amount: tax});
-      trinn += tax;
-      previousTop = b.upto;
-      marginalRate = b.rate;
-    }
-  }
-
-  const trygdRate = (TRYGD_RATES[incType] && TRYGD_RATES[incType][age]) || 0;
-  const trygd = income * trygdRate;
-
-  const fellesskatt = skattbar * 0.185;
-  const kommSkatt = skattbar * kommRate;
-  const kommTotal = fellesskatt + kommSkatt;
-
-  let formSkatt = 0;
-  if(nettoFormue > 1900000){
-    formSkatt = (nettoFormue - 1900000) * 0.01;
-  }
-
-  const kryptoSkatt = krypto * 0.37;
-  const aksjeSkatt = Math.max(0, parseFloat(els.aksje.value) || 0) * 0.37;
-
-  const total = Math.max(0, trinn + trygd + kommTotal + formSkatt + kryptoSkatt + aksjeSkatt);
-  const netto = income - total;
-  const pct = income > 0 ? (total / income) * 100 : 0;
-  const pd = Math.round(total / 2);
-
-  byId('r1').textContent = fx(income);
-  byId('r2').textContent = fx(netto);
-  byId('r3').textContent = pct.toFixed(1) + '%';
-  byId('r4').textContent = fx(pd);
-  byId('r5').textContent = (marginalRate*100).toFixed(1) + '%';
-  byId('r6').textContent = fx(formSkatt);
-
-  const bk = byId('break');
-  bk.innerHTML = '';
-  [
-    {label:'Trinnskatt', amt:trinn, c:'#60a5fa'},
-    {label:'Trygdeavgift (' + (trygdRate*100).toFixed(1) + '%)', amt:trygd, c:'#34d399'},
-    {label:'Kommuneskatt + fellesskatt (' + (kommRate*100).toFixed(1) + '%)', amt:kommTotal, c:'#fbbf24'},
-    ...(nettoFormue > 0 ? [{label:'Formuesskatt (over 1,9 mill netto)', amt:formSkatt, c:'#f87171'}] : [])
-  ].forEach(item => {
-    const rel = income > 0 ? Math.min(100, (item.amt / income) * 3) : 0;
-    const d = document.createElement('div');
-    d.className = 'bracket';
-    d.innerHTML = '<div class="nm">' + item.label + '</div><div class="bar"><div class="bar-fill" style="width:' + rel.toFixed(1) + '%;background:' + item.c + '"></div></div><div class="rt">' + (item.amt / income * 100).toFixed(1) + '%</div><div class="am">' + fmt(item.amt) + '</div>';
-    bk.appendChild(d);
-  });
-
-  const rows = [
-    {l:'Brutto inntekt (' + year + ')', v:income, b:true},
-    {l:'Minstefradrag (' + year + ', maks ' + MINSTEFRADRAG_2026_CAP.toLocaleString('nb-NO') + ' kr)', v:-Math.min(f1, MINSTEFRADRAG_2026_CAP)},
-    {l:'Personfradrag', v:-f2},
-    {l:'Andre fradrag', v:-f3},
-    {l:'BSU-fradrag', v:-f4},
-    ...(reiseFradrag > 0 ? [{l:'Reisefradrag', v:-reiseFradrag}] : []),
-    ...(barneFradrag > 0 ? [{l:'Barnefradrag', v:-barneFradrag}] : []),
-    ...(nettoFormue > 0 ? [{l:'Formuesskatt (nettoformue over 1,9 mill)', v:-formSkatt}] : []),
-    {l:'= Skattbar inntekt', v:skattbar - (nettoFormue > 0 ? formSkatt : 0), b:true},
-    {l:'Trinnskatt', v:trinn},
-    {l:'Trygdeavgift (' + trygdRate.toFixed(3) + ' x brutto)', v:trygd},
-    {l:'Kommuneskatt + fellesskatt (' + kommRate.toFixed(3) + ' + 0,185)', v:kommTotal},
-    {l:'= Total skatt', v:total, highlight:true}
-  ];
-  let html = rows.map(r => {
-    const style = r.highlight ? 'color:#60a5fa' : '';
-    return '<div class="line"><div class="lb">' + r.l + '</div><div class="vl" style="' + style + '">' + (r.v >= 0 ? fmt(r.v) : '- ' + fmt(Math.abs(r.v))) + '</div></div>';
-  }).join('');
-
-  html += '<div class="line" style="justify-content:flex-end;gap:8px"><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm secondary" data-action="save">💾 Lagre</button><button class="btn sm secondary" data-action="txt">⬇ TXT</button><button class="btn sm secondary" data-action="pdf">⬇ PDF</button><button class="btn sm secondary" data-action="word">⬇ Word</button><button class="btn sm secondary" data-action="acct">📋 Regnskap</button><button class="btn sm secondary" data-action="json">⬇ JSON</button><button class="btn sm secondary" data-action="excel">⬇ Excel</button><button class="btn sm secondary" data-action="copy">🔗 Kopier</button></div></div>';
-  byId('calcTable').innerHTML = html;
-
-    checkUsageAndShowTeaser();
-
-    const warnings = [];
-  if(f4 > 27500) warnings.push('BSU er begrenset til 27 500 kr/år.');
-  if(f2 > 50000) warnings.push('Personfradrag er typisk ca. 50 000 kr — for høy verdi kan gi feil.');
-  if(f1 > MINSTEFRADRAG_2026_CAP) warnings.push('Minstefradrag for ' + year + ' er maks ca. ' + MINSTEFRADRAG_2026_CAP.toLocaleString('nb-NO') + ' kr.');
-  byId('warn').textContent = warnings.join(' ');
-
-  const result = {
-    id: uid(),
-    year,
-    savedAt: new Date().toISOString(),
-    type: 'local',
-    income,
-    age,
-    incType,
-    muni: getKommuneNavn(),
-    muniRate: kommRate,
-    f1, f2, f3, f4,
-    dager,
-    kmPerDag,
-    bompenger,
-    reiseFradrag,
-    formue,
-    gjeld: nettoFormue,
-    skattbar, trinn, trygd, trygdRate, kommTotal, formSkatt, total, netto, pct, marginalRate, pd,
-    brackets: bracketParts.map(x => x.label + ': ' + (x.rate*100).toFixed(1) + '% = ' + fmt(x.amount)).join('\\n')
-  };
-
-  if(els.autoSave.checked && getConsent()){
-    const hist = load();
-    hist.unshift(result);
-    localStorage.setItem(STORE, JSON.stringify(hist.slice(0,200)));
-    renderHist();
-  }
-
-  byId('result').style.display = 'block';
-  byId('result').scrollIntoView({behavior:'smooth', block:'start'});
-  window._last = result;
-  return result;
-}
-
-function init(){
-  // KOMMUNER already loaded above
-  fillKommuneSelect();
-
-  els.klasseToggle.addEventListener('click', e => {
-    const b = e.target.closest('button');
-    if(!b) return;
-    els.klasseToggle.querySelectorAll('button').forEach(x => x.classList.remove('on'));
-    b.classList.add('on');
-    const klasse = b.dataset.v;
-    els.klasse.value = klasse;
-    if(klasse === '2'){
-      els.f1.value = 104000;
-      els.f2.value = 75000;
-    } else {
-      els.f1.value = 98000;
-      els.f2.value = 50000;
-    }
-    beregn();
-  });
-
-  els.muniSelect.addEventListener('change', () => {
-    const v = parseFloat(els.muniSelect.value);
-    if(!isNaN(v) && v > 0){
-      els.kommRate.value = v.toFixed(2);
-      els.muniCustom.value = '';
-      beregn();
+      var open = list.querySelectorAll('details[open]');
+      open.forEach(function(el){ el.open = false; });
+      item.open = true;
     }
   });
-  els.muniCustom.addEventListener('input', () => {
-    if(els.muniCustom.value.trim()) els.muniSelect.value = '';
-    beregn();
-  });
-  els.kommRate.addEventListener('input', () => {
-    beregn();
-  });
+})();
 
-  byId('clearHist').addEventListener('click', () => { if(!confirm('Slett historikk?')) return; localStorage.removeItem(STORE); renderHist(); });
-  byId('histList').addEventListener('click', e => {
-    const btn = e.target.closest('button'); if(!btn) return;
-    if(btn.dataset.last !== undefined) restore(parseInt(btn.dataset.last));
-    if(btn.dataset.del !== undefined){ const h = load(); h.splice(parseInt(btn.dataset.del), 1); localStorage.setItem(STORE, JSON.stringify(h)); renderHist(); }
-  });
-  els.regnKnapp.addEventListener('click', () => {
-const today = new Date().toISOString().slice(0,10);
-  if(localStorage.getItem(CALC_DATE_KEY) === today){
-    const count = parseInt(localStorage.getItem(CALC_COUNT_KEY) || '0', 10);
-    if(count >= FREE_CALC_LIMIT){
-      alert('Du har brukt de 5 gratis beregningene for i dag. Få ubegrenset tilgang i Pro.');
-      window.location.href = 'ansatte-og-lonn/';
-      return;
-    }
-    localStorage.setItem(CALC_COUNT_KEY, String(count + 1));
+const cookieConsentKey = 'skattProConsent';
+$('cookieAccept').addEventListener('click', function(){
+  setConsent(true);
+  $('cookieBanner').style.display = 'none';
+});
+$('cookieDecline').addEventListener('click', function(){
+  setConsent(false);
+  $('cookieBanner').style.display = 'none';
+});
+$('cookieSettings').addEventListener('click', function(e){
+  e.preventDefault();
+  openPrivacy();
+});
+$('privacyLink').addEventListener('click', function(e){
+  e.preventDefault();
+  openPrivacy();
+});
+$('footerPrivacy').addEventListener('click', function(e){
+  e.preventDefault();
+  openPrivacy();
+});
+$('privacyClose').addEventListener('click', closePrivacy);
+$('privacyModal').addEventListener('click', function(e){
+  if(e.target.id === 'privacyModal') closePrivacy();
+});
+
+(function initConsent(){
+  var banner = $('cookieBanner');
+  if(!banner) return;
+  if(localStorage.getItem(cookieConsentKey) === '1'){
+    banner.style.display = 'none';
   } else {
-    localStorage.setItem(CALC_DATE_KEY, today);
-    localStorage.setItem(CALC_COUNT_KEY, '1');
+    banner.style.display = 'flex';
   }
-    beregn();
-  });
-  els.sisteKnapp.addEventListener('click', () => { if(load().length) restore(0); else alert('Ingen lagret beregning.'); });
+})();
 
-  if (byId('saveBtn')) {
-    byId('saveBtn').addEventListener('click', () => {
-      if(!getConsent()){ alert('Du må godta personvern for å lagre historikk.'); openPrivacy(); return; }
-      const res = window._last || beregn();
-      localStorage.setItem(STORE, JSON.stringify(load().concat([res])));
-      renderHist();
-      alert('Lagret!');
-    });
+$('beregn').onclick = function(){
+  if(hasUsed(usedCalcKey) && !confirm('Du har brukt gratisberegningen en gang. Last inn siden på nytt for å resette i denne nettleseren, eller kjøp Pro for ubegrenset tilgang.')) return;
+  if(hasUsed(usedCalcKey)) return;
+  markUsed(usedCalcKey);
+  last = beregn();
+};
+$('saveBtn').onclick = function(){
+  if(!getConsent()){
+    alert('Du må godta personvern for å lagre historikk.');
+    openPrivacy();
+    return;
   }
-  if (byId('copyBtn')) {
-    byId('copyBtn').addEventListener('click', () => {
-      const params = new URLSearchParams();
-      for(const id of ['income','incType','age','f1','f2','f3','f4','formue','gjeld','year']) params.set(id, els[id].value);
-      params.set('kommRate', els.kommRate.value);
-      const href = location.origin + location.pathname + '?' + params.toString();
-      navigator.clipboard && navigator.clipboard.writeText(href).then(() => alert('Lenke kopiert!')).catch(() => prompt('Kopier:', href));
-    });
-  }
-  if (byId('calcTable')) {
-    byId('calcTable').addEventListener('click', e => {
-      const action = e.target.closest('button')?.dataset.action;
-      if (!action) return;
-      if (action === 'save' && byId('saveBtn')) byId('saveBtn').click();
-      else if (action === 'txt') exportTxt();
-      else if (action === 'pdf') exportPdf();
-      else if (action === 'word') exportWord();
-      else if (action === 'acct') exportAcct();
-      else if (action === 'copy' && byId('copyBtn')) byId('copyBtn').click();
-    });
-  }
-
-  byId('buyBtnNav').addEventListener('click', () => (window.location.href = 'ansatte-og-lonn/'));
-  if (byId('buyBtn')) byId('buyBtn').addEventListener('click', () => (window.location.href = 'ansatte-og-lonn/'));
-  if (byId('startFree')) byId('startFree').addEventListener('click', () => byId('calc').scrollIntoView({behavior:'smooth'}));
-  byId('privacyLink').addEventListener('click', e => { e.preventDefault(); openPrivacy(); });
-  byId('footerPrivacy').addEventListener('click', e => { e.preventDefault(); openPrivacy(); });
-  byId('privacyClose').addEventListener('click', closePrivacy);
-  byId('privacyModal').addEventListener('click', e => { if(e.target.id === 'privacyModal') closePrivacy(); });
-  byId('cookieAccept').addEventListener('click', () => { setConsent(true); byId('cookieBanner').style.display = 'none'; });
-  byId('cookieDecline').addEventListener('click', () => { setConsent(false); byId('cookieBanner').style.display = 'none'; });
-  byId('cookieSettings').addEventListener('click', e => { e.preventDefault(); openPrivacy(); });
-
-  (function initConsent(){
-    const banner = byId('cookieBanner');
-    if(!banner) return;
-    banner.style.display = getConsent() ? 'none' : 'flex';
-  })();
-
-  [
-    'income','incType','age','f1','f2','f3','f4','krypto','aksje','formue','gjeld','year','kommRate','muniCustom'
-  ].forEach(id => {
-    const el = els[id];
-    if(!el) return;
-    el.addEventListener('input', () => beregn());
-    el.addEventListener('change', () => beregn());
-  });
-
-  els.income.value = 650000;
-  els.f1.value = 98000;
-  els.f2.value = 50000;
-  els.f3.value = 0;
-  els.f4.value = 0;
-  els.formue.value = 0;
-  els.gjeld.value = 0;
-  els.year.value = '2026';
-
-  beregn();
+  const res = last || beregn();
+  localStorage.setItem(storeKey, JSON.stringify(load().concat([res])));
   renderHist();
-}
-
-if(document.readyState === 'loading'){
-  document.addEventListener('DOMContentLoaded', init);
-} else {
-  init();
-}
-
-// Usage counter + Pro teaser modal
-const FREE_CALC_LIMIT = 5;
-let _usageCount = parseInt(localStorage.getItem('skattpro_calc_count') || '0');
-
-function checkUsageAndShowTeaser() {
-  _usageCount++;
-  localStorage.setItem('skattpro_calc_count', _usageCount.toString());
-  
-  if (_usageCount === 3 || _usageCount === FREE_CALC_LIMIT) {
-    showProTeaser(_usageCount);
+  alert('Lagret!');
+};
+$('txtBtn').onclick = exportTxt;
+$('pdfBtn').onclick = exportPdf;
+$('wordBtn').onclick = exportWord;
+$('copyBtn').onclick = function(){
+  const params = new URLSearchParams();
+  for(const id of ['income','incType','age','f1','f2','f3','f4','formue','gjeld','year']) params.set(id, $(''+id).value);
+  params.set('kommRate', $('kommRate').value);
+  const href = location.origin + location.pathname + '?' + params.toString();
+  navigator.clipboard?.writeText(href).then(()=>alert('Lenke kopiert!')).catch(()=>prompt('Kopier:',href));
+};
+$('clearHist').onclick = function(){ if(!confirm('Slett historikk?')) return; localStorage.removeItem(storeKey); renderHist(); };
+$('histList').onclick = function(e){
+  const btn = e.target.closest('button'); if(!btn) return;
+  if(btn.dataset.last !== undefined) restore(parseInt(btn.dataset.last));
+  if(btn.dataset.del !== undefined){ const h=load(); h.splice(parseInt(btn.dataset.del),1); localStorage.setItem(storeKey, JSON.stringify(h)); renderHist(); }
+};
+$('klasseToggle').onclick = function(e){
+  const b = e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('#klasseToggle button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
+  const klasse = b.dataset.v;
+  $('klasse').value = klasse;
+  if(klasse === '2'){
+    $('f1').value = 104000;
+    $('f2').value = 75000;
+  } else {
+    $('f1').value = 98000;
+    $('f2').value = 50000;
   }
-}
+  last = beregn();
+};
+$('muniSelect').onchange = function(){
+  const v = parseFloat($('muniSelect').value);
+  if(!isNaN(v) && v > 0){
+    $('kommRate').value = v.toFixed(2);
+    $('muniCustom').value = '';
+    last = beregn();
+  }
+};
+$('muniCustom').addEventListener('input', function(){
+  if(this.value.trim()){
+    $('muniSelect').value = '';
+  }
+  last = beregn();
+});
+$('kommRate').addEventListener('input', function(){
+  last = beregn();
+});
+$('buyBtnNav').onclick = function(){ $('pro').scrollIntoView({behavior:'smooth'}); };
+$('buyBtn').onclick = function(){ $('pro').scrollIntoView({behavior:'smooth'}); };
+$('startFree').onclick = function(){ $('calc').scrollIntoView({behavior:'smooth'}); };
+$('stripeLink').oninput = function(e){ $('buyBtn').href = e.target.value || '#'; };
+$('lastSaved').onclick = function(){ if(load().length) restore(0); else alert('Ingen lagret beregning.'); };
 
-function showProTeaser(usageCount) {
-  const modal = document.createElement('div');
-  modal.id = 'proTeaserModal';
-  modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:9999;';
-  modal.innerHTML = '<div style="background:#fff;border-radius:16px;padding:32px;max-width:500px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.3);text-align:center;position:relative">' +
-    '<button onclick="document.getElementById(\'proTeaserModal\').remove()" style="position:absolute;top:12px;right:12px;background:none;border:none;font-size:24px;cursor:pointer;color:#999">&times;</button>' +
-    '<div style="font-size:42px;margin-bottom:16px">🚀</div>' +
-    '<h2 style="font-size:24px;font-weight:800;margin-bottom:12px;color:#1a1a1a">Du har brukt ' + usageCount + ' av ' + FREE_CALC_LIMIT + ' gratis beregninger</h2>' +
-    '<p style="color:#666;margin-bottom:24px;line-height:1.6">SkattPro Pro gir deg <strong>ubegrensede beregninger</strong>, eksport til PDF/CSV, ansatt-administrasjon og mye mer.</p>' +
-    '<div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;padding:16px;margin-bottom:24px;text-align:left">' +
-    '<div style="font-weight:600;margin-bottom:8px;color:#0369a1">✨ Pro inkluderer:</div>' +
-    '<div style="font-size:14px;color:#0c4a6e;line-height:1.8">' +
-    '✓ Ubegrenset antall beregninger<br>' +
-    '✓ PDF og CSV eksport<br>' +
-    '✓ Opptil 3 ansatte gratis (deretter ubegrenset)<br>' +
-    '✓ Utgiftssporing med skattereduksjon<br>' +
-    '✓ E-post-varsler før frister<br>' +
-    '✓ Prioritert support (svar innen 24t)' +
-    '</div></div>' +
-    '<div style="font-size:36px;font-weight:800;color:#2563eb;margin-bottom:8px">149 kr <span style="font-size:16px;font-weight:400;color:#666">/ md</span></div>' +
-    '<p style="font-size:13px;color:#999;margin-bottom:24px">Ingen bindingstid · Avbryt når som helst</p>' +
-    '<a href="pro-features.html" style="display:block;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;text-decoration:none;padding:16px 32px;border-radius:10px;font-weight:700;font-size:18px;margin-bottom:12px">Se alle Pro-funksjoner →</a>' +
-    '<button onclick="document.getElementById(\'proTeaserModal\').remove()" style="display:block;width:100%;background:#f3f4f6;color:#374151;border:none;padding:14px 32px;border-radius:10px;font-weight:600;font-size:16px;cursor:pointer">Fortsett med gratis-versjonen</button>' +
-    '</div>';
-  document.body.appendChild(modal);
-      }
+fillKommuneSelect();
 
-  } // End main block
-  </script>
+['income','f1','f2','f3','f4','formue','gjeld','kommRate','muniCustom'].forEach(function(id){
+  const el = $(''+id); if(el){
+    el.addEventListener('input', function(){
+      last = beregn();
+    });
+  }
+});
 
+$('income').value = 650000;
+$('f1').value = 98000;
+$('f2').value = 50000;
+$('f3').value = 0;
+$('f4').value = 0;
+$('formue').value = 0;
+$('gjeld').value = 0;
 
+last = beregn();
+renderHist();
+</script>
 </body>
 </html>
-
