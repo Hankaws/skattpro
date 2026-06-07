@@ -896,9 +896,14 @@ function setConsent(v){ localStorage.setItem(CONSENT_KEY, v ? '1' : '0'); }
 
 function fillKommuneSelect(){
   const sel = els.muniSelect;
-  if(!sel) return;
+  if(!sel) {
+    console.error('muniSelect element not found!');
+    return;
+  }
+  console.log('Filling kommune select...', KOMMUNER.length, 'kommuner');
   sel.innerHTML = '<option value="">Velg kommune...</option>';
   const seen = new Set();
+  let added = 0;
   KOMMUNER.forEach(k => {
     const key = `${k.navn}::${k.sats}`;
     if (seen.has(key)) return;
@@ -907,7 +912,9 @@ function fillKommuneSelect(){
     opt.value = String(k.sats);
     opt.textContent = `${k.navn} (${Number(k.sats).toFixed(2)}%)`;
     sel.appendChild(opt);
+    added++;
   });
+  console.log('Added', added, 'kommuner to select');
 }
 function getKommuneRate(){
   const selVal = parseFloat(els.muniSelect.value);
