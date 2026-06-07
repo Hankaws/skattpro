@@ -225,9 +225,15 @@ exports.default = async (req, res) => {
       console.log('License generated:', license);
 
       // Send email with license key
-      const email = createLicenseEmail(customerEmail, licenseKey);
-      await sgMail.send(email);
-      console.log('License email sent to:', customerEmail);
+      try {
+        const email = createLicenseEmail(customerEmail, licenseKey);
+        console.log('Sending email to:', customerEmail);
+        await sgMail.send(email);
+        console.log('License email sent successfully to:', customerEmail);
+      } catch (emailErr) {
+        console.error('Failed to send email:', emailErr);
+        // Continue anyway - license is still valid
+      }
 
       return res.status(200).json({
         success: true,
