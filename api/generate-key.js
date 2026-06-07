@@ -25,26 +25,10 @@ function generateLicenseKey(type = 'PRO') {
   return `SKATTPRO-${type}-${year}${monthLetter}-${sequence}`;
 }
 
-// Store license in "database" (file-based for MVP, upgrade to SQLite/Postgres later)
-const fs = require('fs');
-const path = require('path');
-const dbPath = path.join(__dirname, 'licenses.json');
-
-function loadLicenses() {
-  try {
-    if (fs.existsSync(dbPath)) {
-      return JSON.parse(fs.readFileSync(dbPath, 'utf8'));
-    }
-  } catch (err) {
-    console.error('Error loading licenses:', err);
-  }
-  return [];
-}
-
 function saveLicense(license) {
-  const licenses = loadLicenses();
-  licenses.push(license);
-  fs.writeFileSync(dbPath, JSON.stringify(licenses, null, 2));
+  // Skip file write in serverless - Vercel filesystem is read-only
+  // License is sent via email, file storage can be added later with DB
+  console.log('License generated (not persisted):', license);
 }
 
 // Email template
