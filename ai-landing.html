@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkattPro AI - Zerø-touch regnskap for ENK</title>
+  <meta name="description" content="AI-først regnskap som automatiserer 95% av bokføringen din. Spar 4.5 timer i måneden.">
+  
+  <!-- OG/Twitter -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SkattPro AI - Fremtidens regnskap">
+  <meta property="og:description" content="95% automatisert bokføring for freelancere og ENK">
+  <meta property="og:image" content="https://skattpro.vercel.app/og-ai.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --primary: #3b82f6;
+      --primary-dark: #2563eb;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+    
+    /* Hero */
+    .hero {
+      padding: 100px 0 60px;
+      text-align: center;
+      background: linear-gradient(135deg, var(--bg) 0%, var(--surface) 100%);
+    }
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      line-height: 1.1;
+    }
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+    
+    /* Demo Box */
+    .demo-box {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 40px;
+      margin: 40px auto;
+      max-width: 700px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      text-align: left;
+    }
+    .demo-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .demo-row:last-child { border-bottom: none; }
+    .demo-icon { font-size: 1.5rem; }
+    .demo-text { flex: 1; }
+    .demo-amount { font-weight: 700; color: var(--text); }
+    .demo-badge {
+      background: #10b981;
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    
+    /* Features */
+    .features {
+      padding: 80px 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    .feature {
+      background: var(--surface);
+      padding: 30px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .feature h3 {
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+    }
+    .feature p { color: var(--muted); }
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+    
+    /* CTA Form */
+    .cta-section {
+      padding: 80px 0;
+      text-align: center;
+    }
+    .cta-box {
+      background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
+      padding: 60px 40px;
+      border-radius: 20px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .cta-box h2 {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+    .cta-box p {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      opacity: 0.95;
+    }
+    .waitlist-form {
+      display: flex;
+      gap: 12px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .waitlist-form input {
+      flex: 1;
+      padding: 16px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      background: rgba(255,255,255,0.95);
+      color: var(--bg);
+    }
+    .waitlist-form button {
+      padding: 16px 32px;
+      background: var(--bg);
+      color: var(--text);
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .waitlist-form button:hover {
+      transform: translateY(-2px);
+    }
+    .spam-note {
+      margin-top: 16px;
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+    
+    /* Social Proof */
+    .social-proof {
+      padding: 60px 0;
+      text-align: center;
+    }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+    .stat {
+      background: var(--surface);
+      padding: 30px;
+      border-radius: 12px;
+    }
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .stat-label {
+      color: var(--muted);
+      margin-top: 8px;
+    }
+    
+    /* Footer */
+    footer {
+      padding: 40px 0;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      text-align: center;
+      color: var(--muted);
+    }
+    
+    /* Mobile */
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 2rem; }
+      .hero p { font-size: 1rem; }
+      .waitlist-form { flex-direction: column; }
+      .demo-box { padding: 20px; }
+    }
+    
+    /* Success message */
+    #successMsg {
+      display: none;
+      background: #10b981;
+      color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Hero -->
+    <section class="hero">
+      <h1>Regnskap som gjør seg selv<br><span>med AI</span></h1>
+      <p>
+        SkattPro AI automatiserer 95% av bokføringen din. 
+        Spar 4.5 timer i måneden og få mer tid til det du elsker.
+      </p>
+      
+      <!-- Demo -->
+      <div class="demo-box">
+        <div style="margin-bottom:20px;font-weight:700;color:var(--muted)">🎯 Slik fungerer det:</div>
+        <div class="demo-row">
+          <span class="demo-icon">🏦</span>
+          <span class="demo-text">VIPPS BEDRIFT: +15,000 kr fra Kundebetalinger AS</span>
+          <span class="demo-amount">+15,000</span>
+          <span class="demo-badge">Auto: Salgsinntekt</span>
+        </div>
+        <div class="demo-row">
+          <span class="demo-icon">💳</span>
+          <span class="demo-text">KLARNA: -2,499 kr fra Apple Store</span>
+          <span class="demo-amount">-2,499</span>
+          <span class="demo-badge">Auto: Kontorutstyr</span>
+        </div>
+        <div class="demo-row">
+          <span class="demo-icon">📄</span>
+          <span class="demo-text">OCR: Kvittering fra Power (12. jun)</span>
+          <span class="demo-amount">-4,999</span>
+          <span class="demo-badge">Auto: Driftsmidler</span>
+        </div>
+        <div style="margin-top:20px;padding:16px;background:rgba(16,185,129,0.1);border-radius:8px;text-align:center">
+          ✅ <strong>95% av transaksjonene dine blir automatisk kategorisert</strong>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Features -->
+    <section class="features">
+      <div class="feature">
+        <div class="feature-icon">🤖</div>
+        <h3>AI-kategorisering</h3>
+        <p>
+          Vår AI lærer av deg og gjenkjenner mønstre. 
+          Etter 2 måneder setter den 95% riktig automatisk.
+        </p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📸</div>
+        <h3>Kvittering-OCR</h3>
+        <p>
+          Ta bilde av kvitteringen. AI leser alt: beløp, dato, butikk, 
+          og foreslår korrekt kategori.
+        </p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">💰</div>
+        <h3>Forskuddsskatt Optimalisering</h3>
+        <p>
+          AI analyserer inntekten din og foreslår optimal forskuddsskatt. 
+          Unngå restskatt neste år.
+        </p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📊</div>
+        <h3>Innsikt i sanntid</h3>
+        <p>
+          Se nøyaktig hvor mye du kan ta ut, hva du skylder i skatt, 
+          og hvordan du ligger an vs. i fjor.
+        </p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📧</div>
+        <h3>Auto-faktura</h3>
+        <p>
+          Glemte du å fakturere? AI ser ubetalte timer og 
+          foreslår å sende faktura automatisk.
+        </p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🔒</div>
+        <h3>Personvern først</h3>
+        <p>
+          Alle beregninger kjøres på norske servere. 
+          Ingen data sendes til OpenAI eller utenlandske aktører.
+        </p>
+      </div>
+    </section>
+    
+    <!-- Social Proof -->
+    <section class="social-proof">
+      <h2 style="font-size:1.8rem;margin-bottom:12px">Hvorfor ENK-ere velger SkattPro AI</h2>
+      <p style="color:var(--muted);max-width:600px;margin:0 auto">
+        Fordi manuell bokføring er som å skrive for hand i 2026
+      </p>
+      
+      <div class="stat-grid">
+        <div class="stat">
+          <div class="stat-number">4.5t</div>
+          <div class="stat-label">Spart per måned</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">95%</div>
+          <div class="stat-label">Automatisering</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">-87%</div>
+          <div class="stat-label">Mindre feil</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">2026</div>
+          <div class="stat-label">Oppdatert regelverk</div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- CTA -->
+    <section class="cta-section">
+      <div class="cta-box">
+        <h2>🚀 Bli med i beta-testen</h2>
+        <p>
+          Vi lanserer AI-betaen i Q2 2026. Først ut får 3 måneder gratis 
+          og tilgang til alle funksjoner.
+        </p>
+        
+        <form class="waitlist-form" id="waitlistForm">
+          <input type="email" id="email" placeholder="din@epost.no" required>
+          <button type="submit">Kom på venteliste →</button>
+        </form>
+        <div id="successMsg">
+          🎉 Takk! Du er på venteliste. Vi kontakter deg snart.
+        </div>
+        <p class="spam-note">
+          🔒 Ingen spam. Avmeld når som helst. Dine data er trygge hos oss.
+        </p>
+      </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2026 SkattPro AI. Laget i Norge 🇳🇴</p>
+      <p style="margin-top:12px;font-size:0.9rem">
+        <a href="/" style="color:var(--primary);text-decoration:none">Tilbake til skattkalkulator</a>
+      </p>
+    </footer>
+  </div>
+  
+  <script>
+    document.getElementById('waitlistForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      
+      // For now, just save to localStorage (later: send to Supabase/Resend)
+      const waitlist = JSON.parse(localStorage.getItem('skattpro_ai_waitlist') || '[]');
+      waitlist.push({email, timestamp: new Date().toISOString()});
+      localStorage.setItem('skattpro_ai_waitlist', JSON.stringify(waitlist));
+      
+      // Show success
+      document.getElementById('waitlistForm').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+      
+      // Track conversion (later: add analytics)
+      console.log('Waitlist signup:', email);
+    });
+  </script>
+</body>
+</html>
