@@ -450,6 +450,55 @@
 (() => {
 const byId = id => document.getElementById(id);
 
+// ========== PRO LICENSE CHECK ==========
+function isProActivated() {
+  const activated = localStorage.getItem('skattpro_pro_activated');
+  const licenseKey = localStorage.getItem('skattpro_license_key');
+  return activated === 'true' && licenseKey;
+}
+
+function getProStatus() {
+  if (!isProActivated()) {
+    return { active: false };
+  }
+  return {
+    active: true,
+    key: localStorage.getItem('skattpro_license_key'),
+    email: localStorage.getItem('skattpro_pro_email'),
+    activated: localStorage.getItem('skattpro_pro_activated_date')
+  };
+}
+
+function showProRequired(message) {
+  // Show upgrade prompt instead of alert
+  const msg = message || 'Denne funksjonen krever SkattPro Pro. Ønsker du å oppgradere?';
+  if (confirm(msg + '\n\nTrykk OK for å se Pro-funksjoner, eller Avbryt for å bli.')) {
+    window.location.href = 'pro-features.html';
+  }
+}
+
+// Add Pro badge to header if activated
+function updateProBadge() {
+  const navActions = document.querySelector('.nav-actions');
+  if (!navActions) return;
+  
+  const proStatus = getProStatus();
+  if (proStatus.active) {
+    // Replace "Kjøp Pro" with "Pro Aktivert"
+    const buyProBtn = navActions.querySelector('a[href="ansatte-og-lonn/"]:nth-child(2)');
+    if (buyProBtn) {
+      buyProBtn.textContent = '✅ Pro';
+      buyProBtn.href = 'pro-activate.html';
+      buyProBtn.title = 'Pro er aktivert';
+      buyProBtn.style.background = 'linear-gradient(135deg, #059669, #10b981)';
+    }
+  }
+}
+
+// Call on load
+setTimeout(updateProBadge, 100);
+// =======================================
+
 const MINSTEFRADRAG_2026_CAP = 104000;
 
 const BRACKETS_2026 = [
@@ -978,8 +1027,10 @@ function exportTxt(){
   a.remove();
 }
 function exportPdf(){
-  if(used(USED_PDF)){ alert('Gratis PDF-eksport er brukt. Få ubegrenset eksport og lønnsslipp i Pro.'); window.location.href = 'ansatte-og-lonn/'; return; }
-  markUsed(USED_PDF);
+  if (!isProActivated()) {
+    showProRequired('PDF-eksport krever SkattPro Pro. Få ubegrenset eksport og mye mer!');
+    return;
+  }
   const res = window._last || beregn();
   const w = window.open('', '_blank');
   const html = '<!DOCTYPE html><html lang="no"><head><meta charset="UTF-8"><title>SkattPro PDF</title><style>body{font-family:Arial,sans-serif;padding:40px;max-width:600px;margin:0 auto;color:#111}h1{color:#2563eb}.box{background:#eff6ff;padding:20px;border-radius:12px;margin:20px 0}table{width:100%;border-collapse:collapse}th,td{padding:8px;text-align:left;border-bottom:1px solid #e5e7eb}.r{text-align:right}.t{font-size:.85rem;color:#6b7280;margin-top:40px}</style></head><body><h1>SkattPro 2026 · skatteberegning</h1><p>' + new Date(res.savedAt).toLocaleString('nb-NO') + '</p><div class="box"><strong>Inntekt: ' + fmt(res.income) + '</strong><br><strong>Total skatt: ' + fmt(res.total) + '</strong><br><strong>Netto: ' + fmt(res.netto) + '</strong><br><strong>Skatteprosent: ' + res.pct.toFixed(1) + '%</strong></div><table>' + [
@@ -1000,8 +1051,10 @@ function exportPdf(){
   setTimeout(() => w.print(), 400);
 }
 function exportWord(){
-  if(used(USED_PDF)){ alert('Du har brukt gratis eksport en gang. Kjøp Pro for ubegrenset eksport.'); byId('pro').scrollIntoView({behavior:'smooth'}); return; }
-  markUsed(USED_PDF);
+  if (!isProActivated()) {
+    showProRequired('Word-eksport krever SkattPro Pro. Få ubegrenset eksport og mye mer!');
+    return;
+  }
   const res = window._last || beregn();
   const rows = [
     ['Brutto inntekt', fmt(res.income)],
