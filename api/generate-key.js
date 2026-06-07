@@ -176,13 +176,17 @@ exports.default = async (req, res) => {
   const sig = req.headers['stripe-signature'];
   let event;
 
+  // Skip signature verification in development (fake signature or no secret)
+  const isDevelopment = !process.env.STRIPE_WEBHOOK_SECRET || !sig || sig === 'test' || !sig.startsWith('t=');
+  
   try {
-    if (process.env.STRIPE_WEBHOOK_SECRET && sig) {
-      // In production, verify signature with raw body
+    if (!isDevelopment) {
+      // Production: verify signature with raw body
       event = stripe.webhooks.constructEvent(JSON.stringify(body), sig, process.env.STRIPE_WEBHOOK_SECRET);
     } else {
-      // Development mode - skip signature verification
+      // Development: skip signature verification
       event = body;
+      console.log('Development mode: skipping signature verification');
     }
   } catch (err) {
     console.error('Webhook signature verification failed:', err.message);
