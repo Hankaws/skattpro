@@ -224,16 +224,19 @@
 
 
     <div style="margin-top:14px">
-      <label>Bostedskommune</label>
-      <select id="muniSelect" class="input select" style="max-width:420px">
-        <option value="">Velg kommune...</option>
-      </select>
-      <div class="input-row" style="margin-top:10px">
-        <input id="muniCustom" class="input" type="text" placeholder="Skriv inn kommune..." />
-        <input id="kommRate" class="input" type="number" step="0.01" min="15" max="25" placeholder="Sats %" />
-      </div>
-      <p class="kommune-note">Velg fra listen, eller skriv navn + sats selv. Kommuneskatt + fellesskatt = total sats.</p>
-    </div>
+          <label>Bostedskommune</label>
+          <div style="display:flex;gap:10px;align-items:center;max-width:420px">
+            <select id="muniSelect" class="input select" style="flex:1">
+              <option value="">Velg kommune...</option>
+            </select>
+            <span id="kommuneLoading" style="display:none;color:var(--a);font-size:0.9rem">⏳ Laster...</span>
+          </div>
+          <div class="input-row" style="margin-top:10px">
+            <input id="muniCustom" class="input" type="text" placeholder="Skriv inn kommune..." />
+            <input id="kommRate" class="input" type="number" step="0.01" min="15" max="25" placeholder="Sats %" />
+          </div>
+          <p class="kommune-note">Velg fra listen, eller skriv navn + sats selv. Kommuneskatt + fellesskatt = total sats.</p>
+        </div>
 
     <div class="row-4" style="margin-top:18px">
       <div><label>Minstefradrag</label><input id="f1" class="input" type="number" value="0" min="0" step="1000"></div>
@@ -904,12 +907,17 @@ function setConsent(v){ localStorage.setItem(CONSENT_KEY, v ? '1' : '0'); }
 
 function fillKommuneSelect(){
   const sel = els.muniSelect;
+  const loadingEl = document.getElementById('kommuneLoading');
   if(!sel) {
     console.error('muniSelect element not found!');
     return;
   }
   console.log('Loading kommuner from JSON...');
   sel.innerHTML = '<option value="">Laster kommuner...</option>';
+  
+  // Show loading indicator
+  if(loadingEl) loadingEl.style.display = 'inline';
+  sel.disabled = true;
   
   // Get user's last selected kommune
   const lastKommune = localStorage.getItem('skattpro_last_kommune');
@@ -948,6 +956,10 @@ function fillKommuneSelect(){
       });
       console.log('Added', added, 'kommuner to select', selectedIdx >= 0 ? `- Pre-selected: ${lastKommune || 'Oslo'}` : '');
       
+      // Hide loading indicator
+      if(loadingEl) loadingEl.style.display = 'none';
+      sel.disabled = false;
+      
       // Auto-calculate if a kommune is selected
       if (selectedIdx >= 0) {
         beregn();
@@ -956,6 +968,8 @@ function fillKommuneSelect(){
     .catch(err => {
       console.error('Failed to load kommuner.json:', err);
       sel.innerHTML = '<option value="">Feil ved lasting</option><option value="22.8">Oslo (22.80%)</option>';
+      if(loadingEl) loadingEl.style.display = 'none';
+      sel.disabled = false;
     });
 }
 function getKommuneRate(){
