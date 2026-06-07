@@ -9,8 +9,23 @@ const Stripe = require('stripe');
 const sgMail = require('@sendgrid/mail');
 
 // Initialize clients
-const stripe = new Stripe(process.env.STRIPE_SECRET || process.env.STRIPE_SECRET_KEY);
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+let stripe;
+try {
+  const stripeKey = process.env.STRIPE_SECRET || process.env.STRIPE_SECRET_KEY;
+  if (!stripeKey) {
+    console.error('Missing STRIPE_SECRET_KEY environment variable');
+  }
+  stripe = new Stripe(stripeKey);
+} catch (err) {
+  console.error('Failed to initialize Stripe:', err);
+}
+
+const sendgridKey = process.env.SENDGRID_API_KEY;
+if (!sendgridKey) {
+  console.error('Missing SENDGRID_API_KEY environment variable');
+} else {
+  sgMail.setApiKey(sendgridKey);
+}
 
 // License key format: SKATTPRO-{TYPE}-{YEAR}{MONTH}-{SEQUENCE}
 // Example: SKATTPRO-PRO-2026F-0234 (June 2026, 234th customer)
@@ -126,6 +141,18 @@ exports.config = {
 };
 
 exports.default = async (req, res) => {
+  // Check if Stripe initialized
+  if (!stripe) {
+    console.error('Stripe not initialized - missing API key');
+    return res.status(500).json({ error: 'Server configuration error' });
+  }
+  
+  // Check if SendGrid initialized
+  if (!sendgridKey) {
+    console.error('SendGrid not initialized - missing API key');
+    return res.status(500).json({ error: 'Server configuration error' });
+  }
+
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST');
