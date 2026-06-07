@@ -1200,7 +1200,9 @@ function beregn(){
   html += '<div class="line" style="justify-content:flex-end;gap:8px"><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm secondary" data-action="save">💾 Lagre</button><button class="btn sm secondary" data-action="txt">⬇ TXT</button><button class="btn sm secondary" data-action="pdf">⬇ PDF</button><button class="btn sm secondary" data-action="word">⬇ Word</button><button class="btn sm secondary" data-action="acct">📋 Regnskap</button><button class="btn sm secondary" data-action="json">⬇ JSON</button><button class="btn sm secondary" data-action="excel">⬇ Excel</button><button class="btn sm secondary" data-action="copy">🔗 Kopier</button></div></div>';
   byId('calcTable').innerHTML = html;
 
-  const warnings = [];
+    checkUsageAndShowTeaser();
+
+    const warnings = [];
   if(f4 > 27500) warnings.push('BSU er begrenset til 27 500 kr/år.');
   if(f2 > 50000) warnings.push('Personfradrag er typisk ca. 50 000 kr — for høy verdi kan gi feil.');
   if(f1 > MINSTEFRADRAG_2026_CAP) warnings.push('Minstefradrag for ' + year + ' er maks ca. ' + MINSTEFRADRAG_2026_CAP.toLocaleString('nb-NO') + ' kr.');
@@ -1374,6 +1376,46 @@ if(document.readyState === 'loading'){
   document.addEventListener('DOMContentLoaded', init);
 } else {
   init();
+}
+
+// Usage counter + Pro teaser modal
+const FREE_CALC_LIMIT = 5;
+let _usageCount = parseInt(localStorage.getItem('skattpro_calc_count') || '0');
+
+function checkUsageAndShowTeaser() {
+  _usageCount++;
+  localStorage.setItem('skattpro_calc_count', _usageCount.toString());
+  
+  if (_usageCount === 3 || _usageCount === FREE_CALC_LIMIT) {
+    showProTeaser(_usageCount);
+  }
+}
+
+function showProTeaser(usageCount) {
+  const modal = document.createElement('div');
+  modal.id = 'proTeaserModal';
+  modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:9999;';
+  modal.innerHTML = '<div style="background:#fff;border-radius:16px;padding:32px;max-width:500px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.3);text-align:center;position:relative">' +
+    '<button onclick="document.getElementById(\'proTeaserModal\').remove()" style="position:absolute;top:12px;right:12px;background:none;border:none;font-size:24px;cursor:pointer;color:#999">&times;</button>' +
+    '<div style="font-size:42px;margin-bottom:16px">🚀</div>' +
+    '<h2 style="font-size:24px;font-weight:800;margin-bottom:12px;color:#1a1a1a">Du har brukt ' + usageCount + ' av ' + FREE_CALC_LIMIT + ' gratis beregninger</h2>' +
+    '<p style="color:#666;margin-bottom:24px;line-height:1.6">SkattPro Pro gir deg <strong>ubegrensede beregninger</strong>, eksport til PDF/CSV, ansatt-administrasjon og mye mer.</p>' +
+    '<div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;padding:16px;margin-bottom:24px;text-align:left">' +
+    '<div style="font-weight:600;margin-bottom:8px;color:#0369a1">✨ Pro inkluderer:</div>' +
+    '<div style="font-size:14px;color:#0c4a6e;line-height:1.8">' +
+    '✓ Ubegrenset antall beregninger<br>' +
+    '✓ PDF og CSV eksport<br>' +
+    '✓ Opptil 3 ansatte gratis (deretter ubegrenset)<br>' +
+    '✓ Utgiftssporing med skattereduksjon<br>' +
+    '✓ E-post-varsler før frister<br>' +
+    '✓ Prioritert support (svar innen 24t)' +
+    '</div></div>' +
+    '<div style="font-size:36px;font-weight:800;color:#2563eb;margin-bottom:8px">149 kr <span style="font-size:16px;font-weight:400;color:#666">/ md</span></div>' +
+    '<p style="font-size:13px;color:#999;margin-bottom:24px">Ingen bindingstid · Avbryt når som helst</p>' +
+    '<a href="pro-features.html" style="display:block;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;text-decoration:none;padding:16px 32px;border-radius:10px;font-weight:700;font-size:18px;margin-bottom:12px">Se alle Pro-funksjoner →</a>' +
+    '<button onclick="document.getElementById(\'proTeaserModal\').remove()" style="display:block;width:100%;background:#f3f4f6;color:#374151;border:none;padding:14px 32px;border-radius:10px;font-weight:600;font-size:16px;cursor:pointer">Fortsett med gratis-versjonen</button>' +
+    '</div>';
+  document.body.appendChild(modal);
 }
 })();
 </script>
