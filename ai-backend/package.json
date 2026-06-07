@@ -1,0 +1,16 @@
+{
+  "name": "skattpro-ai",
+  "version": "0.1.0",
+  "description": "AI-powered transaction categorization for SkattPro",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "node src/server.js",
+    "test": "node tests/test-categorizer.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "pg": "^8.11.3",
+    "dotenv": "^16.3.1"
+  }
+}
