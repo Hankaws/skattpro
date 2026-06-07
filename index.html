@@ -451,9 +451,8 @@ console.log('🚀 SkattPro script starting...');
 console.log('📄 Document readyState:', document.readyState);
 console.log('🔍 Looking for muniSelect element...');
 
-// Run after DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-
+// Script at end of body - DOM is ready, run directly
+{
 const byId = id => {
   const el = document.getElementById(id);
   if (!el) console.error('❌ Element not found:', id);
@@ -1185,9 +1184,9 @@ function showProTeaser(usageCount) {
     '<button onclick="document.getElementById(\'proTeaserModal\').remove()" style="display:block;width:100%;background:#f3f4f6;color:#374151;border:none;padding:14px 32px;border-radius:10px;font-weight:600;font-size:16px;cursor:pointer">Fortsett med gratis-versjonen</button>' +
     '</div>';
   document.body.appendChild(modal);
-    }
+      }
 
-  }); // End DOMContentLoaded
+  } // End main block
   </script>
 
 
