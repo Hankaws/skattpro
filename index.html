@@ -511,7 +511,28 @@ const BRACKETS_2026 = [
   { upto: Infinity, rate: 0.178 }
 ];
 
-const KOMMUNER = [
+// Kommunen will be loaded dynamically from kommuner.json
+let KOMMUNER = [];
+
+async function loadKommuner() {
+  try {
+    const response = await fetch('kommuner.json');
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+    KOMMUNER = await response.json();
+    console.log('✅ Loaded', KOMMUNER.length, 'kommuner from JSON');
+    fillKommuneSelect();
+  } catch (err) {
+    console.error('❌ Failed to load kommuner.json:', err.message);
+    // Minimal fallback
+    KOMMUNER = [
+      {navn:"Oslo",sats:22.0},
+      {navn:"Bergen",sats:21.5},
+      {navn:"Stavanger",sats:22.0},
+      {navn:"Trondheim",sats:22.0}
+    ];
+    fillKommuneSelect();
+  }
+}
   {navn:"Alta",sats:21.2},
   {navn:"Alvdal",sats:21.0},
   {navn:"Aremark",sats:21.4},
@@ -1303,8 +1324,8 @@ function beregn(){
   return result;
 }
 
-function init(){
-  fillKommuneSelect();
+async function init(){
+  await loadKommuner();
 
   els.klasseToggle.addEventListener('click', e => {
     const b = e.target.closest('button');
