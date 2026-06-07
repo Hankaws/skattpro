@@ -911,6 +911,9 @@ function fillKommuneSelect(){
   console.log('Loading kommuner from JSON...');
   sel.innerHTML = '<option value="">Laster kommuner...</option>';
   
+  // Get user's last selected kommune
+  const lastKommune = localStorage.getItem('skattpro_last_kommune');
+  
   fetch('kommuner.json')
     .then(res => {
       if(!res.ok) throw new Error('HTTP ' + res.status);
@@ -921,19 +924,34 @@ function fillKommuneSelect(){
       sel.innerHTML = '<option value="">Velg kommune...</option>';
       const seen = new Set();
       let added = 0;
-      data.sort((a,b) => a.navn.localeCompare(b.navn)).forEach(k => {
+      let selectedIdx = -1;
+      
+      data.sort((a,b) => a.navn.localeCompare(b.navn)).forEach((k, idx) => {
         const key = `${k.navn}::${k.sats}`;
         if (seen.has(key)) return;
         seen.add(key);
         const opt = document.createElement('option');
         opt.value = String(k.sats);
         opt.textContent = `${k.navn} (${Number(k.sats).toFixed(2)}%)`;
+        opt.dataset.name = k.navn; // Store name for matching
+        
+        // Pre-select user's last choice or Oslo as default
+        if (!selectedIdx && ((lastKommune && k.navn === lastKommune) || (!lastKommune && k.navn === 'Oslo'))) {
+          opt.selected = true;
+          selectedIdx = idx;
+          // Auto-fill the rate if we found the kommune
+          els.kommRate.value = String(k.sats);
+        }
+        
         sel.appendChild(opt);
         added++;
       });
-      console.log('Added', added, 'kommuner to select');
-      // Trigger calculation if a kommune is now selected
-      if(added > 0) beregn();
+      console.log('Added', added, 'kommuner to select', selectedIdx >= 0 ? `- Pre-selected: ${lastKommune || 'Oslo'}` : '');
+      
+      // Auto-calculate if a kommune is selected
+      if (selectedIdx >= 0) {
+        beregn();
+      }
     })
     .catch(err => {
       console.error('Failed to load kommuner.json:', err);
@@ -1350,13 +1368,20 @@ function init(){
   });
 
   els.muniSelect.addEventListener('change', () => {
-    const v = parseFloat(els.muniSelect.value);
-    if(!isNaN(v) && v > 0){
-      els.kommRate.value = v.toFixed(2);
-      els.muniCustom.value = '';
-      beregn();
-    }
-  });
+      const v = parseFloat(els.muniSelect.value);
+      if(!isNaN(v) && v > 0){
+        els.kommRate.value = v.toFixed(2);
+        els.muniCustom.value = '';
+      
+        // Save user's kommune preference
+        const selectedOpt = els.muniSelect.selectedOptions[0];
+        if(selectedOpt && selectedOpt.dataset.name) {
+          localStorage.setItem('skattpro_last_kommune', selectedOpt.dataset.name);
+        }
+      
+        beregn();
+      }
+    });
   els.muniCustom.addEventListener('input', () => {
     if(els.muniCustom.value.trim()) els.muniSelect.value = '';
     beregn();
