@@ -9,7 +9,7 @@ const Stripe = require('stripe');
 const sgMail = require('@sendgrid/mail');
 
 // Initialize clients
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET || process.env.STRIPE_SECRET_KEY);
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // License key format: SKATTPRO-{TYPE}-{YEAR}{MONTH}-{SEQUENCE}
