@@ -305,21 +305,41 @@
   </section>
 
   <section id="result" class="card" style="display:none">
-    <h2>📈 Resultater</h2>
-    <div class="kpis">
-      <div class="kpi"><div class="v" id="r1">0 kr</div><div class="l">Årlig inntekt</div></div>
-      <div class="kpi"><div class="v" id="r2">0 kr</div><div class="l">Netto per år</div></div>
-      <div class="kpi"><div class="v" id="r3">0%</div><div class="l">Skatteprosent</div></div>
-      <div class="kpi"><div class="v" id="r4">0 kr</div><div class="l">Terminbeløp/halvår</div></div>
-      <div class="kpi"><div class="v" id="r5">0%</div><div class="l">Marginalskatt</div></div>
-      <div class="kpi"><div class="v" id="r6">0 kr</div><div class="l">Formuesskatt</div></div>
-    </div>
+      <h2>📈 Resultater</h2>
+    
+      <!-- Placeholder message shown on first visit -->
+      <div id="resultPlaceholder" style="text-align:center;padding:30px 0;display:none">
+        <div style="font-size:3rem;margin-bottom:10px">🎯</div>
+        <h3 style="font-size:1.3rem;font-weight:700;color:var(--ink);margin-bottom:8px">
+          Beregn skatten din på 30 sekunder
+        </h3>
+        <p style="color:var(--muted);font-size:0.95rem;line-height:1.6;max-width:500px;margin:0 auto 20px">
+          Fyll inn inntekten din og velg kommune for å se nøyaktig beregning av trinnskatt, trygdeavgift og hva du sitter igjen med.
+        </p>
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;font-size:0.9rem;color:var(--muted)">
+          <span>✓ 400+ kommuner</span>
+          <span>✓ Oppdatert for 2026</span>
+          <span>✓ Ingen innlogging</span>
+        </div>
+      </div>
+    
+      <!-- Actual results (shown after calculation) -->
+      <div id="resultContent" style="display:none">
+        <div class="kpis">
+          <div class="kpi"><div class="v" id="r1">0 kr</div><div class="l">Årlig inntekt</div></div>
+          <div class="kpi"><div class="v" id="r2">0 kr</div><div class="l">Netto per år</div></div>
+          <div class="kpi"><div class="v" id="r3">0%</div><div class="l">Skatteprosent</div></div>
+          <div class="kpi"><div class="v" id="r4">0 kr</div><div class="l">Terminbeløp/halvår</div></div>
+          <div class="kpi"><div class="v" id="r5">0%</div><div class="l">Marginalskatt</div></div>
+          <div class="kpi"><div class="v" id="r6">0 kr</div><div class="l">Formuesskatt</div></div>
+        </div>
 
-    <p id="warn" style="color:var(--warn);margin-top:8px;font-size:.85rem"></p>
+        <p id="warn" style="color:var(--warn);margin-top:8px;font-size:.85rem"></p>
 
-    <div id="break" style="margin-top:16px"></div>
-    <div id="calcTable" class="status" style="margin-top:12px"></div>
-  </section>
+        <div id="break" style="margin-top:16px"></div>
+        <div id="calcTable" class="status" style="margin-top:12px"></div>
+      </div>
+    </section>
 
   <section id="hist" class="card" style="display:none">
     <h2>🕒 Historikk <span class="badge" id="histCount">0</span></h2>
@@ -1273,13 +1293,19 @@ function beregn(){
   const pd = Math.round(total / 2);
 
   byId('r1').textContent = fx(income);
-  byId('r2').textContent = fx(netto);
-  byId('r3').textContent = pct.toFixed(1) + '%';
-  byId('r4').textContent = fx(pd);
-  byId('r5').textContent = (marginalRate*100).toFixed(1) + '%';
-  byId('r6').textContent = fx(formSkatt);
+    byId('r2').textContent = fx(netto);
+    byId('r3').textContent = pct.toFixed(1) + '%';
+    byId('r4').textContent = fx(pd);
+    byId('r5').textContent = (marginalRate*100).toFixed(1) + '%';
+    byId('r6').textContent = fx(formSkatt);
 
-  const bk = byId('break');
+    // Hide placeholder, show actual results
+    const placeholder = document.getElementById('resultPlaceholder');
+    const resultContent = document.getElementById('resultContent');
+    if(placeholder) placeholder.style.display = 'none';
+    if(resultContent) resultContent.style.display = 'block';
+
+    const bk = byId('break');
   bk.innerHTML = '';
   [
     {label:'Trinnskatt', amt:trinn, c:'#60a5fa'},
@@ -1363,6 +1389,14 @@ function init(){
   console.log('init() called!');
   // KOMMUNER already loaded above
   fillKommuneSelect();
+
+  // Show placeholder results on first load
+  const resultSection = byId('result');
+  const placeholder = document.getElementById('resultPlaceholder');
+  const resultContent = document.getElementById('resultContent');
+  if(resultSection) resultSection.style.display = 'block';
+  if(placeholder) placeholder.style.display = 'block';
+  if(resultContent) resultContent.style.display = 'none';
 
   els.klasseToggle.addEventListener('click', e => {
     const b = e.target.closest('button');
@@ -1511,7 +1545,8 @@ function checkUsageAndShowTeaser() {
   _usageCount++;
   localStorage.setItem('skattpro_calc_count', _usageCount.toString());
   
-  if (_usageCount === 3 || _usageCount === FREE_CALC_LIMIT) {
+  // Show teaser after 3 calculations (soft suggestion, not a hard limit)
+  if (_usageCount === 3) {
     showProTeaser(_usageCount);
   }
 }
@@ -1519,29 +1554,37 @@ function checkUsageAndShowTeaser() {
 function showProTeaser(usageCount) {
   const modal = document.createElement('div');
   modal.id = 'proTeaserModal';
-  modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:9999;';
-  modal.innerHTML = '<div style="background:#fff;border-radius:16px;padding:32px;max-width:500px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.3);text-align:center;position:relative">' +
-    '<button onclick="document.getElementById(\'proTeaserModal\').remove()" style="position:absolute;top:12px;right:12px;background:none;border:none;font-size:24px;cursor:pointer;color:#999">&times;</button>' +
-    '<div style="font-size:42px;margin-bottom:16px">🚀</div>' +
-    '<h2 style="font-size:24px;font-weight:800;margin-bottom:12px;color:#1a1a1a">Du har brukt ' + usageCount + ' av ' + FREE_CALC_LIMIT + ' gratis beregninger</h2>' +
-    '<p style="color:#666;margin-bottom:24px;line-height:1.6">SkattPro Pro gir deg <strong>ubegrensede beregninger</strong>, eksport til PDF/CSV, ansatt-administrasjon og mye mer.</p>' +
-    '<div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;padding:16px;margin-bottom:24px;text-align:left">' +
-    '<div style="font-weight:600;margin-bottom:8px;color:#0369a1">✨ Pro inkluderer:</div>' +
-    '<div style="font-size:14px;color:#0c4a6e;line-height:1.8">' +
-    '✓ Ubegrenset antall beregninger<br>' +
-    '✓ PDF og CSV eksport<br>' +
-    '✓ Opptil 3 ansatte gratis (deretter ubegrenset)<br>' +
-    '✓ Utgiftssporing med skattereduksjon<br>' +
-    '✓ E-post-varsler før frister<br>' +
-    '✓ Prioritert support (svar innen 24t)' +
+  modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:9999;';
+  modal.innerHTML = '<div style="background:#fff;border-radius:16px;padding:32px;max-width:520px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.3);text-align:center;position:relative;animation:fadeIn 0.3s ease">' +
+    '<button onclick="document.getElementById(\'proTeaserModal\').remove()" style="position:absolute;top:12px;right:12px;background:none;border:none;font-size:24px;cursor:pointer;color:#999;line-height:1">&times;</button>' +
+    '<div style="font-size:48px;margin-bottom:12px">🎉</div>' +
+    '<h2 style="font-size:22px;font-weight:800;margin-bottom:12px;color:#1a1a1a">Du har beregnet skatten ' + usageCount + ' ganger!</h2>' +
+    '<p style="color:#666;margin-bottom:20px;line-height:1.6;font-size:0.95rem">' +
+    'Flott at du planlegger økonomien! 🚀<br>' +
+    'Med <strong>SkattPro Pro</strong> får du enda mer hjelp:' +
+    '</p>' +
+    '<div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;padding:20px;margin-bottom:24px;text-align:left">' +
+    '<div style="font-weight:700;margin-bottom:12px;color:#0369a1;font-size:0.95rem">✨ Dette får du med Pro (149 kr/md):</div>' +
+    '<div style="font-size:14px;color:#0c4a6e;line-height:2">' +
+    '✓ <strong>Ubegrensede beregninger</strong> – bruk så mye du vil<br>' +
+    '✓ <strong>Eksporter til PDF og CSV</strong> – lagre og del resultatene<br>' +
+    '✓ <strong>Ansatt-administrasjon</strong> – håndter opptil 3 ansatte gratis<br>' +
+    '✓ <strong>Utgiftssporing</strong> – få oversikt over fradragsberettigede utgifter<br>' +
+    '✓ <strong>Frist-varsler på e-post</strong> – aldri gå glipp av en frist<br>' +
+    '✓ <strong>Prioritert support</strong> – svar innen 24 timer' +
     '</div></div>' +
-    '<div style="font-size:36px;font-weight:800;color:#2563eb;margin-bottom:8px">149 kr <span style="font-size:16px;font-weight:400;color:#666">/ md</span></div>' +
-    '<p style="font-size:13px;color:#999;margin-bottom:24px">Ingen bindingstid · Avbryt når som helst</p>' +
-    '<a href="pro-features.html" style="display:block;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;text-decoration:none;padding:16px 32px;border-radius:10px;font-weight:700;font-size:18px;margin-bottom:12px">Se alle Pro-funksjoner →</a>' +
-    '<button onclick="document.getElementById(\'proTeaserModal\').remove()" style="display:block;width:100%;background:#f3f4f6;color:#374151;border:none;padding:14px 32px;border-radius:10px;font-weight:600;font-size:16px;cursor:pointer">Fortsett med gratis-versjonen</button>' +
+    '<p style="font-size:13px;color:#999;margin-bottom:20px">Ingen bindingstid · Avbryt når som helst · Alle funksjoner inkludert</p>' +
+    '<a href="pro-features.html" style="display:block;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;text-decoration:none;padding:16px 32px;border-radius:10px;font-weight:700;font-size:17px;margin-bottom:12px;box-shadow:0 4px 12px rgba(37,99,235,0.2)">Se alle Pro-funksjoner →</a>' +
+    '<button onclick="document.getElementById(\'proTeaserModal\').remove()" style="display:block;width:100%;background:#fff;color:#666;border:1px solid #e5e7eb;padding:14px 32px;border-radius:10px;font-weight:600;font-size:15px;cursor:pointer">Fortsett med gratis-versjonen</button>' +
     '</div>';
   document.body.appendChild(modal);
+  
+  // Add fade-in animation
+  const style = document.createElement('style');
+  style.textContent = '@keyframes fadeIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}';
+  document.head.appendChild(style);
   }
+
   })();
   </script>
 
