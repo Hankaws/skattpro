@@ -6,6 +6,29 @@
 
 ---
 
+## 🚀 NEW: AI-First Strategy - Competing with Fiken
+
+**Announced:** June 7, 2026  
+**Target:** 400,000+ ENK freelancers in Norway
+
+We're building AI-first, zero-touch bookkeeping to beat Fiken at their own game.
+
+**The Wedge:**
+- 95%+ transaction automation via LLM + open banking (Vipps/Klarna/Stripe)
+- Forskuddsskatt optimization
+- Auto-invoicing from bank data
+- 199 kr/md (vs Fiken's 149-399 kr/md)
+
+**Timeline:**
+- Q2 2026: AI beta launch
+- Q3 2026: Public launch with 100+ customers
+- Q4 2026: Full product + e-invoicing compliance
+
+📄 **Full Strategy:** [`COMPETE-WITH-FIKEN.md`](COMPETE-WITH-FIKEN.md)  
+🎯 **AI Landing Page:** `/ai-landing.html` (beta waitlist)
+
+---
+
 ## ✅ What's Working Now
 
 ### Core Features
