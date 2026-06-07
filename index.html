@@ -908,6 +908,10 @@ function fillKommuneSelect(){
     console.error('muniSelect element not found!');
     return;
   }
+  if(!KOMMUNER || !KOMMUNER.length) {
+    console.error('KOMMUNER array is empty or undefined!');
+    return;
+  }
   console.log('Filling kommune select...', KOMMUNER.length, 'kommuner');
   sel.innerHTML = '<option value="">Velg kommune...</option>';
   const seen = new Set();
@@ -1312,6 +1316,7 @@ function beregn(){
 }
 
 function init(){
+  console.log('init() called!');
   // KOMMUNER already loaded above
   fillKommuneSelect();
 
