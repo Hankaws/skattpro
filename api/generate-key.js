@@ -50,7 +50,7 @@ function saveLicense(license) {
 function createLicenseEmail(email, key) {
   return {
     to: email,
-    from: 'SkattPro Support <support@skattpro.no>',
+    from: 'SkattPro Support <hankawsproduction@gmail.com>',
     subject: '🎉 Din SkattPro Pro-lisens',
     html: `
       <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 600px; margin: 0 auto;">
