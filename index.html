@@ -447,8 +447,16 @@
 </div>
 
 <script>
+console.log('🚀 SkattPro script starting...');
+console.log('📄 Document readyState:', document.readyState);
+console.log('🔍 Looking for muniSelect element...');
+
 (() => {
-const byId = id => document.getElementById(id);
+const byId = id => {
+  const el = document.getElementById(id);
+  if (!el) console.error('❌ Element not found:', id);
+  return el;
+};
 
 // ========== PRO LICENSE CHECK ==========
 function isProActivated() {
@@ -515,23 +523,30 @@ const BRACKETS_2026 = [
 let KOMMUNER = [];
 
 async function loadKommuner() {
+  console.log('🔄 Starting to load kommuner...');
   try {
     const response = await fetch('kommuner.json', { 
       cache: 'no-cache',
       headers: { 'Accept': 'application/json' }
     });
-    console.log('Fetch status:', response.status);
+    console.log('📡 Fetch status:', response.status);
     if (!response.ok) throw new Error('HTTP ' + response.status);
-    KOMMUNER = await response.json();
+    const data = await response.json();
+    console.log('📦 Raw data type:', typeof data, 'Array length:', Array.isArray(data) ? data.length : 'N/A');
+    KOMMUNER = data;
     console.log('✅ Loaded', KOMMUNER.length, 'kommuner from JSON');
     fillKommuneSelect();
+    console.log('✅ Select filled with', KOMMUNER.length, 'options');
   } catch (err) {
     console.error('❌ Failed to load kommuner.json:', err.message);
+    console.error('Stack:', err.stack);
     console.error('URL attempted:', window.location.origin + '/kommuner.json');
+    
     // Fallback: try to load from GitHub CDN
     try {
-      console.log('Trying GitHub CDN fallback...');
+      console.log('🔄 Trying GitHub CDN fallback...');
       const cdnResp = await fetch('https://hankaws.github.io/skattpro/kommuner.json');
+      console.log('📡 CDN Fetch status:', cdnResp.status);
       if (cdnResp.ok) {
         KOMMUNER = await cdnResp.json();
         console.log('✅ Loaded', KOMMUNER.length, 'kommuner from CDN');
@@ -539,8 +554,9 @@ async function loadKommuner() {
         return;
       }
     } catch (cdnErr) {
-      console.error('CDN fallback also failed:', cdnErr.message);
+      console.error('❌ CDN fallback also failed:', cdnErr.message);
     }
+    
     // Minimal fallback
     KOMMUNER = [
       {navn:"Oslo",sats:22.0},
