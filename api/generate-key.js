@@ -232,10 +232,16 @@ exports.default = async (req, res) => {
       try {
         const email = createLicenseEmail(customerEmail, licenseKey);
         console.log('Sending email to:', customerEmail);
-        await sgMail.send(email);
-        console.log('License email sent successfully to:', customerEmail);
+        console.log('Email from:', email.from);
+        console.log('Email subject:', email.subject);
+        const result = await sgMail.send(email);
+        console.log('Email sent successfully! Status:', result[0].statusCode);
+        console.log('Headers:', result[0].headers);
       } catch (emailErr) {
         console.error('Failed to send email:', emailErr);
+        console.error('Error code:', emailErr.code);
+        console.error('Error message:', emailErr.message);
+        console.error('Error response:', emailErr.response?.body);
         // Continue anyway - license is still valid
       }
 
