@@ -908,25 +908,37 @@ function fillKommuneSelect(){
     console.error('muniSelect element not found!');
     return;
   }
-  if(!KOMMUNER || !KOMMUNER.length) {
-    console.error('KOMMUNER array is empty or undefined!');
-    return;
-  }
-  console.log('Filling kommune select...', KOMMUNER.length, 'kommuner');
-  sel.innerHTML = '<option value="">Velg kommune...</option>';
-  const seen = new Set();
-  let added = 0;
-  KOMMUNER.forEach(k => {
-    const key = `${k.navn}::${k.sats}`;
-    if (seen.has(key)) return;
-    seen.add(key);
-    const opt = document.createElement('option');
-    opt.value = String(k.sats);
-    opt.textContent = `${k.navn} (${Number(k.sats).toFixed(2)}%)`;
-    sel.appendChild(opt);
-    added++;
-  });
-  console.log('Added', added, 'kommuner to select');
+  console.log('Loading kommuner from JSON...');
+  sel.innerHTML = '<option value="">Laster kommuner...</option>';
+  
+  fetch('kommuner.json')
+    .then(res => {
+      if(!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    })
+    .then(data => {
+      console.log('Loaded', data.length, 'kommuner from JSON');
+      sel.innerHTML = '<option value="">Velg kommune...</option>';
+      const seen = new Set();
+      let added = 0;
+      data.sort((a,b) => a.navn.localeCompare(b.navn)).forEach(k => {
+        const key = `${k.navn}::${k.sats}`;
+        if (seen.has(key)) return;
+        seen.add(key);
+        const opt = document.createElement('option');
+        opt.value = String(k.sats);
+        opt.textContent = `${k.navn} (${Number(k.sats).toFixed(2)}%)`;
+        sel.appendChild(opt);
+        added++;
+      });
+      console.log('Added', added, 'kommuner to select');
+      // Trigger calculation if a kommune is now selected
+      if(added > 0) beregn();
+    })
+    .catch(err => {
+      console.error('Failed to load kommuner.json:', err);
+      sel.innerHTML = '<option value="">Feil ved lasting</option><option value="22.8">Oslo (22.80%)</option>';
+    });
 }
 function getKommuneRate(){
   const selVal = parseFloat(els.muniSelect.value);
