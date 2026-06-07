@@ -34,6 +34,9 @@ const hybrid = new HybridCategorizer({
 app.use(cors());
 app.use(express.json());
 
+// Serve static files (dashboard UI)
+app.use('/', express.static(path.join(__dirname, '..')));
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/dashboard', authMiddleware, dashboardRoutes);

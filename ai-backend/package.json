@@ -5,12 +5,13 @@
   "main": "src/server.js",
   "scripts": {
     "dev": "nodemon src/server.js",
-    "start": "node src/server.js",
+    "start": "node src/server-enhanced.js",
     "test": "node tests/test-categorizer.js",
     "db:migrate": "prisma migrate dev",
     "db:generate": "prisma generate",
     "db:seed": "node prisma/seed.js",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "dashboard": "open http://localhost:3001/dashboard.html"
   },
   "dependencies": {
     "express": "^4.18.2",
