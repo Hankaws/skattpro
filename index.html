@@ -516,13 +516,31 @@ let KOMMUNER = [];
 
 async function loadKommuner() {
   try {
-    const response = await fetch('kommuner.json');
+    const response = await fetch('kommuner.json', { 
+      cache: 'no-cache',
+      headers: { 'Accept': 'application/json' }
+    });
+    console.log('Fetch status:', response.status);
     if (!response.ok) throw new Error('HTTP ' + response.status);
     KOMMUNER = await response.json();
     console.log('✅ Loaded', KOMMUNER.length, 'kommuner from JSON');
     fillKommuneSelect();
   } catch (err) {
     console.error('❌ Failed to load kommuner.json:', err.message);
+    console.error('URL attempted:', window.location.origin + '/kommuner.json');
+    // Fallback: try to load from GitHub CDN
+    try {
+      console.log('Trying GitHub CDN fallback...');
+      const cdnResp = await fetch('https://hankaws.github.io/skattpro/kommuner.json');
+      if (cdnResp.ok) {
+        KOMMUNER = await cdnResp.json();
+        console.log('✅ Loaded', KOMMUNER.length, 'kommuner from CDN');
+        fillKommuneSelect();
+        return;
+      }
+    } catch (cdnErr) {
+      console.error('CDN fallback also failed:', cdnErr.message);
+    }
     // Minimal fallback
     KOMMUNER = [
       {navn:"Oslo",sats:22.0},
@@ -530,6 +548,7 @@ async function loadKommuner() {
       {navn:"Stavanger",sats:22.0},
       {navn:"Trondheim",sats:22.0}
     ];
+    console.log('⚠️ Using fallback with', KOMMUNER.length, 'kommuner');
     fillKommuneSelect();
   }
 }
