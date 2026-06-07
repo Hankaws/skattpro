@@ -8,6 +8,8 @@ const HybridCategorizer = require('./hybrid-categorizer');
 const { parseReceipt } = require('./receipts/ocr');
 const { authMiddleware, optionalAuth } = require('./auth/middleware');
 const authRoutes = require('./auth/routes');
+const dashboardRoutes = require('./api/dashboard');
+const invoiceRoutes = require('./api/invoices');
 const prisma = require('./db/prisma');
 const { calculateForskuddsskatt } = require('./tax/forskuddsskatt');
 
@@ -32,7 +34,12 @@ const hybrid = new HybridCategorizer({
 app.use(cors());
 app.use(express.json());
 
-// Health check
+// API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/dashboard', authMiddleware, dashboardRoutes);
+app.use('/api/invoices', invoiceRoutes);
+
+// Public endpoints
 app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'ok', 
