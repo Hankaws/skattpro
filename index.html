@@ -942,8 +942,13 @@ function fillKommuneSelect(){
   // Get user's last selected kommune
   const lastKommune = localStorage.getItem('skattpro_last_kommune');
   
-  fetch('kommuner.json')
+  // Load with timeout
+const controller = new AbortController();
+const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+fetch('kommuner.json', { signal: controller.signal })
     .then(res => {
+      clearTimeout(timeoutId);
       if(!res.ok) throw new Error('HTTP ' + res.status);
       return res.json();
     })
@@ -987,9 +992,16 @@ function fillKommuneSelect(){
     })
     .catch(err => {
       console.error('Failed to load kommuner.json:', err);
-      sel.innerHTML = '<option value="">Feil ved lasting</option><option value="22.8">Oslo (22.80%)</option>';
+      // Fallback: Add major cities manually
+      sel.innerHTML = '<option value="">Velg kommune...</option>' +
+        '<option value="22.80" selected>Oslo (22.80%)</option>' +
+        '<option value="19.40">Bergen (19.40%)</option>' +
+        '<option value="21.00">Trondheim (21.00%)</option>' +
+        '<option value="20.50">Stavanger (20.50%)</option>' +
+        '<option value="18.60">Tromsø (18.60%)</option>';
       if(loadingEl) loadingEl.style.display = 'none';
       sel.disabled = false;
+      console.log('Using fallback kommuner');
     });
 }
 function getKommuneRate(){

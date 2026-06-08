@@ -32,14 +32,15 @@
 32|.menu a:hover{color:var(--ink);background:var(--panel2)}
 33|.nav-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 34|.badge{padding:6px 10px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);font-size:.82rem;color:var(--muted)}
-35|.hero{text-align:center;padding:40px 0 28px;max-width:820px;margin:0 auto}
-36|.hero h1{font-size:2.4rem;font-weight:900;letter-spacing:-.02em;line-height:1.2;margin-bottom:14px}
-37|.hero p{color:var(--muted);font-size:1.05rem;line-height:1.6;margin-bottom:18px}
+.hero{text-align:center;padding:60px 0 40px;max-width:900px;margin:0 auto}
+.hero h1{font-size:3rem;font-weight:900;letter-spacing:-.03em;line-height:1.1;margin-bottom:16px;background:linear-gradient(135deg,#0f172a,#475569);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:var(--muted);font-size:1.15rem;line-height:1.7;margin-bottom:24px}
 38|.cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-39|.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;margin:14px 0}
-40|.card h2{font-size:1.05rem;font-weight:700;color:var(--ink);margin:0 0 14px;display:flex;align-items:center;gap:10px}
-41|.input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:.95rem}
-42|.input:focus{outline:none;border-color:var(--a);box-shadow:0 0 0 3px #93c5fd40}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;margin:14px 0;transition:all .2s}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.08);border-color:#cbd5e1}
+.card h2{font-size:1.05rem;font-weight:700;color:var(--ink);margin:0 0 14px;display:flex;align-items:center;gap:10px}
+.input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:.95rem;transition:border-color .2s,box-shadow .2s}
+.input:focus{outline:none;border-color:var(--a);box-shadow:0 0 0 3px rgba(99,102,241,.15)}
 43|label{color:#334155;font-size:.85rem;font-weight:600;display:block;margin-bottom:6px}
 44|.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 45|.row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
@@ -47,13 +48,14 @@
 47|.row-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 48|@media(max-width:900px){.row,.row-2,.row-3,.row-4{grid-template-columns:1fr}}
 49|.select{appearance:none;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 12px center no-repeat;padding-right:38px;color:var(--ink)}
-50|.btn{display:inline-flex;align-items:center;gap:8px;border:0;padding:11px 18px;border-radius:10px;font-weight:700;cursor:pointer;color:#fff;background:var(--a);font-size:.92rem;font-family:inherit;text-decoration:none}
-51|.btn:hover{filter:brightness(1.08)}
-52|.btn.secondary{background:var(--panel2);border:1px solid var(--line);color:var(--ink)}
-53|.btn.ghost{background:transparent;color:var(--ink);border:1px solid transparent;padding:8px 10px}
-54|.btn.ghost:hover{border-color:var(--line)}
-55|.btn.sm{padding:7px 12px;font-size:.82rem}
-56|.btn.upgrade{background:linear-gradient(135deg,var(--a),var(--a2));color:#fff}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;padding:11px 18px;border-radius:10px;font-weight:700;cursor:pointer;color:#fff;background:var(--a);font-size:.92rem;font-family:inherit;text-decoration:none;transition:all .2s;box-shadow:0 2px 8px rgba(37,99,235,.2)}
+.btn:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 4px 12px rgba(37,99,235,.3)}
+.btn.secondary{background:var(--panel2);border:1px solid var(--line);color:var(--ink)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid transparent;padding:8px 10px}
+.btn.ghost:hover{border-color:var(--line)}
+.btn.sm{padding:7px 12px;font-size:.82rem}
+.btn.upgrade{background:linear-gradient(135deg,var(--a),var(--a2));color:#fff;box-shadow:0 2px 8px rgba(79,70,229,.3)}
+.btn.upgrade:hover{box-shadow:0 4px 16px rgba(79,70,229,.4)}
 57|.kpi{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center}
 58|.kpi .v{font-size:1.15rem;font-weight:800;color:var(--ink)}
 59|.kpi .l{font-size:.78rem;color:var(--muted)}
