@@ -23,6 +23,7 @@ model User {
   transactions Transaction[]
   receipts     Receipt[]
   corrections  Correction[]
+  apiKeys      ApiKey[]
   
   @@map("users")
 }
@@ -56,6 +57,8 @@ model Transaction {
   @@index([userId])
   @@index([date])
   @@index([account])
+  
+  receipt Receipt? @relation(name: "ReceiptToTransaction")
   @@map("transactions")
 }
 
@@ -76,8 +79,8 @@ model Receipt {
   vatRate     Float?
   
   // Linked transaction (if matched)
-  transactionId String?
-  transaction   Transaction? @relation(fields: [transactionId], references: [id])
+  transactionId String? @unique
+  transaction   Transaction? @relation(fields: [transactionId], references: [id], name: "ReceiptToTransaction")
   
   ocrText     String?  // Full OCR output
   confidence  Float?

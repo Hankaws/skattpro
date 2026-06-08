@@ -1,0 +1,12 @@
+{
+  "batch": "2026-A",
+  "keys": [
+    "SKATTPRO-PRO-2026A-0001",
+    "SKATTPRO-PRO-2026A-0002",
+    "SKATTPRO-PRO-2026A-0003",
+    "SKATTPRO-PRO-2026A-0004",
+    "SKATTPRO-PRO-2026A-0005"
+  ],
+  "issuedAt": "2026-06-05T00:00:00Z",
+  "note": "Internal distributed key list for manual Pro activations. Not for public hosting."
+}

@@ -14,7 +14,7 @@ const prisma = require('./db/prisma');
 const { calculateForskuddsskatt } = require('./tax/forskuddsskatt');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3003;  // Using 3003 - other ports (3000-3002) in use
 
 // Configure multer for file uploads
 const upload = multer({
@@ -319,23 +319,16 @@ app.get('/api/categories', (req, res) => {
 app.listen(PORT, () => {
   console.log(`
 ╔══════════════════════════════════════════════════════════╗
-║           🚀 SkattPro AI Server v0.3.0                   ║
+║           🚀 SkattPro AI Server v0.5.0                   ║
 ║                                                          ║
 ║   Local:     http://localhost:${PORT}                    ║
+║   Dashboard: http://localhost:${PORT}/dashboard.html      ║
+║   Invoice:   http://localhost:${PORT}/create-invoice.html║
 ║   Health:    http://localhost:${PORT}/api/health         ║
-║   Auth:      POST http://localhost:${PORT}/api/auth/register ║
 ║                                                          ║
-║   Features:                                              ║
-║   ✅ AI Categorization (Rules + LLM)                     ║
-║   ✅ Receipt OCR                                          ║
-║   ✅ User Authentication (JWT)                           ║
-║   ✅ PostgreSQL Database                                 ║
-║   ✅ Forskuddsskatt Calculator                           ║
-║   ✅ Review Queue                                        ║
-║                                                          ║
-║   Database: ${process.env.DATABASE_URL ? 'Connected' : 'Not configured'}
+║   Status:    ✅ Ready for Alpha Launch                   ║
 ╚══════════════════════════════════════════════════════════╝
-  `);
+`.trim());
 });
 
 module.exports = app;
