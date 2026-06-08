@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkattPro AI - Lag Faktura</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <!-- Header -->
+  <div class="bg-white border-b border-gray-200">
+    <div class="max-w-4xl mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <a href="dashboard.html" class="flex items-center space-x-3 text-purple-600 hover:underline">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          <span>Tilbake til dashboard</span>
+        </a>
+        <h1 class="text-2xl font-bold text-gray-900">Lag ny faktura</h1>
+        <div class="w-32"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Form -->
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <form id="invoiceForm" class="space-y-6">
+      
+      <!-- Seller Info -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Din informasjon (Avsender)</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Navn/Firmanavn *</label>
+            <input type="text" name="sellerName" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">ENK-nummer</label>
+            <input type="text" name="sellerEnk" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">E-post *</label>
+            <input type="email" name="sellerEmail" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Telefon</label>
+            <input type="tel" name="sellerPhone" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Adresse</label>
+            <input type="text" name="sellerAddress" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Postnummer</label>
+            <input type="text" name="sellerZip" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Poststed</label>
+            <input type="text" name="sellerCity" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Bankkonto</label>
+            <input type="text" name="sellerBank" placeholder="1234.56.78901" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Vipps-nummer</label>
+            <input type="text" name="sellerVipps" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+          </div>
+        </div>
+      </div>
+
+      <!-- Buyer Info -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Kunde (Mottaker)</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Navn/Firmanavn *</label>
+            <input type="text" name="buyerName" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Organisasjonsnummer</label>
+            <input type="text" name="buyerOrg" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-1">E-post</label>
+            <input type="email" name="buyerEmail" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Adresse</label>
+            <input type="text" name="buyerAddress" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+          </div>
+        </div>
+      </div>
+
+      <!-- Line Items -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Fakturalinjer</h2>
+        
+        <div id="lineItems" class="space-y-4">
+          <!-- First line item -->
+          <div class="line-item grid grid-cols-12 gap-3 items-end">
+            <div class="col-span-12 md:col-span-6">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Beskrivelse *</label>
+              <input type="text" name="description[]" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Beskriv tjeneste eller produkt">
+            </div>
+            <div class="col-span-4 md:col-span-2">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Antall *</label>
+              <input type="number" name="quantity[]" value="1" min="1" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            </div>
+            <div class="col-span-4 md:col-span-2">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Pris (kr) *</label>
+              <input type="number" name="price[]" min="0" step="0.01" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="0.00">
+            </div>
+            <div class="col-span-4 md:col-span-2">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Total</label>
+              <div class="total-display px-3 py-2 bg-gray-50 rounded-lg text-right font-semibold text-gray-900">0 kr</div>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" onclick="addLineItem()" class="mt-4 text-purple-600 hover:text-purple-700 font-medium flex items-center space-x-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+          </svg>
+          <span>Legg til linje</span>
+        </button>
+      </div>
+
+      <!-- Payment Terms -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Betalingsvilkår</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Betalingstermin (dager)</label>
+            <input type="number" name="paymentTerms" value="14" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Forfallsdato</label>
+            <input type="date" name="dueDate" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary & Actions -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900">Oppsummering</h3>
+            <div class="mt-2 space-y-1">
+              <p class="text-sm text-gray-600">Subtotal: <span id="subtotalDisplay" class="font-semibold">0 kr</span></p>
+              <p class="text-sm text-gray-600">MVA (25%): <span id="vatDisplay" class="font-semibold">0 kr</span></p>
+              <p class="text-lg font-bold text-gray-900">Total: <span id="totalDisplay" class="font-bold text-purple-600">0 kr</span></p>
+            </div>
+          </div>
+          <div class="flex space-x-3">
+            <button type="button" onclick="previewInvoice()" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-medium">
+              Forhåndsvis
+            </button>
+            <button type="submit" class="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium shadow-sm">
+              Lag faktura PDF
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Add line item
+    function addLineItem() {
+      const container = document.getElementById('lineItems');
+      const newItem = document.createElement('div');
+      newItem.className = 'line-item grid grid-cols-12 gap-3 items-end mt-4';
+      newItem.innerHTML = `
+        <div class="col-span-12 md:col-span-6">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Beskrivelse *</label>
+          <input type="text" name="description[]" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Beskriv tjeneste eller produkt">
+        </div>
+        <div class="col-span-4 md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Antall *</label>
+          <input type="number" name="quantity[]" value="1" min="1" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+        </div>
+        <div class="col-span-4 md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Pris (kr) *</label>
+          <input type="number" name="price[]" min="0" step="0.01" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="0.00">
+        </div>
+        <div class="col-span-4 md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Total</label>
+          <div class="total-display px-3 py-2 bg-gray-50 rounded-lg text-right font-semibold text-gray-900">0 kr</div>
+        </div>
+      `;
+      container.appendChild(newItem);
+    }
+
+    // Calculate totals
+    function calculateTotals() {
+      let subtotal = 0;
+      document.querySelectorAll('.line-item').forEach(item => {
+        const quantity = parseFloat(item.querySelector('[name="quantity[]"]').value) || 0;
+        const price = parseFloat(item.querySelector('[name="price[]"]').value) || 0;
+        const total = quantity * price;
+        item.querySelector('.total-display').textContent = total.toFixed(2) + ' kr';
+        subtotal += total;
+      });
+
+      const vat = subtotal * 0.25;
+      const total = subtotal + vat;
+
+      document.getElementById('subtotalDisplay').textContent = subtotal.toFixed(2) + ' kr';
+      document.getElementById('vatDisplay').textContent = vat.toFixed(2) + ' kr';
+      document.getElementById('totalDisplay').textContent = total.toFixed(2) + ' kr';
+    }
+
+    // Listen for changes
+    document.addEventListener('input', (e) => {
+      if (e.target.name === 'quantity[]' || e.target.name === 'price[]') {
+        calculateTotals();
+      }
+    });
+
+    // Set default due date
+    const today = new Date();
+    const dueDate = new Date(today);
+    dueDate.setDate(dueDate.getDate() + 14);
+    document.querySelector('[name="dueDate"]').value = dueDate.toISOString().split('T')[0];
+
+    // Form submission
+    document.getElementById('invoiceForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(e.target);
+      const descriptions = formData.getAll('description[]');
+      const quantities = formData.getAll('quantity[]');
+      const prices = formData.getAll('price[]');
+
+      const invoiceData = {
+        seller: {
+          name: formData.get('sellerName'),
+          enkNumber: formData.get('sellerEnk'),
+          email: formData.get('sellerEmail'),
+          phone: formData.get('sellerPhone'),
+          address: formData.get('sellerAddress'),
+          zip: formData.get('sellerZip'),
+          city: formData.get('sellerCity'),
+          bankAccount: formData.get('sellerBank'),
+          vippsNumber: formData.get('sellerVipps')
+        },
+        buyer: {
+          name: formData.get('buyerName'),
+          organizationNumber: formData.get('buyerOrg'),
+          email: formData.get('buyerEmail'),
+          address: formData.get('buyerAddress')
+        },
+        items: descriptions.map((desc, i) => ({
+          description: desc,
+          quantity: parseFloat(quantities[i]),
+          price: parseFloat(prices[i])
+        })),
+        dueDate: formData.get('dueDate'),
+        paymentTerms: parseInt(formData.get('paymentTerms')) || 14
+      };
+
+      try {
+        const response = await fetch('http://localhost:3001/api/invoices/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(invoiceData)
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to create invoice');
+        }
+
+        const result = await response.json();
+        
+        // Download the invoice
+        window.location.href = `http://localhost:3001${result.downloadUrl}`;
+        
+        alert('✅ Faktura generert! Nedlastingen starter snart.');
+      } catch (error) {
+        console.error('Error:', error);
+        alert('❌ Kunne ikke generere faktura. Sjekk at backend kjører.');
+      }
+    });
+
+    // Preview function
+    function previewInvoice() {
+      alert('Forhåndsvisning kommer snart!');
+    }
+  </script>
+</body>
+</html>
