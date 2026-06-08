@@ -291,4 +291,4 @@ cd ~/skattpro/ai-backend
 railway up
 ```
 
-**Your AI bookkeeping engine will be live in 5 minutes!** 🎉
+**Your AI bookkeeping engine will be live in 5 minutes!** 🎉# Vercel env fix
