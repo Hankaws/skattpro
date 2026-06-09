@@ -4,8 +4,12 @@ import Prisma from '@prisma/client';
 const prisma = new Prisma.PrismaClient();
 
 export default async function handler(req, res) {
-  // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // CORS headers - restricted to allowed domains only
+  const allowedOrigins = ['https://skattpro.vercel.app', 'https://skattpro.no', 'http://localhost:3000'];
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   

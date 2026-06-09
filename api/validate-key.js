@@ -18,9 +18,48 @@ const VALID_LICENSES = {
   // Add more licenses here as they're generated
 };
 
+// Rate limiting - max 5 attempts per IP per minute
+const rateLimitStore = new Map();
+const RATE_LIMIT_WINDOW = 60000; // 1 minute
+const RATE_LIMIT_MAX = 5;
+
+function checkRateLimit(ip) {
+  const now = Date.now();
+  const attempts = rateLimitStore.get(ip) || [];
+  const recentAttempts = attempts.filter(time => now - time < RATE_LIMIT_WINDOW);
+  
+  if (recentAttempts.length >= RATE_LIMIT_MAX) {
+    return false;
+  }
+  
+  recentAttempts.push(now);
+  rateLimitStore.set(ip, recentAttempts);
+  return true;
+}
+
 exports.default = async (req, res) => {
-  // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // Get client IP (from header or connection)
+  const clientIp = req.headers['x-forwarded-for']?.split(',')[0] || 
+                   req.headers['x-real-ip'] || 
+                   req.connection?.remoteAddress || 
+                   'unknown';
+  
+  // Check rate limit
+  if (!checkRateLimit(clientIp)) {
+    console.log('Rate limit exceeded for IP:', clientIp);
+    return res.status(429).json({ 
+      valid: false, 
+      error: 'For mange forsøk',
+      message: 'Vennligst prøv igjen om et øyeblikk.'
+    });
+  }
+  
+  // CORS headers - restricted to allowed domains only
+  const allowedOrigins = ['https://skattpro.vercel.app', 'https://skattpro.no', 'http://localhost:3000'];
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
