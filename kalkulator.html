@@ -292,13 +292,9 @@ body {
       <div class="form-group">
         <label>Kommune</label>
         <select id="kommune" onchange="calculate()">
-          <option value="22.9">Oslo (22.9%)</option>
-          <option value="21.0">Bergen (21.0%)</option>
-          <option value="21.5">Trondheim (21.5%)</option>
-          <option value="22.1">Stavanger (22.1%)</option>
-          <option value="23.5">Tromsø (23.5%)</option>
+          <option value="22.9">Laster kommuner...</option>
         </select>
-        <div class="hint"><span class="hint-icon">i</span> Kommuneskatten varierer fra 20.1% til 26.1%</div>
+        <div class="hint"><span class="hint-icon">i</span> Kommuneskatten varierer fra 16.9% til 23.1%</div>
       </div>
       <h2 style="margin-top:32px">💡 Fradrag og sparing</h2>
       <div class="form-row">
@@ -401,6 +397,30 @@ function copyResults() {
   alert('Kopiert til utklippstavlen!');
 }
 calculate();
+
+// Load all kommuner from JSON
+async function loadKommuner() {
+  try {
+    const response = await fetch('kommuner.json');
+    const data = await response.json();
+    const select = document.getElementById('kommune');
+    select.innerHTML = '<option value="">Velg kommune...</option>';
+    
+    // Sort by name and add to dropdown
+    const sorted = Object.values(data).sort((a, b) => a.navn.localeCompare(b.navn));
+    sorted.forEach(k => {
+      const option = document.createElement('option');
+      option.value = k.skatt;
+      option.textContent = `${k.navn} (${k.skatt}%)`;
+      if (k.navn === 'Oslo') option.selected = true;
+      select.appendChild(option);
+    });
+    calculate(); // Recalculate with loaded data
+  } catch (e) {
+    console.error('Failed to load kommuner:', e);
+  }
+}
+loadKommuner();
 </script>
 </body>
 </html>
