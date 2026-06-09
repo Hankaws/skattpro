@@ -401,7 +401,8 @@ calculate();
 // Load all kommuner from JSON
 async function loadKommuner() {
   try {
-    const response = await fetch('kommuner.json');
+    const response = await fetch('kommuner.json?v=' + Date.now());
+    if (!response.ok) throw new Error('HTTP ' + response.status);
     const data = await response.json();
     const select = document.getElementById('kommune');
     
@@ -422,6 +423,7 @@ async function loadKommuner() {
     }
     
     // Add all others
+    console.log('Loaded', sorted.length, 'kommuner');
     sorted.forEach(k => {
       if (k.name !== 'Oslo') {
         const option = document.createElement('option');
@@ -430,6 +432,7 @@ async function loadKommuner() {
         select.appendChild(option);
       }
     });
+    console.log('Dropdown now has', select.options.length, 'options');
     
     calculate(); // Recalculate with loaded data
   } catch (e) {
