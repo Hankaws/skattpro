@@ -44,103 +44,128 @@ body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:linear-grad
 
 /* Professional Print Layout */
 @media print {
-  body {
-    background: white;
-    font-size: 11pt;
+  body * {
+    visibility: hidden;
   }
-  .nav, .header, .card h2, .btn, .hint, .form-group label, .form-group input, .form-group textarea, .form-group select, .result-highlight {
-    display: none !important;
-  }
-  .container {
-    max-width: 100%;
-    padding: 0;
-    margin: 0;
-  }
-  .card {
-    box-shadow: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    page-break-inside: avoid;
+  #invoicePrint, #invoicePrint * {
+    visibility: visible;
   }
   #invoicePrint {
     display: block !important;
-    font-family: 'Plus Jakarta Sans', Arial, sans-serif;
-    padding: 40px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
     background: white;
     color: #0f172a;
   }
+  .container, .nav, .header, .card {
+    display: none !important;
+  }
   .invoice-header {
-    display: flex;
+    display: flex !important;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 40px;
     border-bottom: 3px solid #6366f1;
     padding-bottom: 20px;
   }
   .invoice-logo {
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 900;
     color: #6366f1;
   }
   .invoice-title {
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 28px;
+    font-weight: 800;
     color: #0f172a;
+    letter-spacing: 2px;
   }
   .invoice-parties {
-    display: flex;
+    display: flex !important;
     justify-content: space-between;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
+    gap: 40px;
   }
   .invoice-from, .invoice-to {
-    width: 45%;
+    flex: 1;
   }
   .invoice-section {
+    font-size: 10pt;
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     color: #6366f1;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
   .invoice-details {
     margin-bottom: 30px;
   }
   .invoice-detail-row {
-    display: flex;
+    display: flex !important;
     justify-content: space-between;
-    padding: 10px 0;
+    padding: 12px 0;
     border-bottom: 1px solid #e2e8f0;
+    font-size: 11pt;
   }
   .invoice-detail-row:last-child {
     border-bottom: none;
   }
-  .invoice-total {
-    background: #6366f1;
-    color: white;
-    padding: 15px 20px;
+  .invoice-description {
+    display: block !important;
+    margin: 20px 0;
+    padding: 15px;
+    background: #f8fafc;
     border-radius: 8px;
-    margin-top: 20px;
+    font-size: 11pt;
+    line-height: 1.6;
+  }
+  .invoice-total-section {
+    display: block !important;
+    margin-top: 30px;
+    page-break-inside: avoid;
+  }
+  .invoice-total-box {
+    background: #6366f1 !important;
+    color: white !important;
+    padding: 20px 25px;
+    border-radius: 12px;
+    margin-top: 15px;
   }
   .invoice-total-row {
-    display: flex;
+    display: flex !important;
     justify-content: space-between;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
+    font-size: 12pt;
   }
   .invoice-total-row.final {
-    font-size: 18px;
+    font-size: 20pt;
     font-weight: 900;
-    border-top: 2px solid rgba(255,255,255,0.3);
-    padding-top: 12px;
-    margin-top: 12px;
+    border-top: 2px solid rgba(255,255,255,0.4);
+    padding-top: 15px;
+    margin-top: 15px;
   }
   .invoice-footer {
-    margin-top: 40px;
-    padding-top: 20px;
+    display: block !important;
+    margin-top: 50px;
+    padding-top: 25px;
     border-top: 2px solid #e2e8f0;
     text-align: center;
     color: #64748b;
     font-size: 10pt;
+    line-height: 1.8;
+  }
+  @page {
+    margin: 2cm;
   }
 }
 #invoicePrint {
+  display: none;
+}
+
+.invoice-header, .invoice-parties, .invoice-description, .invoice-total-section {
   display: none;
 }
 </style>
@@ -233,7 +258,7 @@ body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:linear-grad
 </div>
 </div>
 <p class="hint" style="margin-top:12px;color:var(--gray);font-size:.85rem">
-Ohmregnet etter skatt er omtrentlig og basert på ENK med 40% effektiv skattesats. Bruk <a href="faktura-kalkulator.html" style="color:var(--primary)">faktura-kalkulatoren</a> for nøyaktig beregning.
+Estimert etter skatt er omtrentlig og basert på ENK med 40% effektiv skattesats. Bruk <a href="kalkulator.html" style="color:var(--primary)">skattekalkulatoren</a> for nøyaktig beregning.
 </p>
 </div>
 
@@ -274,13 +299,13 @@ Laster faktura...
 <span>Dato:</span>
 <strong id="printDate"></strong>
 </div>
-<div class="invoice-detail-row" style="display:block;padding-top:15px">
-<div class="invoice-section" style="margin-bottom:8px">Beskrivelse:</div>
-<div id="printDesc"></div>
-</div>
 </div>
 
-<div class="invoice-total">
+<div class="invoice-description" id="printDescBlock">
+</div>
+
+<div class="invoice-total-section">
+<div class="invoice-total-box">
 <div class="invoice-total-row">
 <span>Beløp eks. mva:</span>
 <strong id="printAmount"></strong>
@@ -290,14 +315,18 @@ Laster faktura...
 <strong id="printMva"></strong>
 </div>
 <div class="invoice-total-row final">
-<span>TOTALT:</span>
+<span>TOTALT Å BETALE:</span>
 <strong id="printTotal"></strong>
+</div>
 </div>
 </div>
 
 <div class="invoice-footer">
 Takk for oppdraget!<br>
-Betaling innen 14 dager.
+Betaling innen 14 dager.<br>
+<br>
+<strong>SkattPro</strong> · Org.nr: <span id="printOrgFooter"></span><br>
+kontakt@skattpro.no · www.skattpro.no
 </div>
 </div>
 
@@ -355,10 +384,11 @@ document.getElementById('preview').textContent = preview.trim();
 // Print preview
 document.getElementById('printCompany').textContent = company;
 document.getElementById('printOrg').textContent = 'Org.nr: ' + org;
+document.getElementById('printOrgFooter').textContent = org;
 document.getElementById('printClient').textContent = client;
 document.getElementById('printInvNum').textContent = invNum;
-document.getElementById('printDate').textContent = invDate;
-document.getElementById('printDesc').textContent = desc;
+document.getElementById('printDate').textContent = new Date(invDate).toLocaleDateString('nb-NO', { year: 'numeric', month: 'long', day: 'numeric' });
+document.getElementById('printDescBlock').textContent = desc;
 document.getElementById('printAmount').textContent = formatNOK(amount);
 document.getElementById('printMva').textContent = formatNOK(mvaAmount);
 document.getElementById('printTotal').textContent = formatNOK(total);

@@ -1,96 +1,240 @@
-<!DOCTYPE html><html lang="no"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>SkattPro – Forskuddsskatt Kalkulator | Beregn kvartalsvis skatt</title><meta name="description" content="Beregn forskuddsskatt for enkeltpersonforetak 2026. Se hva du bør betale hver av 4 terminer. Inkluderer 40%-regelen."><link rel="canonical" href="https://skattpro.no/forskuddsskatt.html"><link rel="stylesheet" href="skattpro-common.css"><style>
-.wrap{max-width:800px;margin:0 auto;padding:20px}
-.section{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;margin:20px 0}
-.section h2{font-size:1.2rem;font-weight:800;color:var(--ink);margin:0 0 8px}
-.section-lead{color:var(--muted);font-size:.95rem;margin-bottom:20px}
-.nav{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--line)}
-.nav .logo{font-weight:800;font-size:1.1rem;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px}
-.nav .menu{display:flex;gap:16px}
-.nav .menu a{color:var(--muted);text-decoration:none;font-size:.95rem}
-.input-group{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
-@media(max-width:600px){.input-group{grid-template-columns:1fr}}
-label{display:block;font-size:.9rem;font-weight:600;color:var(--ink);margin-bottom:6px}
-input,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:1rem;background:var(--panel2);color:var(--ink)}
-.hint{font-size:.8rem;color:var(--muted);margin-top:4px}
-.result-box{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:20px;margin-top:20px}
-.result-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)}
-.result-row:last-child{border-bottom:none;padding-bottom:0}
-.result-row .label{color:var(--muted)}
-.result-row .value{font-weight:700;color:var(--ink)}
-.result-row.highlight{background:var(--a);border-radius:8px;padding:14px;margin:10px -8px}
-.result-row.highlight .label,.result-row.highlight .value{color:#fff}
-.term-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
-@media(max-width:600px){.term-grid{grid-template-columns:1fr 1fr}}
-.term-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;text-align:center}
-.term-card .month{font-size:.75rem;font-weight:700;color:var(--a);text-transform:uppercase}
-.term-card .amount{font-size:1.3rem;font-weight:900;color:var(--ink);margin:8px 0}
-.term-card .status{font-size:.8rem;color:var(--muted)}
-.term-card.urgent{border-color:#ef4444;background:rgba(239,68,68,0.05)}
-.alert-box{padding:14px;background:rgba(245,158,11,0.1);border:1px solid #f59e0b;border-radius:12px;margin:16px 0}
-.alert-box strong{color:#92400e}
-.alert-box p{color:var(--muted);font-size:.9rem;margin:6px 0 0}
-</style></head><body><div class="wrap"><header class="nav" role="banner"><a href="index.html" class="logo"><svg width="28" height="28" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="20" fill="url(#logoGrad)"/><defs><linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#2563eb"/><stop offset="100%" style="stop-color:#7c3aed"/></linearGradient></defs><rect x="10" y="22" width="5" height="10" rx="1.5" fill="white" opacity="0.9"/><rect x="17" y="16" width="5" height="16" rx="1.5" fill="white"/><rect x="24" y="12" width="5" height="20" rx="1.5" fill="white" opacity="0.9"/><path d="M28 14l-8 8-4-4" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-SkattPro
-</a><nav class="menu" aria-label="Hovedmeny" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><a href="index.html">Skatt</a><a href="ansatte-og-lonn/">Ansatte</a><a href="faktura.html">Faktura</a><a href="forskuddsskatt.html">Forskudd</a><a href="skattefrister.html">Frister</a><a href="utgiftssporing.html">Utgifter</a><a href="paminnelser.html">Påminnelser</a><a href="pro-features.html" style="color:var(--a);font-weight:600">Pro</a></nav></header><div class="section"><h2>📅 Forskuddsskatt Kalkulator 2026</h2><p class="section-lead">Beregn hvor mye du bør betale i forskuddsskatt hver av de 4 terminene. For enkeltpersonforetak (ENK).</p><div class="alert-box"><strong>💡 Tommelfingerregel:</strong><p>Skatteetaten anbefaler å sette av <strong>40 % av overskuddet</strong> til skatt. Dette dekker både forskuddsskatt og eventuell restskatt.</p></div><div class="input-group"><div><label for="expectedProfit">Forventet overskudd 2026 (før skatt)</label><input type="number" id="expectedProfit" value="500000" min="0" step="10000"><div class="hint">Inntekter − kostnader = overskudd</div></div><div><label for="otherIncome">Annen inntekt (lønn, pensjon)</label><input type="number" id="otherIncome" value="0" min="0" step="1000"><div class="hint">Inntekt hvor skatt allerede er trukket</div></div></div><div class="input-group"><div><label for="deductions">Fradrag (gjeldsrente, bolig etc.)</label><input type="number" id="deductions" value="0" min="0" step="1000"><div class="hint">Rentefradrag, fagforeningskontingent, etc.</div></div><div><label for="wealth">Formue over gratisgrensen</label><input type="number" id="wealth" value="0" min="0" step="10000"><div class="hint">2026: 2 055 600 kr (enkelt) / 4 111 200 kr (sammen)</div></div></div><div style="text-align:center;margin-top:20px"><button class="btn" onclick="calculateForskuddsskatt()">🔢 Beregn forskuddsskatt</button></div><div id="result" class="result-box" style="display:none"><div class="result-row highlight"><span class="label">Årlig forskuddsskatt</span><span class="value" id="totalTax">0 kr</span></div><div style="margin-top:16px"><h3 style="font-size:.95rem;font-weight:700;color:var(--ink);margin-bottom:10px">Betales i 4 terminer:</h3><div class="term-grid"><div class="term-card"><div class="month">15. mars</div><div class="amount" id="term1">0 kr</div><div class="status">1. termin</div></div><div class="term-card"><div class="month">15. mai</div><div class="amount" id="term2">0 kr</div><div class="status">2. termin</div></div><div class="term-card"><div class="month">15. sept</div><div class="amount" id="term3">0 kr</div><div class="status">3. termin</div></div><div class="term-card"><div class="month">15. nov</div><div class="amount" id="term4">0 kr</div><div class="status">4. termin</div></div></div></div><div class="result-row" style="margin-top:20px"><span class="label">Anbefalt å sette av per md</span><span class="value" id="monthlySave">0 kr</span></div><div class="result-row"><span class="label">Effektiv skatteprosent</span><span class="value" id="effectiveRate">0 %</span></div></div></div><div class="section"><h2>Hvordan forskuddsskatt fungerer</h2><ul style="color:var(--muted);font-size:.95rem;line-height:1.8"><li><strong>Hvem:</strong> Alle med enkeltpersonforetak som forventer overskudd > 5 400 kr/år</li><li><strong>Hvor mye:</strong> Basert på forventet overskudd + annen inntekt − fradrag</li><li><strong>Når:</strong> 4 terminer (mar, mai, sept, nov) – <strong>ikke</strong> kvartalsvis!</li><li><strong>Hva skjer:</strong> Du melder forventet overskudd i Altinn → Skatteetaten sender giroer</li></ul><div style="margin-top:16px;padding:14px;background:var(--panel2);border:1px solid var(--line);border-radius:12px"><strong style="color:var(--ink)">⚠️ Viktig om renter:</strong><p style="color:var(--muted);font-size:.9rem;margin:6px 0 0">
-Hvis du betaler <strong>for lite</strong> forskuddsskatt, må du betale <strong>restskatt med 10,25 % rente</strong> (2026).<br>
-Hvis du betaler <strong>for mye</strong>, får du <strong>tilbake med 0,625 % rente</strong>.<br><strong>Derfor:</strong> Det er bedre å betale litt for mye enn litt for lite!
-</p></div></div><div class="section"><h2>Slik bruker du SkattPro for forskuddsskatt</h2><ol style="color:var(--muted);font-size:.95rem;line-height:2;padding-left:20px"><li>Beregn forventet overskudd med <a href="faktura.html">faktura-kalkulatoren</a> vår</li><li>Bruk denne kalkulatoren for å finne 4 terminbeløp</li><li>Meld inn tallet i <a href="https://altinn.no" target="_blank" rel="noopener">Altinn</a> innen 31. mars</li><li>Betal terminene i mars, mai, september, november</li><li>Juster underveis hvis inntekten endrer seg</li></ol></div></div><script>
-function calculateForskuddsskatt(){
-const profit = parseFloat(document.getElementById('expectedProfit').value) || 0;
-const otherIncome = parseFloat(document.getElementById('otherIncome').value) || 0;
-const deductions = parseFloat(document.getElementById('deductions').value) || 0;
-const wealth = parseFloat(document.getElementById('wealth').value) || 0;// Calculate tax base
-const totalIncome = profit + otherIncome;
-const taxableIncome = Math.max(0, totalIncome - deductions);// 2026 tax rates
-const almSkattRate = 0.22; // Alminnelig skatt
-const trygdeavgiftRate = 0.156; // Trygdeavgift for næring
-const wealthTaxRate = 0.01; // Formuesskatt// Calculate taxes
-const almSkatt = taxableIncome * almSkattRate;
-const trygdeavgift = profit * trygdeavgiftRate; // Only on business income
-// Trinnskatt 2026 thresholds
-const trinnLevels = [
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkattPro – Forskuddsskatt | Beregn kvartalsvis skatt</title>
+<meta name="description" content="Beregn forskuddsskatt for enkeltpersonforetak 2026. Se hva du bør betale hver av 4 terminer.">
+<link rel="canonical" href="https://skattpro.no/forskuddsskatt.html">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#6366f1;--primary-dark:#4f46e5;--success:#10b981;--danger:#ef4444;--warning:#f59e0b;--dark:#0f172a;--gray:#64748b;--light:#f8fafc;--border:#e2e8f0}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:linear-gradient(135deg,#f0f9ff 0%,#e0e7ff 100%);color:var(--dark);line-height:1.6}
+.nav{background:white;border-bottom:1px solid var(--border);padding:16px 40px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:20px;font-weight:800;background:linear-gradient(135deg,var(--primary),#0ea5e9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--primary),#0ea5e9);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:18px;box-shadow:0 4px 14px rgba(99,102,241,0.4)}
+.menu{display:flex;gap:16px;flex-wrap:wrap}
+.menu a{color:var(--gray);text-decoration:none;font-size:.9rem;font-weight:500}
+.menu a:hover{color:var(--primary)}
+.container{max-width:900px;margin:0 auto;padding:32px 20px}
+.header{text-align:center;margin-bottom:32px}
+.header h1{font-size:2.2rem;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.header p{font-size:1.1rem;color:var(--gray)}
+.card{background:white;border-radius:16px;padding:28px;box-shadow:0 4px 20px rgba(0,0,0,0.08);border:1px solid var(--border);margin-bottom:24px}
+.card h2{font-size:1.3rem;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-weight:600;font-size:.9rem;margin-bottom:6px;color:var(--dark)}
+.form-group input{width:100%;padding:12px 14px;border:2px solid var(--border);border-radius:10px;font-size:1rem;font-family:inherit;transition:all .2s}
+.form-group input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px rgba(99,102,241,0.1)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.hint{font-size:.825rem;color:var(--gray);margin-top:5px;display:flex;align-items:center;gap:5px}
+.hint-icon{width:14px;height:14px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:10px;font-weight:700}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:10px;font-weight:700;font-size:1rem;cursor:pointer;border:none;transition:all .3s;font-family:inherit;text-decoration:none}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;box-shadow:0 4px 14px rgba(99,102,241,0.4)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(99,102,241,0.5)}
+.alert-box{padding:16px;background:rgba(245,158,11,0.1);border:1px solid var(--warning);border-radius:12px;margin-bottom:24px}
+.alert-box strong{color:#92400e;font-weight:700}
+.alert-box p{color:var(--gray);font-size:.9rem;margin:6px 0 0;line-height:1.6}
+.result-card{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;padding:24px;border-radius:14px;margin-top:20px}
+.stat-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.15)}
+.stat-row:last-child{border-bottom:none}
+.stat-label{opacity:.9;font-size:.95rem}
+.stat-value{font-weight:800;font-size:1.4rem}
+.term-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}
+@media(max-width:768px){.form-row{grid-template-columns:1fr}.nav{padding:16px 20px}.container{padding:20px 16px}.term-grid{grid-template-columns:1fr 1fr}}
+.term-card{background:var(--light);border:2px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+.term-card .month{font-size:.7rem;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.term-card .amount{font-size:1.4rem;font-weight:900;color:var(--dark);margin:8px 0}
+.term-card .label{font-size:.8rem;color:var(--gray)}
+.term-card.urgent{border-color:var(--danger);background:rgba(239,68,68,0.05)}
+.info-section{background:var(--light);border-radius:14px;padding:24px;margin-top:24px}
+.info-section h3{font-size:1.1rem;font-weight:700;margin-bottom:12px;color:var(--dark)}
+.info-section ul{color:var(--gray);font-size:.9rem;line-height:1.8;padding-left:20px}
+</style>
+</head>
+<body>
+<nav class="nav">
+<a href="index.html" class="logo"><div class="logo-mark">S</div>SkattPro</a>
+<nav class="menu">
+<a href="index.html">Skatt</a>
+<a href="kalkulator.html">Kalkulator</a>
+<a href="faktura.html">Faktura</a>
+<a href="forskuddsskatt.html">Forskudd</a>
+<a href="skattefrister.html">Frister</a>
+<a href="pro-features.html" style="color:var(--primary);font-weight:600">Pro</a>
+</nav>
+</nav>
+
+<div class="container">
+<div class="header">
+<h1>📅 Forskuddsskatt 2026</h1>
+<p>Beregn kvartalsvis forskuddsskatt for enkeltpersonforetak</p>
+</div>
+
+<div class="card">
+<h2>💡 Tommelfingerregel</h2>
+<div class="alert-box">
+<strong>Skatteetaten anbefaler å sette av 40 % av overskuddet til skatt.</strong>
+<p>Dette dekker både forskuddsskatt og eventuell restskatt. Bedre å betale litt for mye enn for lite!</p>
+</div>
+
+<h2 style="margin-top:28px">📊 Dine opplysninger</h2>
+<div class="form-row">
+<div class="form-group">
+<label>Forventet overskudd 2026 (før skatt)</label>
+<input type="number" id="expectedProfit" value="500000" min="0" step="10000" oninput="calculate()">
+<div class="hint"><span class="hint-icon">i</span> Inntekter − kostnader = overskudd</div>
+</div>
+<div class="form-group">
+<label>Annen inntekt (lønn, pensjon)</label>
+<input type="number" id="otherIncome" value="0" min="0" step="1000" oninput="calculate()">
+<div class="hint"><span class="hint-icon">i</span> Inntekt hvor skatt allerede er trukket</div>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label>Fradrag (gjeldsrente, bolig etc.)</label>
+<input type="number" id="deductions" value="0" min="0" step="1000" oninput="calculate()">
+<div class="hint"><span class="hint-icon">i</span> Rentefradrag, fagforeningskontingent, etc.</div>
+</div>
+<div class="form-group">
+<label>Formue over gratisgrensen</label>
+<input type="number" id="wealth" value="0" min="0" step="10000" oninput="calculate()">
+<div class="hint"><span class="hint-icon">i</span> 2026: 2 055 600 kr (enkelt)</div>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>📈 Din forskuddsskatt</h2>
+<div class="result-card">
+<div class="stat-row">
+<span class="stat-label">Total skatt (årlig)</span>
+<span class="stat-value" id="totalTax">0 kr</span>
+</div>
+<div class="stat-row">
+<span class="stat-label">Effektiv skattesats</span>
+<span class="stat-value" id="effectiveRate">0 %</span>
+</div>
+<div class="stat-row" style="margin-top:16px;padding-top:16px;border-top:2px solid rgba(255,255,255,0.3)">
+<span class="stat-label">Anbefalt månedlig sparing (40 %)</span>
+<span class="stat-value" id="monthlySave">0 kr</span>
+</div>
+</div>
+
+<div class="term-grid">
+<div class="term-card">
+<div class="month">Mars</div>
+<div class="amount" id="term1">0 kr</div>
+<div class="label">1. termin</div>
+</div>
+<div class="term-card">
+<div class="month">Mai</div>
+<div class="amount" id="term2">0 kr</div>
+<div class="label">2. termin</div>
+</div>
+<div class="term-card">
+<div class="month">September</div>
+<div class="amount" id="term3">0 kr</div>
+<div class="label">3. termin</div>
+</div>
+<div class="term-card">
+<div class="month">November</div>
+<div class="amount" id="term4">0 kr</div>
+<div class="label">4. termin</div>
+</div>
+</div>
+</div>
+
+<div class="info-section">
+<h3>📋 Viktig å vite</h3>
+<ul>
+<li><strong>For sent betalt:</strong> Rentetillegg på 10,25 % per år på restskatt</li>
+<li><strong>For mye betalt:</strong> Du får 0,625 % rente av tilbakembetaling</li>
+<li><strong>Frist for innmelding:</strong> 31. mars i skatteåret</li>
+<li><strong>Betalinger:</strong> Mars, mai, september, november</li>
+<li><strong>Justering:</strong> Du kan endre forskuddsskatten underveis hvis inntekten endrer seg</li>
+</ul>
+</div>
+</div>
+
+<script>
+const TRINN_LEVELS_2026 = [
 { limit: 200150, rate: 0 },
 { limit: 279450, rate: 0.017 },
 { limit: 677900, rate: 0.04 },
 { limit: 980100, rate: 0.137 },
 { limit: 1467200, rate: 0.168 }
 ];
+
+function calculate() {
+const profit = parseFloat(document.getElementById('expectedProfit').value) || 0;
+const otherIncome = parseFloat(document.getElementById('otherIncome').value) || 0;
+const deductions = parseFloat(document.getElementById('deductions').value) || 0;
+const wealth = parseFloat(document.getElementById('wealth').value) || 0;
+
+const totalIncome = profit + otherIncome;
+const taxableIncome = Math.max(0, totalIncome - deductions);
+
+// Calculate taxes
+const almSkatt = taxableIncome * 0.22;
+const trygdeavgift = profit * 0.156;
+
+// Trinnskatt
 let trinnskatt = 0;
 let prevLimit = 0;
-for(const level of trinnLevels){
-if(taxableIncome > prevLimit){
+for(const level of TRINN_LEVELS_2026) {
+if(taxableIncome > prevLimit) {
 const incomeInLevel = Math.min(taxableIncome, level.limit) - prevLimit;
 trinnskatt += incomeInLevel * level.rate;
 prevLimit = level.limit;
 }
 }
-if(taxableIncome > prevLimit){
+if(taxableIncome > prevLimit) {
 trinnskatt += (taxableIncome - prevLimit) * 0.168;
-}// Wealth tax (simplified - only above threshold)
+}
+
+// Formuesskatt
 const wealthThreshold = 2055600;
 const taxableWealth = Math.max(0, wealth - wealthThreshold);
-const wealthTax = taxableWealth * wealthTaxRate;// Total annual tax
-const totalAnnualTax = almSkatt + trygdeavgift + trinnskatt + wealthTax;// Forskuddsskatt is paid in 4 equal installments
-const termAmount = totalAnnualTax / 4;// Recommended monthly savings (40% rule)
-const recommendedMonthlySave = (profit * 0.40) / 12;// Effective rate
-const effectiveRate = profit > 0 ? (totalAnnualTax / profit * 100) : 0;// Display results
-document.getElementById('result').style.display = 'block';
-document.getElementById('totalTax').textContent = formatNumber(totalAnnualTax);
-document.getElementById('term1').textContent = formatNumber(termAmount);
-document.getElementById('term2').textContent = formatNumber(termAmount);
-document.getElementById('term3').textContent = formatNumber(termAmount);
-document.getElementById('term4').textContent = formatNumber(termAmount);
-document.getElementById('monthlySave').textContent = formatNumber(recommendedMonthlySave);
-document.getElementById('effectiveRate').textContent = effectiveRate.toFixed(1) + ' %';// Highlight if effective rate is outside recommended range
+const wealthTax = taxableWealth * 0.01;
+
+// Total annual tax
+const totalAnnualTax = almSkatt + trygdeavgift + trinnskatt + wealthTax;
+
+// 4 equal installments
+const termAmount = totalAnnualTax / 4;
+
+// 40% rule
+const recommendedMonthlySave = (profit * 0.40) / 12;
+
+// Effective rate
+const effectiveRate = profit > 0 ? (totalAnnualTax / profit * 100) : 0;
+
+// Display results
+document.getElementById('totalTax').textContent = formatNOK(totalAnnualTax);
+document.getElementById('effectiveRate').textContent = effectiveRate.toFixed(1) + ' %';
+document.getElementById('monthlySave').textContent = formatNOK(recommendedMonthlySave);
+document.getElementById('term1').textContent = formatNOK(termAmount);
+document.getElementById('term2').textContent = formatNOK(termAmount);
+document.getElementById('term3').textContent = formatNOK(termAmount);
+document.getElementById('term4').textContent = formatNOK(termAmount);
+
+// Highlight if outside recommended range
 const termCards = document.querySelectorAll('.term-card');
-if(effectiveRate < 34 || effectiveRate > 50){
+if(effectiveRate < 34 || effectiveRate > 50) {
 termCards.forEach(card => card.classList.add('urgent'));
+} else {
+termCards.forEach(card => card.classList.remove('urgent'));
 }
-}function formatNumber(n){
-return n.toLocaleString('nb-NO', { style: 'currency', currency: 'NOK', maximumFractionDigits: 0 });
-}// Auto-calculate on load
-calculateForskuddsskatt();// Add listeners
-['expectedProfit', 'otherIncome', 'deductions', 'wealth'].forEach(id => {
-document.getElementById(id).addEventListener('input', calculateForskuddsskatt);
-});
-</script></body></html>
+}
+
+function formatNOK(amount) {
+return new Intl.NumberFormat('nb-NO', { style: 'currency', currency: 'NOK', minimumFractionDigits: 0 }).format(amount);
+}
+
+// Initialize
+calculate();
+</script>
+</body>
+</html>
