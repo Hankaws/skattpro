@@ -407,12 +407,12 @@ async function loadKommuner() {
     select.innerHTML = '<option value="">Velg kommune...</option>';
     
     // Sort by name and add to dropdown
-    const sorted = Object.values(data).sort((a, b) => a.navn.localeCompare(b.navn));
+    const sorted = Object.values(data).sort((a, b) => a.name.localeCompare(b.name));
     sorted.forEach(k => {
       const option = document.createElement('option');
-      option.value = k.skatt;
-      option.textContent = `${k.navn} (${k.skatt}%)`;
-      if (k.navn === 'Oslo') option.selected = true;
+      option.value = k.rate;
+      option.textContent = `${k.name} (${k.rate}%)`;
+      if (k.name === 'Oslo') option.selected = true;
       select.appendChild(option);
     });
     calculate(); // Recalculate with loaded data
