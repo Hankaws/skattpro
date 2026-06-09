@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkattPro – Faktura | Lag og beregn faktura</title>
+<meta name="description" content="Lag faktura og beregn hva du beholder etter skatt. Enkel fakturamaler for enkeltpersonforetak.">
+<link rel="canonical" href="https://skattpro.no/faktura.html">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#6366f1;--primary-dark:#4f46e5;--success:#10b981;--danger:#ef4444;--dark:#0f172a;--gray:#64748b;--light:#f8fafc;--border:#e2e8f0}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:linear-gradient(135deg,#f0f9ff 0%,#e0e7ff 100%);color:var(--dark);line-height:1.6}
+.nav{background:white;border-bottom:1px solid var(--border);padding:16px 40px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:20px;font-weight:800;background:linear-gradient(135deg,var(--primary),#0ea5e9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--primary),#0ea5e9);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:18px;box-shadow:0 4px 14px rgba(99,102,241,0.4)}
+.menu{display:flex;gap:16px;flex-wrap:wrap}
+.menu a{color:var(--gray);text-decoration:none;font-size:.9rem;font-weight:500}
+.menu a:hover{color:var(--primary)}
+.container{max-width:900px;margin:0 auto;padding:32px 20px}
+.header{text-align:center;margin-bottom:32px}
+.header h1{font-size:2.2rem;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.header p{font-size:1.1rem;color:var(--gray)}
+.card{background:white;border-radius:16px;padding:28px;box-shadow:0 4px 20px rgba(0,0,0,0.08);border:1px solid var(--border);margin-bottom:24px}
+.card h2{font-size:1.3rem;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-weight:600;font-size:.9rem;margin-bottom:6px;color:var(--dark)}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:12px 14px;border:2px solid var(--border);border-radius:10px;font-size:1rem;font-family:inherit;transition:all .2s}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px rgba(99,102,241,0.1)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.hint{font-size:.825rem;color:var(--gray);margin-top:5px;display:flex;align-items:center;gap:5px}
+.hint-icon{width:14px;height:14px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:10px;font-weight:700}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:10px;font-weight:700;font-size:1rem;cursor:pointer;border:none;transition:all .3s;font-family:inherit;text-decoration:none}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;box-shadow:0 4px 14px rgba(99,102,241,0.4)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(99,102,241,0.5)}
+.btn-secondary{background:white;color:var(--primary);border:2px solid var(--border)}
+.btn-secondary:hover{background:var(--light)}
+.preview-box{background:var(--light);border:1px solid var(--border);border-radius:12px;padding:20px;margin-top:20px;font-family:monospace;font-size:.875rem;white-space:pre-wrap}
+.result-highlight{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;padding:20px;border-radius:12px;margin-top:20px}
+.stat-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.2)}
+.stat-row:last-child{border-bottom:none}
+.stat-label{opacity:.9}
+.stat-value{font-weight:800;font-size:1.3rem}
+@media(max-width:768px){.form-row{grid-template-columns:1fr}.nav{padding:16px 20px}.container{padding:20px 16px}}
+</style>
+</head>
+<body>
+<nav class="nav">
+<a href="index.html" class="logo"><div class="logo-mark">S</div>SkattPro</a>
+<nav class="menu">
+<a href="index.html">Skatt</a>
+<a href="kalkulator.html">Kalkulator</a>
+<a href="faktura.html">Faktura</a>
+<a href="forskuddsskatt.html">Forskudd</a>
+<a href="skattefrister.html">Frister</a>
+<a href="pro-features.html" style="color:var(--primary);font-weight:600">Pro</a>
+</nav>
+</nav>
+
+<div class="container">
+<div class="header">
+<h1>📄 Faktura</h1>
+<p>Lag faktura og se hva du beholder etter skatt</p>
+</div>
+
+<div class="card">
+<h2>📝 Fakturadetaljer</h2>
+<div class="form-row">
+<div class="form-group">
+<label>Ditt firmanavn</label>
+<input type="text" id="companyName" placeholder="Ditt Firma AS" oninput="updatePreview()">
+</div>
+<div class="form-group">
+<label>Organisasjonsnummer</label>
+<input type="text" id="orgNumber" placeholder="987 654 321" maxlength="12" oninput="updatePreview()">
+</div>
+</div>
+<div class="form-group">
+<label>Klientens navn</label>
+<input type="text" id="clientName" placeholder="Klient AS" oninput="updatePreview()">
+</div>
+<div class="form-row">
+<div class="form-group">
+<label>Fakturanummer</label>
+<input type="text" id="invoiceNumber" value="2026-001" oninput="updatePreview()">
+</div>
+<div class="form-group">
+<label>Fakturadato</label>
+<input type="date" id="invoiceDate" oninput="updatePreview()">
+</div>
+</div>
+<div class="form-group">
+<label>Beskrivelse av tjenester</label>
+<textarea id="description" rows="3" placeholder="Beskriv arbeidet du har utført..." oninput="updatePreview()"></textarea>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label>Beløp (ekskl. mva)</label>
+<input type="number" id="amount" value="10000" min="0" step="100" oninput="calculate()">
+<div class="hint"><span class="hint-icon">i</span> Beløp før mva</div>
+</div>
+<div class="form-group">
+<label>Mva-sats</label>
+<select id="mvaRate" onchange="calculate()">
+<option value="25">25% (standard)</option>
+<option value="15">15% (matvarer, transport)</option>
+<option value="12">12% (kultur, reiser)</option>
+<option value="0">0% (eksport, helse)</option>
+</select>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>💰 Beregning</h2>
+<div class="result-highlight">
+<div class="stat-row">
+<span class="stat-label">Beløp eks. mva</span>
+<span class="stat-value" id="resAmount">0 kr</span>
+</div>
+<div class="stat-row">
+<span class="stat-label">Mva</span>
+<span class="stat-value" id="resMva">0 kr</span>
+</div>
+<div class="stat-row">
+<span class="stat-label">Beløp inkl. mva</span>
+<span class="stat-value" id="resTotal">0 kr</span>
+</div>
+<div class="stat-row" style="margin-top:16px;padding-top:16px;border-top:2px solid rgba(255,255,255,0.3)">
+<span class="stat-label">Estimert etter skatt (ENK)</span>
+<span class="stat-value" id="resAfterTax">0 kr</span>
+</div>
+</div>
+<p class="hint" style="margin-top:12px;color:var(--gray);font-size:.85rem">
+Ohmregnet etter skatt er omtrentlig og basert på ENK med 40% effektiv skattesats. Bruk <a href="faktura.html" style="color:var(--primary)">faktura-kalkulatoren</a> for nøyaktig beregning.
+</p>
+</div>
+
+<div class="card">
+<h2>📋 Fakturautkast</h2>
+<div class="preview-box" id="preview">
+Laster faktura...
+</div>
+<button class="btn btn-primary" onclick="window.print()" style="margin-top:16px">🖨️ Skriv ut / Lagre PDF</button>
+</div>
+</div>
+
+<script>
+// Set today's date
+document.getElementById('invoiceDate').valueAsDate = new Date();
+
+function calculate() {
+const amount = parseFloat(document.getElementById('amount').value) || 0;
+const mvaRate = parseFloat(document.getElementById('mvaRate').value) / 100;
+const mvaAmount = amount * mvaRate;
+const total = amount + mvaAmount;
+const afterTax = amount * 0.60;
+
+document.getElementById('resAmount').textContent = formatNOK(amount);
+document.getElementById('resMva').textContent = formatNOK(mvaAmount);
+document.getElementById('resTotal').textContent = formatNOK(total);
+document.getElementById('resAfterTax').textContent = formatNOK(afterTax);
+updatePreview();
+}
+
+function updatePreview() {
+const company = document.getElementById('companyName').value || 'Ditt Firma';
+const org = document.getElementById('orgNumber').value || 'XXX XXX XXX';
+const client = document.getElementById('clientName').value || 'Klient AS';
+const invNum = document.getElementById('invoiceNumber').value;
+const invDate = document.getElementById('invoiceDate').value;
+const desc = document.getElementById('description').value || 'Tjenester';
+const amount = parseFloat(document.getElementById('amount').value) || 0;
+const mvaRate = parseFloat(document.getElementById('mvaRate').value);
+const mvaAmount = amount * (mvaRate / 100);
+const total = amount + mvaAmount;
+
+const preview = `
+FRA: ${company}
+Org.nr: ${org}
+
+TIL: ${client}
+
+Fakturanummer: ${invNum}
+Dato: ${invDate}
+
+Beskrivelse:
+${desc}
+
+Beløp: ${formatNOK(amount)}
+Mva (${mvaRate}%): ${formatNOK(mvaAmount)}
+TOTALT: ${formatNOK(total)}
+
+Takk for oppdraget!
+`;
+document.getElementById('preview').textContent = preview.trim();
+}
+
+function formatNOK(n) {
+return n.toLocaleString('nb-NO', { style: 'currency', currency: 'NOK', maximumFractionDigits: 0 });
+}
+
+// Initialize
+calculate();
+updatePreview();
+</script>
+</body>
+</html>
