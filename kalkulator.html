@@ -1,550 +1,406 @@
 <!DOCTYPE html>
 <html lang="no">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Skattekalkulator 2026 - SkattPro</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    :root {
-      --primary: #6366f1;
-      --primary-dark: #4f46e5;
-      --success: #10b981;
-      --danger: #ef4444;
-      --dark: #0f172a;
-      --gray: #64748b;
-      --light: #f8fafc;
-    }
-    
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
-      color: var(--dark);
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-    
-    .nav {
-      background: white;
-      border-bottom: 1px solid #e2e8f0;
-      padding: 16px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    
-    .logo {
-      font-size: 24px;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--primary), #0ea5e9);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    
-    .logo-mark {
-      width: 40px;
-      height: 40px;
-      background: linear-gradient(135deg, var(--primary), #0ea5e9);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 900;
-    }
-    
-    .nav-links {
-      display: flex;
-      gap: 8px;
-    }
-    
-    .nav-links a {
-      color: var(--gray);
-      text-decoration: none;
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-weight: 500;
-      transition: all 0.2s;
-    }
-    
-    .nav-links a:hover {
-      color: var(--dark);
-      background: var(--light);
-    }
-    
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 40px 20px;
-    }
-    
-    .header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-    
-    .header h1 {
-      font-size: 2.5rem;
-      font-weight: 800;
-      margin-bottom: 12px;
-      letter-spacing: -0.02em;
-    }
-    
-    .header p {
-      font-size: 1.1rem;
-      color: var(--gray);
-    }
-    
-    .calc-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 32px;
-    }
-    
-    @media (max-width: 900px) {
-      .calc-grid { grid-template-columns: 1fr; }
-      .nav { padding: 16px 20px; }
-      .header h1 { font-size: 2rem; }
-    }
-    
-    .card {
-      background: white;
-      border-radius: 16px;
-      padding: 32px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      border: 1px solid #e2e8f0;
-    }
-    
-    .form-group {
-      margin-bottom: 24px;
-    }
-    
-    label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: var(--dark);
-      font-size: 14px;
-    }
-    
-    .hint {
-      font-size: 12px;
-      color: var(--gray);
-      margin-top: 4px;
-    }
-    
-    input, select {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      font-size: 15px;
-      font-family: inherit;
-      transition: all 0.2s;
-    }
-    
-    input:focus, select:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-    }
-    
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 14px 28px;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 15px;
-      border: none;
-      cursor: pointer;
-      transition: all 0.3s;
-      font-family: inherit;
-      width: 100%;
-    }
-    
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white;
-      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
-    }
-    
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
-    }
-    
-    .results {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white;
-      position: sticky;
-      top: 100px;
-    }
-    
-    .results h2 {
-      font-size: 1.5rem;
-      margin-bottom: 24px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    
-    .result-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 16px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    
-    .result-row:last-child {
-      border-bottom: none;
-      padding-top: 24px;
-      margin-top: 16px;
-      border-top: 2px solid rgba(255, 255, 255, 0.3);
-      font-size: 1.3rem;
-      font-weight: 800;
-    }
-    
-    .result-label {
-      font-weight: 500;
-      opacity: 0.9;
-    }
-    
-    .result-value {
-      font-weight: 700;
-      font-size: 1.1rem;
-    }
-    
-    .result-value.total {
-      font-size: 1.5rem;
-    }
-    
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 9999px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-    
-    .progress-bar {
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 9999px;
-      height: 8px;
-      margin-top: 8px;
-      overflow: hidden;
-    }
-    
-    .progress-fill {
-      height: 100%;
-      background: white;
-      border-radius: 9999px;
-      transition: width 0.5s ease;
-    }
-    
-    .actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 24px;
-    }
-    
-    .btn-secondary {
-      background: white;
-      color: var(--dark);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-    }
-    
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skattekalkulator 2026 - SkattPro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --success: #10b981;
+  --danger: #ef4444;
+  --dark: #0f172a;
+  --gray: #64748b;
+  --light: #f8fafc;
+  --border: #e2e8f0;
+}
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+  color: var(--dark);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+.nav {
+  background: white;
+  border-bottom: 1px solid var(--border);
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo {
+  font-size: 24px;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary), #0ea5e9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.logo-mark {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--primary), #0ea5e9);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 900;
+  font-size: 20px;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.header h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+.header p {
+  font-size: 1.15rem;
+  color: var(--gray);
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 32px;
+}
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  border: 1px solid var(--border);
+}
+.card h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+  color: var(--dark);
+}
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.form-group input:focus, .form-group select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s;
+  font-family: inherit;
+  text-decoration: none;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+  width: 100%;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+}
+.results {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  position: sticky;
+  top: 32px;
+}
+.results h2 {
+  color: white;
+}
+.stat {
+  background: rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  backdrop-filter: blur(10px);
+}
+.stat-label {
+  font-size: 0.875rem;
+  opacity: 0.9;
+  margin-bottom: 6px;
+}
+.stat-value {
+  font-size: 2rem;
+  font-weight: 800;
+}
+.stat-value.green { color: #86efac; }
+.stat-value.red { color: #fca5a5; }
+.breakdown {
+  margin-top: 24px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  padding: 20px;
+}
+.breakdown-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.breakdown-item:last-child {
+  border-bottom: none;
+}
+.progress-bar {
+  height: 8px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #86efac, #34d399);
+  border-radius: 4px;
+  transition: width 0.5s;
+}
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 24px;
+}
+.btn-secondary {
+  background: white;
+  color: var(--primary);
+  border: 2px solid rgba(255,255,255,0.3);
+}
+.btn-secondary:hover {
+  background: rgba(255,255,255,0.1);
+}
+.hint {
+  font-size: 0.875rem;
+  color: var(--gray);
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.hint-icon {
+  width: 16px;
+  height: 16px;
+  background: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+}
+@media (max-width: 900px) {
+  .grid { grid-template-columns: 1fr; }
+  .results { position: static; }
+  .form-row { grid-template-columns: 1fr; }
+}
+</style>
 </head>
 <body>
-  <nav class="nav">
-    <a href="index.html" class="logo">
-      <div class="logo-mark">S</div>
-      SkattPro
-    </a>
-    <div class="nav-links">
-      <a href="index.html">Hjem</a>
-      <a href="kalkulator.html" style="color:var(--dark);background:var(--light)">Kalkulator</a>
-      <a href="faktura-kalkulator.html">Faktura</a>
-      <a href="forskuddsskatt.html">Forskudd</a>
-    </div>
-  </nav>
-
-  <div class="container">
-    <div class="header">
-      <h1>Skattekalkulator 2026</h1>
-      <p>Beregn skatt, trinnskatt og trygdeavgift nøyaktig</p>
-    </div>
-
-    <div class="calc-grid">
-      <!-- Form -->
-      <div class="card">
-        <form id="taxForm">
-          <div class="form-group">
-            <label for="income">Brutto årsinntekt (kr)</label>
-            <input type="number" id="income" value="500000" min="0" step="1000">
-            <div class="hint">Lønn, pensjon eller næringsinntekt før skatt</div>
-          </div>
-
-          <div class="form-group">
-            <label for="incomeType">Inntektstype</label>
-            <select id="incomeType">
-              <option value="lonn">Lønnsinntekt</option>
-              <option value="pensjon">Pensjon</option>
-              <option value="naering">Næringsinntekt</option>
-              <option value="kapital">Kapitalinntekt</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="kommune">Kommune</label>
-            <select id="kommune">
-              <option value="oslo">Oslo (22.8%)</option>
-              <option value="bergen">Bergen (22.2%)</option>
-              <option value="trondheim">Trondheim (21.7%)</option>
-              <option value="stavanger">Stavanger (21.4%)</option>
-              <option value="tromso">Tromsø (23.1%)</option>
-            </select>
-            <div class="hint">Kommuneskatten varierer mellom 20.6%-24.1%</div>
-          </div>
-
-          <div class="form-group">
-            <label for="age">Alder</label>
-            <input type="number" id="age" value="35" min="0" max="120">
-            <div class="hint">Pensjonister har lavere trygdeavgift</div>
-          </div>
-
-          <div class="form-group">
-            <label for="taxClass">Skattemessig klasse</label>
-            <select id="taxClass">
-              <option value="1">Klasse 1 (singel/ennegifte)</option>
-              <option value="2">Klasse 2 (samboer/ektepar)</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="bsu">BSU-sparing (kr)</label>
-            <input type="number" id="bsu" value="0" min="0" max="100000" step="1000">
-            <div class="hint">Maks 100 000 kr, gir 20% skattefradrag</div>
-          </div>
-
-          <div class="form-group">
-            <label for="pension">Privat pensjonssparing (kr)</label>
-            <input type="number" id="pension" value="0" min="0" max="40000" step="1000">
-            <div class="hint">Maks 40 000 kr med fradragsrett</div>
-          </div>
-
-          <button type="submit" class="btn btn-primary">
-            Beregn skatt nå
-          </button>
-        </form>
+<nav class="nav">
+  <a href="index.html" class="logo">
+    <div class="logo-mark">S</div>
+    SkattPro
+  </a>
+  <a href="index.html" class="btn" style="background:white;border:1px solid var(--border);color:var(--dark)">← Tilbake</a>
+</nav>
+<div class="container">
+  <div class="header">
+    <h1>Skattekalkulator 2026</h1>
+    <p>Beregn skatt, trinnskatt, trygdeavgift og nettoinntekt nøyaktig</p>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <h2>📊 Dine opplysninger</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Brutto årsinntekt (kr)</label>
+          <input type="number" id="income" value="500000" min="0" step="1000" oninput="calculate()">
+        </div>
+        <div class="form-group">
+          <label>Inntektstype</label>
+          <select id="incomeType" onchange="calculate()">
+            <option value="lonn">Lønnsinntekt</option>
+            <option value="pensjon">Pensjon</option>
+            <option value="næring">Næringsinntekt</option>
+          </select>
+        </div>
       </div>
-
-      <!-- Results -->
-      <div class="card results" id="resultsCard" style="display:none;">
-        <h2>
-          📊 Skatteoppgjør 2026
-          <span class="badge">✓ Oppdatert</span>
-        </h2>
-
-        <div class="result-row">
-          <span class="result-label">Bruttoinntekt</span>
-          <span class="result-value" id="grossIncome">-</span>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Alder</label>
+          <input type="number" id="age" value="35" min="0" max="100" oninput="calculate()">
         </div>
-
-        <div class="result-row">
-          <span class="result-label">Personfradrag</span>
-          <span class="result-value" id="deduction">-</span>
+        <div class="form-group">
+          <label>Skatteklasse</label>
+          <select id="taxClass" onchange="calculate()">
+            <option value="1">Klasse 1</option>
+            <option value="2">Klasse 2</option>
+          </select>
         </div>
-
-        <div class="result-row">
-          <span class="result-label">Skattegrunnlag</span>
-          <span class="result-value" id="taxableIncome">-</span>
+      </div>
+      <div class="form-group">
+        <label>Kommune</label>
+        <select id="kommune" onchange="calculate()">
+          <option value="22.9">Oslo (22.9%)</option>
+          <option value="21.0">Bergen (21.0%)</option>
+          <option value="21.5">Trondheim (21.5%)</option>
+          <option value="22.1">Stavanger (22.1%)</option>
+          <option value="23.5">Tromsø (23.5%)</option>
+        </select>
+        <div class="hint"><span class="hint-icon">i</span> Kommuneskatten varierer fra 20.1% til 26.1%</div>
+      </div>
+      <h2 style="margin-top:32px">💡 Fradrag og sparing</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>BSU-sparing (kr)</label>
+          <input type="number" id="bsu" value="0" min="0" max="100000" step="1000" oninput="calculate()">
+          <div class="hint"><span class="hint-icon">i</span> 20% skattefradrag, maks 100 000 kr</div>
         </div>
-
-        <div class="result-row">
-          <span class="result-label">
-            <div>Trinnskatt</div>
-            <div class="progress-bar"><div class="progress-fill" id="trinnskattBar" style="width:0%"></div></div>
-          </span>
-          <span class="result-value" id="trinnskatt">-</span>
+        <div class="form-group">
+          <label>Pensjonssparing (kr)</label>
+          <input type="number" id="pension" value="0" min="0" max="40000" step="1000" oninput="calculate()">
+          <div class="hint"><span class="hint-icon">i</span> Fullt fradrag, maks 40 000 kr</div>
         </div>
-
-        <div class="result-row">
-          <span class="result-label">Trygdeavgift</span>
-          <span class="result-value" id="trygdeavgift">-</span>
-        </div>
-
-        <div class="result-row">
-          <span class="result-label">Kommuneskatt</span>
-          <span class="result-value" id="kommuneskatt">-</span>
-        </div>
-
-        <div class="result-row">
-          <span class="result-label">BSU-fradrag</span>
-          <span class="result-value" id="bsuDeduction" style="color:#86efac">-</span>
-        </div>
-
-        <div class="result-row">
-          <span class="result-label">Sum skatt</span>
-          <span class="result-value" id="totalTax">-</span>
-        </div>
-
-        <div class="result-row">
-          <span class="result-label">Effektiv skattesats</span>
-          <span class="result-value" id="effectiveRate">-</span>
-        </div>
-
-        <div class="result-row">
-          <span class="result-label">Netto årsinntekt</span>
-          <span class="result-value total" id="netIncome">-</span>
-        </div>
-
-        <div class="actions">
-          <button class="btn btn-secondary" onclick="window.print()">📄 PDF</button>
-          <button class="btn btn-secondary" onclick="copyResults()">📋 Kopier</button>
-        </div>
+      </div>
+      <div class="form-group">
+        <label>Andre fradrag (kr)</label>
+        <input type="number" id="deductions" value="0" min="0" step="1000" oninput="calculate()">
+        <div class="hint"><span class="hint-icon">i</span> F.eks. foreldrefradrag, fagforeningskontingent</div>
+      </div>
+    </div>
+    <div class="card results">
+      <h2>📈 Din skatt</h2>
+      <div class="stat">
+        <div class="stat-label">Total skatt</div>
+        <div class="stat-value red" id="totalTax">0 kr</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Netto utbetaling</div>
+        <div class="stat-value green" id="netIncome">0 kr</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Effektiv skattesats</div>
+        <div class="stat-value" id="effectiveRate">0%</div>
+      </div>
+      <div class="breakdown">
+        <div class="breakdown-item"><span>Trinnskatt</span><strong id="bracketTax">0 kr</strong></div>
+        <div class="progress-bar"><div class="progress-fill" id="bracketProgress" style="width:0%"></div></div>
+        <div class="breakdown-item" style="margin-top:12px"><span>Trygdeavgift</span><strong id="socialTax">0 kr</strong></div>
+        <div class="breakdown-item"><span>Kommuneskatt</span><strong id="municipalTax">0 kr</strong></div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-secondary" onclick="exportPDF()">📥 PDF</button>
+        <button class="btn btn-secondary" onclick="copyResults()">📋 Kopier</button>
       </div>
     </div>
   </div>
-
-  <script>
-    // Tax brackets 2026
-    const brackets = [
-      { limit: 208050, rate: 0.017 },
-      { limit: 279700, rate: 0.04 },
-      { limit: 651250, rate: 0.137 },
-      { limit: Infinity, rate: 0.167 }
-    ];
-
-    // Kommune tax rates
-    const kommuneRates = {
-      oslo: 0.228,
-      bergen: 0.222,
-      trondheim: 0.217,
-      stavanger: 0.214,
-      tromso: 0.231
-    };
-
-    function formatNOK(amount) {
-      return new Intl.NumberFormat('no-NO', {
-        style: 'currency',
-        currency: 'NOK',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-      }).format(amount);
+</div>
+<script>
+const BRACKETS_2026 = [
+  { limit: 206000, rate: 0 },
+  { limit: 270700, rate: 0.017 },
+  { limit: 644100, rate: 0.04 },
+  { limit: 975900, rate: 0.137 },
+  { limit: Infinity, rate: 0.167 }
+];
+function calculate() {
+  const income = parseFloat(document.getElementById('income').value) || 0;
+  const age = parseInt(document.getElementById('age').value) || 35;
+  const kommuneRate = parseFloat(document.getElementById('kommune').value) / 100;
+  const bsu = parseFloat(document.getElementById('bsu').value) || 0;
+  const pension = parseFloat(document.getElementById('pension').value) || 0;
+  const deductions = parseFloat(document.getElementById('deductions').value) || 0;
+  const incomeType = document.getElementById('incomeType').value;
+  let socialRate = 0.082;
+  if (incomeType === 'pensjon' || age >= 67) socialRate = 0.051;
+  if (incomeType === 'næring') socialRate = 0.243;
+  const totalDeductions = Math.min(bsu * 0.2, 20000) + Math.min(pension, 40000) + deductions + 82800;
+  const taxableIncome = Math.max(0, income - totalDeductions);
+  let bracketTax = 0;
+  let prevLimit = 0;
+  BRACKETS_2026.forEach(bracket => {
+    if (taxableIncome > prevLimit) {
+      const taxableInBracket = Math.min(taxableIncome, bracket.limit) - prevLimit;
+      if (taxableInBracket > 0) bracketTax += taxableInBracket * bracket.rate;
+      prevLimit = bracket.limit;
     }
-
-    function calculateTax() {
-      const income = parseFloat(document.getElementById('income').value) || 0;
-      const incomeType = document.getElementById('incomeType').value;
-      const kommune = kommuneRates[document.getElementById('kommune').value] || 0.229;
-      const age = parseInt(document.getElementById('age').value) || 35;
-      const bsu = parseFloat(document.getElementById('bsu').value) || 0;
-      const pension = parseFloat(document.getElementById('pension').value) || 0;
-
-      // Trygdeavgift rates
-      const trygdeavgiftRates = {
-        lonn: 0.082,
-        pensjon: age >= 67 ? 0.051 : 0.082,
-        naering: 0.243,
-        kapital: 0
-      };
-      const trygdeavgiftRate = trygdeavgiftRates[incomeType] || 0.082;
-
-      // Personfradrag
-      const personfradrag = 82800;
-      
-      // BSU and pension deductions
-      const bsuDeduction = Math.min(bsu * 0.2, 20000);
-      const pensionDeduction = Math.min(pension, 40000);
-      
-      // Taxable income
-      const taxableIncome = Math.max(0, income - personfradrag - bsuDeduction - pensionDeduction);
-
-      // Trygdeavgift
-      const trygdeavgift = income * trygdeavgiftRate;
-
-      // Trinnskatt
-      let trinnskatt = 0;
-      let remainingIncome = income;
-      let prevLimit = 0;
-
-      for (const bracket of brackets) {
-        const taxableInBracket = Math.min(remainingIncome, bracket.limit - prevLimit);
-        if (taxableInBracket > 0) {
-          trinnskatt += taxableInBracket * bracket.rate;
-          remainingIncome -= taxableInBracket;
-          prevLimit = bracket.limit;
-        }
-      }
-
-      // Kommuneskatt
-      const kommuneskatt = taxableIncome * kommune;
-
-      // Total tax
-      const totalTax = trygdeavgift + trinnskatt + kommuneskatt;
-      
-      // Net income
-      const netIncome = income - totalTax;
-      
-      // Effective rate
-      const effectiveRate = income > 0 ? (totalTax / income * 100) : 0;
-
-      // Update UI
-      document.getElementById('grossIncome').textContent = formatNOK(income);
-      document.getElementById('deduction').textContent = '- ' + formatNOK(personfradrag);
-      document.getElementById('taxableIncome').textContent = formatNOK(taxableIncome);
-      document.getElementById('trinnskatt').textContent = formatNOK(trinnskatt);
-      document.getElementById('trygdeavgift').textContent = formatNOK(trygdeavgift);
-      document.getElementById('kommuneskatt').textContent = formatNOK(kommuneskatt);
-      document.getElementById('bsuDeduction').textContent = '- ' + formatNOK(bsuDeduction);
-      document.getElementById('totalTax').textContent = formatNOK(totalTax);
-      document.getElementById('effectiveRate').textContent = effectiveRate.toFixed(1) + '%';
-      document.getElementById('netIncome').textContent = formatNOK(netIncome);
-
-      // Progress bar
-      const maxTrinn = 100000;
-      const trinnPercent = Math.min((trinnskatt / maxTrinn) * 100, 100);
-      document.getElementById('trinnskattBar').style.width = trinnPercent + '%';
-
-      // Show results
-      document.getElementById('resultsCard').style.display = 'block';
-    }
-
-    function copyResults() {
-      const text = `Skatteberegning 2026:\nBrutto: ${document.getElementById('grossIncome').textContent}\nSkatt: ${document.getElementById('totalTax').textContent}\nNetto: ${document.getElementById('netIncome').textContent}`;
-      navigator.clipboard.writeText(text);
-      alert('Kopiert til utklippstavle!');
-    }
-
-    // Auto-calculate on load
-    document.getElementById('taxForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      calculateTax();
-    });
-
-    // Calculate on page load
-    calculateTax();
-  </script>
+  });
+  const municipalTax = taxableIncome * kommuneRate;
+  const socialTax = income * socialRate;
+  const totalTax = bracketTax + municipalTax + socialTax;
+  const netIncome = income - totalTax;
+  const effectiveRate = income > 0 ? (totalTax / income * 100) : 0;
+  document.getElementById('totalTax').textContent = formatNOK(totalTax);
+  document.getElementById('netIncome').textContent = formatNOK(netIncome);
+  document.getElementById('effectiveRate').textContent = effectiveRate.toFixed(1) + '%';
+  document.getElementById('bracketTax').textContent = formatNOK(bracketTax);
+  document.getElementById('socialTax').textContent = formatNOK(socialTax);
+  document.getElementById('municipalTax').textContent = formatNOK(municipalTax);
+  const maxBracket = 165000;
+  const bracketPercent = Math.min((bracketTax / maxBracket) * 100, 100);
+  document.getElementById('bracketProgress').style.width = bracketPercent + '%';
+}
+function formatNOK(amount) {
+  return new Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK', minimumFractionDigits: 0 }).format(amount);
+}
+function exportPDF() { window.print(); }
+function copyResults() {
+  const text = `SkattPro Beregning\nTotal skatt: ${document.getElementById('totalTax').textContent}\nNetto: ${document.getElementById('netIncome').textContent}\nEffektiv sats: ${document.getElementById('effectiveRate').textContent}`;
+  navigator.clipboard.writeText(text);
+  alert('Kopiert til utklippstavlen!');
+}
+calculate();
+</script>
 </body>
 </html>
