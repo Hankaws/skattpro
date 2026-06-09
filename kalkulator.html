@@ -398,49 +398,53 @@ function copyResults() {
 }
 calculate();
 
-// Load all kommuner from JSON
+// Load all kommuner from JSON (with inline fallback data)
+const KOMPONENTER_FALLBACK = [
+  {"name": "Oslo", "rate": 22.9}, {"name": "Bergen", "rate": 23.1}, {"name": "Trondheim", "rate": 22.7},
+  {"name": "Stavanger", "rate": 21.9}, {"name": "Drammen", "rate": 22.9}, {"name": "Kristiansand", "rate": 22.3},
+  {"name": "Fredrikstad", "rate": 22.8}, {"name": "Tromsø", "rate": 21.4}, {"name": "Bodø", "rate": 21.8},
+  {"name": "Ålesund", "rate": 22.6}, {"name": "Sandefjord", "rate": 22.5}, {"name": "Hamar", "rate": 22.8},
+  {"name": "Larvik", "rate": 22.4}, {"name": "Halden", "rate": 22.7}, {"name": "Lillestrøm", "rate": 22.7},
+  {"name": "Tønsberg", "rate": 22.5}, {"name": "Moss", "rate": 22.6}, {"name": "Arendal", "rate": 22.4},
+  {"name": "Haugesund", "rate": 22.1}, {"name": "Harstad", "rate": 21.6}, {"name": "Molde", "rate": 22.5},
+  {"name": "Kongsberg", "rate": 22.7}, {"name": "Gjøvik", "rate": 22.8}, {"name": "Steinkjer", "rate": 22.1},
+  {"name": "Førde", "rate": 21.9}, {"name": "Lillehammer", "rate": 22.8}, {"name": "Elverum", "rate": 22.9},
+  {"name": "Kongsvinger", "rate": 22.8}, {"name": "Sarpsborg", "rate": 22.7}, {"name": "Sandnes", "rate": 21.9},
+  {"name": "Bærum", "rate": 22.6}, {"name": "Ski", "rate": 22.6}, {"name": "Alta", "rate": 21.5},
+  {"name": "Kirkenes", "rate": 21.5}, {"name": "Hammerfest", "rate": 21.5}, {"name": "Svalbard", "rate": 16.9}
+];
 async function loadKommuner() {
   try {
     const response = await fetch('kommuner.json?v=' + Date.now());
     if (!response.ok) throw new Error('HTTP ' + response.status);
     const data = await response.json();
-    const select = document.getElementById('kommune');
-    
-    // Clear existing options
-    select.innerHTML = '';
-    
-    // Sort by name and add to dropdown
-    const sorted = data.sort((a, b) => a.name.localeCompare(b.name));
-    
-    // Add Oslo first as default
-    const oslo = sorted.find(k => k.name === 'Oslo');
-    if (oslo) {
+    populateDropdown(data);
+  } catch (e) {
+    console.warn('Using fallback kommuner:', e);
+    populateDropdown(KOMPONENTER_FALLBACK);
+  }
+}
+function populateDropdown(data) {
+  const select = document.getElementById('kommune');
+  select.innerHTML = '';
+  const sorted = data.sort((a, b) => a.name.localeCompare(b.name));
+  const oslo = sorted.find(k => k.name === 'Oslo');
+  if (oslo) {
+    const option = document.createElement('option');
+    option.value = oslo.rate;
+    option.textContent = `${oslo.name} (${oslo.rate}%)`;
+    option.selected = true;
+    select.appendChild(option);
+  }
+  sorted.forEach(k => {
+    if (k.name !== 'Oslo') {
       const option = document.createElement('option');
-      option.value = oslo.rate;
-      option.textContent = `${oslo.name} (${oslo.rate}%)`;
-      option.selected = true;
+      option.value = k.rate;
+      option.textContent = `${k.name} (${k.rate}%)`;
       select.appendChild(option);
     }
-    
-    // Add all others
-    console.log('Loaded', sorted.length, 'kommuner');
-    sorted.forEach(k => {
-      if (k.name !== 'Oslo') {
-        const option = document.createElement('option');
-        option.value = k.rate;
-        option.textContent = `${k.name} (${k.rate}%)`;
-        select.appendChild(option);
-      }
-    });
-    console.log('Dropdown now has', select.options.length, 'options');
-    
-    calculate(); // Recalculate with loaded data
-  } catch (e) {
-    console.error('Failed to load kommuner:', e);
-    // Fallback to Oslo if file fails to load
-    const select = document.getElementById('kommune');
-    select.innerHTML = '<option value="22.9" selected>Oslo (22.9%)</option>';
-  }
+  });
+  calculate();
 }
 loadKommuner();
 </script>
