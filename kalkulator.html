@@ -404,20 +404,39 @@ async function loadKommuner() {
     const response = await fetch('kommuner.json');
     const data = await response.json();
     const select = document.getElementById('kommune');
-    select.innerHTML = '<option value="">Velg kommune...</option>';
+    
+    // Clear existing options
+    select.innerHTML = '';
     
     // Sort by name and add to dropdown
-    const sorted = Object.values(data).sort((a, b) => a.name.localeCompare(b.name));
-    sorted.forEach(k => {
+    const sorted = data.sort((a, b) => a.name.localeCompare(b.name));
+    
+    // Add Oslo first as default
+    const oslo = sorted.find(k => k.name === 'Oslo');
+    if (oslo) {
       const option = document.createElement('option');
-      option.value = k.rate;
-      option.textContent = `${k.name} (${k.rate}%)`;
-      if (k.name === 'Oslo') option.selected = true;
+      option.value = oslo.rate;
+      option.textContent = `${oslo.name} (${oslo.rate}%)`;
+      option.selected = true;
       select.appendChild(option);
+    }
+    
+    // Add all others
+    sorted.forEach(k => {
+      if (k.name !== 'Oslo') {
+        const option = document.createElement('option');
+        option.value = k.rate;
+        option.textContent = `${k.name} (${k.rate}%)`;
+        select.appendChild(option);
+      }
     });
+    
     calculate(); // Recalculate with loaded data
   } catch (e) {
     console.error('Failed to load kommuner:', e);
+    // Fallback to Oslo if file fails to load
+    const select = document.getElementById('kommune');
+    select.innerHTML = '<option value="22.9" selected>Oslo (22.9%)</option>';
   }
 }
 loadKommuner();
