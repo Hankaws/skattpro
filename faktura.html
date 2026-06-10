@@ -1,498 +1,375 @@
 <!DOCTYPE html>
 <html lang="no">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SkattPro – Faktura | Lag og beregn faktura</title>
-<meta name="description" content="Lag faktura og beregn hva du beholder etter skatt. Enkel fakturamaler for enkeltpersonforetak.">
-<link rel="canonical" href="https://skattpro.no/faktura.html">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--primary:#6366f1;--primary-dark:#4f46e5;--success:#10b981;--danger:#ef4444;--dark:#0f172a;--gray:#64748b;--light:#f8fafc;--border:#e2e8f0}
-body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:linear-gradient(135deg,#f0f9ff 0%,#e0e7ff 100%);color:var(--dark);line-height:1.6}
-.nav{background:white;border-bottom:1px solid var(--border);padding:16px 40px;display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:20px;font-weight:800;background:linear-gradient(135deg,var(--primary),#0ea5e9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;display:flex;align-items:center;gap:10px}
-.logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--primary),#0ea5e9);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:18px;box-shadow:0 4px 14px rgba(99,102,241,0.4)}
-.menu{display:flex;gap:16px;flex-wrap:wrap}
-.menu a{color:var(--gray);text-decoration:none;font-size:.9rem;font-weight:500}
-.menu a:hover{color:var(--primary)}
-.container{max-width:900px;margin:0 auto;padding:32px 20px}
-.header{text-align:center;margin-bottom:32px}
-.header h1{font-size:2.2rem;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
-.header p{font-size:1.1rem;color:var(--gray)}
-.card{background:white;border-radius:16px;padding:28px;box-shadow:0 4px 20px rgba(0,0,0,0.08);border:1px solid var(--border);margin-bottom:24px}
-.card h2{font-size:1.3rem;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:8px}
-.form-group{margin-bottom:18px}
-.form-group label{display:block;font-weight:600;font-size:.9rem;margin-bottom:6px;color:var(--dark)}
-.form-group input,.form-group textarea,.form-group select{width:100%;padding:12px 14px;border:2px solid var(--border);border-radius:10px;font-size:1rem;font-family:inherit;transition:all .2s}
-.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px rgba(99,102,241,0.1)}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.hint{font-size:.825rem;color:var(--gray);margin-top:5px;display:flex;align-items:center;gap:5px}
-.hint-icon{width:14px;height:14px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:10px;font-weight:700}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:10px;font-weight:700;font-size:1rem;cursor:pointer;border:none;transition:all .3s;font-family:inherit;text-decoration:none}
-.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;box-shadow:0 4px 14px rgba(99,102,241,0.4)}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(99,102,241,0.5)}
-.btn-secondary{background:white;color:var(--primary);border:2px solid var(--border)}
-.btn-secondary:hover{background:var(--light)}
-.preview-box{background:var(--light);border:1px solid var(--border);border-radius:12px;padding:20px;margin-top:20px;font-family:monospace;font-size:.875rem;white-space:pre-wrap}
-.result-highlight{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;padding:20px;border-radius:12px;margin-top:20px}
-.stat-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.2)}
-.stat-row:last-child{border-bottom:none}
-.stat-label{opacity:.9}
-.stat-value{font-weight:800;font-size:1.3rem}
-@media(max-width:768px){.form-row{grid-template-columns:1fr}.nav{padding:16px 20px}.container{padding:20px 16px}}
-
-/* Professional Print Layout */
-@media print {
-  body {
-    background: white !important;
-  }
-  body * {
-    visibility: hidden;
-  }
-  #invoicePrint, #invoicePrint * {
-    visibility: visible;
-  }
-  #invoicePrint {
-    display: block !important;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    margin: 0;
-    padding: 40px;
-    background: white;
-    color: #0f172a;
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
-  }
-  .container, .nav, .header, .card, .btn {
-    display: none !important;
-  }
-  .invoice-header {
-    display: flex !important;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 50px;
-    border-bottom: 3px solid #6366f1;
-    padding-bottom: 25px;
-  }
-  .invoice-logo-block {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .invoice-logo-mark {
-    width: 44px;
-    height: 44px;
-    background: linear-gradient(135deg, #6366f1, #0ea5e9);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 900;
-    font-size: 22px;
-    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
-  }
-  .invoice-logo-text {
-    font-size: 28px;
-    font-weight: 900;
-    background: linear-gradient(135deg, #6366f1, #0ea5e9);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .invoice-title {
-    text-align: right;
-  }
-  .invoice-title-label {
-    font-size: 11pt;
-    color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 4px;
-  }
-  .invoice-title-main {
-    font-size: 32px;
-    font-weight: 900;
-    color: #0f172a;
-    letter-spacing: 2px;
-  }
-  .invoice-parties {
-    display: flex !important;
-    justify-content: space-between;
-    margin-bottom: 50px;
-    gap: 60px;
-  }
-  .invoice-from, .invoice-to {
-    flex: 1;
-  }
-  .invoice-section {
-    font-size: 9pt;
-    font-weight: 700;
-    margin-bottom: 12px;
-    color: #6366f1;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-  }
-  .invoice-party-name {
-    font-size: 13pt;
-    font-weight: 700;
-    color: #0f172a;
-    margin-bottom: 6px;
-  }
-  .invoice-party-detail {
-    font-size: 10pt;
-    color: #64748b;
-    line-height: 1.6;
-  }
-  .invoice-details {
-    background: #f8fafc;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 35px;
-  }
-  .invoice-detail-row {
-    display: flex !important;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid #e2e8f0;
-    font-size: 10.5pt;
-  }
-  .invoice-detail-row:first-child {
-    padding-top: 0;
-  }
-  .invoice-detail-row:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-  }
-  .invoice-detail-label {
-    color: #64748b;
-    font-weight: 500;
-  }
-  .invoice-detail-value {
-    color: #0f172a;
-    font-weight: 700;
-  }
-  .invoice-description-block {
-    display: block !important;
-    margin: 30px 0;
-  }
-  .invoice-description-label {
-    font-size: 9pt;
-    font-weight: 700;
-    color: #6366f1;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin-bottom: 12px;
-  }
-  .invoice-description-text {
-    padding: 18px;
-    background: #f8fafc;
-    border-radius: 10px;
-    border-left: 4px solid #6366f1;
-    font-size: 10.5pt;
-    line-height: 1.7;
-    color: #334155;
-  }
-  .invoice-total-section {
-    display: block !important;
-    margin-top: 40px;
-    page-break-inside: avoid;
-  }
-  .invoice-total-box {
-    background: linear-gradient(135deg, #6366f1, #4f46e5);
-    color: white !important;
-    padding: 28px 32px;
-    border-radius: 16px;
-    margin-top: 20px;
-    box-shadow: 0 10px 40px rgba(99, 102, 241, 0.3);
-  }
-  .invoice-total-row {
-    display: flex !important;
-    justify-content: space-between;
-    margin-bottom: 12px;
-    font-size: 11pt;
-  }
-  .invoice-total-row.final {
-    font-size: 22pt;
-    font-weight: 900;
-    border-top: 2px solid rgba(255,255,255,0.4);
-    padding-top: 18px;
-    margin-top: 18px;
-  }
-  .invoice-footer {
-    display: block !important;
-    margin-top: 60px;
-    padding-top: 30px;
-    border-top: 2px solid #e2e8f0;
-    text-align: center;
-    color: #64748b;
-    font-size: 9.5pt;
-    line-height: 2;
-  }
-  .invoice-footer strong {
-    color: #0f172a;
-  }
-  .invoice-thanks {
-    font-size: 11pt;
-    color: #0f172a;
-    font-weight: 600;
-    margin-bottom: 15px;
-  }
-  @page {
-    margin: 1.5cm;
-    size: A4;
-  }
-}
-#invoicePrint {
-  display: none;
-}
-
-.invoice-header, .invoice-parties, .invoice-description-block, .invoice-total-section {
-  display: none;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkattPro – Lag Faktura</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --success: #10b981;
+      --danger: #ef4444;
+      --dark: #0f172a;
+      --gray: #64748b;
+      --light: #f8fafc;
+      --border: #e2e8f0;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+      color: var(--dark);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    .nav {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 16px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .logo {
+      font-size: 20px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), #0ea5e9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--primary), #0ea5e9);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 900;
+      font-size: 16px;
+    }
+    .menu {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .menu a {
+      padding: 8px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--gray);
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .menu a:hover, .menu a.active {
+      background: var(--primary);
+      color: white;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .header p {
+      color: var(--gray);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    @media (max-width: 768px) {
+      .grid { grid-template-columns: 1fr; }
+      .nav { padding: 16px 20px; }
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      border: 1px solid var(--border);
+    }
+    .card h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+    .form-group input:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 500px) {
+      .form-row { grid-template-columns: 1fr; }
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      width: 100%;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+    }
+    .btn-secondary {
+      background: white;
+      color: var(--primary);
+      border: 2px solid var(--border);
+    }
+    .preview-box {
+      background: var(--light);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+    .preview-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .preview-row:last-child {
+      border-bottom: none;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+    .summary {
+      margin-top: 20px;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 12px;
+      color: white;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+    }
+    .summary-row.highlight {
+      border-top: 1px solid rgba(255,255,255,0.3);
+      margin-top: 10px;
+      padding-top: 12px;
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+    @media print {
+          .nav, .no-print, .btn-primary { display: none !important; }
+          body { background: white; }
+          .container { padding: 20px; max-width: 800px; margin: 0 auto; }
+          .card { box-shadow: none; border: 1px solid #ddd; page-break-inside: avoid; }
+          .grid { display: block; }
+          .preview-box { 
+            break-inside: avoid; 
+            border: 2px solid #333;
+            background: white;
+            padding: 30px;
+          }
+          .summary { 
+            break-inside: avoid;
+            background: #f8fafc !important;
+            color: #0f172a !important;
+            border: 1px solid #ddd;
+          }
+          .summary-row.highlight { 
+            border-top: 2px solid #333;
+            font-size: 1.3rem;
+          }
+          h1, h2 { color: #0f172a !important; }
+          * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+  </style>
 </head>
 <body>
-<nav class="nav">
-<a href="index.html" class="logo"><div class="logo-mark">S</div>SkattPro</a>
-<nav class="menu">
-<a href="index.html">Skatt</a>
-<a href="kalkulator.html">Kalkulator</a>
-<a href="faktura.html">Faktura</a>
-<a href="forskuddsskatt.html">Forskudd</a>
-<a href="skattefrister.html">Frister</a>
-<a href="pro-features.html" style="color:var(--primary);font-weight:600">Pro</a>
-</nav>
-</nav>
+  <nav class="nav">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">S</div>
+      SkattPro
+    </a>
+    <div class="menu">
+      <a href="index.html">Skatt</a>
+      <a href="kalkulator.html">Kalkulator</a>
+      <a href="faktura.html" class="active">Faktura</a>
+      <a href="forskuddsskatt.html">Forskudd</a>
+      <a href="skattefrister.html">Frister</a>
+      <a href="utgiftssporing.html">Utgifter</a>
+      <a href="paminnelser.html">Påminnelser</a>
+      <a href="pro-features.html">Pro</a>
+    </div>
+  </nav>
 
-<div class="container">
-<div class="header">
-<h1>📄 Faktura</h1>
-<p>Lag faktura og se hva du beholder etter skatt</p>
-</div>
+  <div class="container">
+    <div class="header">
+      <h1>📄 Lag Faktura</h1>
+      <p>Lag en enkel faktura på sekunder</p>
+    </div>
 
-<div class="card">
-<h2>📝 Fakturadetaljer</h2>
-<div class="form-row">
-<div class="form-group">
-<label>Ditt firmanavn</label>
-<input type="text" id="companyName" placeholder="Ditt Firma AS" oninput="updatePreview()">
-</div>
-<div class="form-group">
-<label>Organisasjonsnummer</label>
-<input type="text" id="orgNumber" placeholder="987 654 321" maxlength="12" oninput="updatePreview()">
-</div>
-</div>
-<div class="form-group">
-<label>Klientens navn</label>
-<input type="text" id="clientName" placeholder="Klient AS" oninput="updatePreview()">
-</div>
-<div class="form-row">
-<div class="form-group">
-<label>Fakturanummer</label>
-<input type="text" id="invoiceNumber" value="2026-001" oninput="updatePreview()">
-</div>
-<div class="form-group">
-<label>Fakturadato</label>
-<input type="date" id="invoiceDate" oninput="updatePreview()">
-</div>
-</div>
-<div class="form-group">
-<label>Beskrivelse av tjenester</label>
-<textarea id="description" rows="3" placeholder="Beskriv arbeidet du har utført..." oninput="updatePreview()"></textarea>
-</div>
-<div class="form-row">
-<div class="form-group">
-<label>Beløp (ekskl. mva)</label>
-<input type="number" id="amount" value="10000" min="0" step="100" oninput="calculate()">
-<div class="hint"><span class="hint-icon">i</span> Beløp før mva</div>
-</div>
-<div class="form-group">
-<label>Mva-sats</label>
-<select id="mvaRate" onchange="calculate()">
-<option value="25">25% (standard)</option>
-<option value="15">15% (matvarer, transport)</option>
-<option value="12">12% (kultur, reiser)</option>
-<option value="0">0% (eksport, helse)</option>
-</select>
-</div>
-</div>
-</div>
+    <div class="grid">
+      <div class="card">
+        <h2>📝 Fakturadetaljer</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Ditt firma</label>
+            <input type="text" id="company" placeholder="Ditt AS" oninput="updatePreview()">
+          </div>
+          <div class="form-group">
+            <label>Klient</label>
+            <input type="text" id="client" placeholder="Kunden AS" oninput="updatePreview()">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Beløp (ekskl. mva)</label>
+            <input type="number" id="amount" value="10000" min="0" oninput="updatePreview()">
+          </div>
+          <div class="form-group">
+            <label>Mva-sats</label>
+            <select id="vat" onchange="updatePreview()">
+              <option value="25">25%</option>
+              <option value="15">15%</option>
+              <option value="12">12%</option>
+              <option value="0">0%</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Beskrivelse</label>
+          <textarea id="desc" rows="3" placeholder="Konsulenttjenester..." oninput="updatePreview()"></textarea>
+        </div>
+        <button class="btn btn-primary" onclick="window.print()">🖨️ Skriv ut / PDF</button>
+      </div>
 
-<div class="card">
-<h2>💰 Beregning</h2>
-<div class="result-highlight">
-<div class="stat-row">
-<span class="stat-label">Beløp eks. mva</span>
-<span class="stat-value" id="resAmount">0 kr</span>
-</div>
-<div class="stat-row">
-<span class="stat-label">Mva</span>
-<span class="stat-value" id="resMva">0 kr</span>
-</div>
-<div class="stat-row">
-<span class="stat-label">Beløp inkl. mva</span>
-<span class="stat-value" id="resTotal">0 kr</span>
-</div>
-<div class="stat-row" style="margin-top:16px;padding-top:16px;border-top:2px solid rgba(255,255,255,0.3)">
-<span class="stat-label">Estimert etter skatt (ENK)</span>
-<span class="stat-value" id="resAfterTax">0 kr</span>
-</div>
-</div>
-<p class="hint" style="margin-top:12px;color:var(--gray);font-size:.85rem">
-Estimert etter skatt er omtrentlig og basert på ENK med 40% effektiv skattesats. Bruk <a href="kalkulator.html" style="color:var(--primary)">skattekalkulatoren</a> for nøyaktig beregning.
-</p>
-</div>
+      <div class="card">
+        <h2>👁️ Forhåndsvisning</h2>
+        <div class="preview-box" id="preview">
+          <div style="margin-bottom:16px">
+            <strong>FRA:</strong> <span id="prevCompany">-</span><br>
+            <strong>TIL:</strong> <span id="prevClient">-</span>
+          </div>
+          <div id="prevDesc" style="margin-bottom:16px;color:var(--gray)">-</div>
+          <div class="preview-row">
+            <span>Beløp:</span>
+            <span id="prevAmount">0 kr</span>
+          </div>
+          <div class="preview-row">
+            <span>Mva (<span id="prevVatRate">25</span>%):</span>
+            <span id="prevVat">0 kr</span>
+          </div>
+          <div class="preview-row">
+            <span>Totalt:</span>
+            <span id="prevTotal">0 kr</span>
+          </div>
+        </div>
 
-<div class="card">
-<h2>📋 Fakturautkast</h2>
-<div class="preview-box" id="preview">
-Laster faktura...
-</div>
-<button class="btn btn-primary" onclick="window.print()" style="margin-top:16px">🖨️ Skriv ut / Lagre PDF</button>
-</div>
-</div>
+        <div class="summary">
+          <div class="summary-row">
+            <span>Du sender:</span>
+            <span id="sumTotal">0 kr</span>
+          </div>
+          <div class="summary-row">
+            <span>Hvorav mva:</span>
+            <span id="sumVat">0 kr</span>
+          </div>
+          <div class="summary-row highlight">
+            <span>Du beholder:</span>
+            <span id="sumKeep">0 kr</span>
+          </div>
+          <div style="font-size:0.8rem;opacity:0.8;margin-top:8px;text-align:center">
+            *Estimert etter skatt (ca. 40%)
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<!-- Professional Print Layout (hidden on screen) -->
-<div id="invoicePrint">
-<div class="invoice-header">
-<div class="invoice-logo-block">
-<div class="invoice-logo-mark">S</div>
-<div class="invoice-logo-text">SkattPro</div>
-</div>
-<div class="invoice-title">
-<div class="invoice-title-label">Dokument</div>
-<div class="invoice-title-main">FAKTURA</div>
-</div>
-</div>
+  <script>
+    function updatePreview() {
+      const company = document.getElementById('company').value || '-';
+      const client = document.getElementById('client').value || '-';
+      const amount = parseFloat(document.getElementById('amount').value) || 0;
+      const vatRate = parseFloat(document.getElementById('vat').value) || 25;
+      const desc = document.getElementById('desc').value || '-';
 
-<div class="invoice-parties">
-<div class="invoice-from">
-<div class="invoice-section">Fra:</div>
-<div class="invoice-party-name" id="printCompany"></div>
-<div class="invoice-party-detail" id="printOrg"></div>
-</div>
-<div class="invoice-to">
-<div class="invoice-section">Til:</div>
-<div class="invoice-party-name" id="printClient"></div>
-</div>
-</div>
+      const vatAmount = amount * (vatRate / 100);
+      const total = amount + vatAmount;
+      const keep = amount * 0.60; // Rough estimate after tax
 
-<div class="invoice-details">
-<div class="invoice-detail-row">
-<span class="invoice-detail-label">Fakturanummer:</span>
-<strong class="invoice-detail-value" id="printInvNum"></strong>
-</div>
-<div class="invoice-detail-row">
-<span class="invoice-detail-label">Dato:</span>
-<strong class="invoice-detail-value" id="printDate"></strong>
-</div>
-</div>
+      document.getElementById('prevCompany').textContent = company;
+      document.getElementById('prevClient').textContent = client;
+      document.getElementById('prevDesc').textContent = desc;
+      document.getElementById('prevAmount').textContent = formatNOK(amount);
+      document.getElementById('prevVatRate').textContent = vatRate;
+      document.getElementById('prevVat').textContent = formatNOK(vatAmount);
+      document.getElementById('prevTotal').textContent = formatNOK(total);
 
-<div class="invoice-description-block">
-<div class="invoice-description-label">Beskrivelse:</div>
-<div class="invoice-description-text" id="printDescBlock"></div>
-</div>
+      document.getElementById('sumTotal').textContent = formatNOK(total);
+      document.getElementById('sumVat').textContent = formatNOK(vatAmount);
+      document.getElementById('sumKeep').textContent = formatNOK(keep);
+    }
 
-<div class="invoice-total-section">
-<div class="invoice-total-box">
-<div class="invoice-total-row">
-<span>Beløp eks. mva:</span>
-<strong id="printAmount"></strong>
-</div>
-<div class="invoice-total-row">
-<span>Mva:</span>
-<strong id="printMva"></strong>
-</div>
-<div class="invoice-total-row final">
-<span>TOTALT Å BETALE:</span>
-<strong id="printTotal"></strong>
-</div>
-</div>
-</div>
+    function formatNOK(n) {
+      return new Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK', minimumFractionDigits: 0 }).format(n);
+    }
 
-<div class="invoice-footer">
-<div class="invoice-thanks">Takk for oppdraget!</div>
-Betaling innen 14 dager.<br>
-<br>
-<strong>SkattPro</strong> · Org.nr: <span id="printOrgFooter"></span><br>
-kontakt@skattpro.no · www.skattpro.no
-</div>
-</div>
-
-<script>
-// Set today's date
-document.getElementById('invoiceDate').valueAsDate = new Date();
-
-function calculate() {
-const amount = parseFloat(document.getElementById('amount').value) || 0;
-const mvaRate = parseFloat(document.getElementById('mvaRate').value) / 100;
-const mvaAmount = amount * mvaRate;
-const total = amount + mvaAmount;
-const afterTax = amount * 0.60;
-
-document.getElementById('resAmount').textContent = formatNOK(amount);
-document.getElementById('resMva').textContent = formatNOK(mvaAmount);
-document.getElementById('resTotal').textContent = formatNOK(total);
-document.getElementById('resAfterTax').textContent = formatNOK(afterTax);
-updatePreview();
-}
-
-function updatePreview() {
-const company = document.getElementById('companyName').value || 'Ditt Firma';
-const org = document.getElementById('orgNumber').value || 'XXX XXX XXX';
-const client = document.getElementById('clientName').value || 'Klient AS';
-const invNum = document.getElementById('invoiceNumber').value;
-const invDate = document.getElementById('invoiceDate').value;
-const desc = document.getElementById('description').value || 'Tjenester';
-const amount = parseFloat(document.getElementById('amount').value) || 0;
-const mvaRate = parseFloat(document.getElementById('mvaRate').value);
-const mvaAmount = amount * (mvaRate / 100);
-const total = amount + mvaAmount;
-
-// Text preview
-const preview = `
-FRA: ${company}
-Org.nr: ${org}
-
-TIL: ${client}
-
-Fakturanummer: ${invNum}
-Dato: ${invDate}
-
-Beskrivelse:
-${desc}
-
-Beløp: ${formatNOK(amount)}
-Mva (${mvaRate}%): ${formatNOK(mvaAmount)}
-TOTALT: ${formatNOK(total)}
-
-Takk for oppdraget!
-`;
-document.getElementById('preview').textContent = preview.trim();
-
-// Print preview
-document.getElementById('printCompany').textContent = company;
-document.getElementById('printOrg').textContent = 'Org.nr: ' + org;
-document.getElementById('printOrgFooter').textContent = org;
-document.getElementById('printClient').textContent = client;
-document.getElementById('printInvNum').textContent = invNum;
-document.getElementById('printDate').textContent = new Date(invDate).toLocaleDateString('nb-NO', { year: 'numeric', month: 'long', day: 'numeric' });
-document.getElementById('printDescBlock').textContent = desc;
-document.getElementById('printAmount').textContent = formatNOK(amount);
-document.getElementById('printMva').textContent = formatNOK(mvaAmount);
-document.getElementById('printTotal').textContent = formatNOK(total);
-}
-
-function formatNOK(n) {
-return n.toLocaleString('nb-NO', { style: 'currency', currency: 'NOK', maximumFractionDigits: 0 });
-}
-
-// Initialize
-calculate();
-updatePreview();
-</script>
+    updatePreview();
+  </script>
 </body>
 </html>
