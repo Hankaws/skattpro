@@ -10,6 +10,17 @@
   --light: #f1f5f9;
   --white: #ffffff;
   --border: #e2e8f0;
+  --panel: #ffffff;
+  --panel2: #f1f5f9;
+  --line: #e2e8f0;
+  --ink: #0f172a;
+  --muted: #475569;
+  --dim: #64748b;
+  --a: #2563eb;
+  --a2: #4f46e5;
+  --ok: #059669;
+  --warn: #d97706;
+  --err: #dc2626;
 }
 
 body {
