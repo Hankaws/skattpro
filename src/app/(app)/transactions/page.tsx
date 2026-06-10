@@ -303,7 +303,7 @@ export default function TransactionsPage() {
                 const res = tx.result;
                 return (
                   <TableRow key={tx.id} className={tx.isSaved ? 'bg-emerald-50/40' : ''}>
-                    <TableCell className="font-mono text-sm">{tx.date}</TableCell>
+                    <TableCell className="font-mono text-sm">{tx.date ? new Date(tx.date).toLocaleDateString('nb-NO') : ''}</TableCell>
                     <TableCell className="max-w-[320px] truncate">{tx.description}</TableCell>
                     <TableCell className={`text-right font-medium ${tx.amount < 0 ? 'text-red-600' : 'text-emerald-600'}`}>
                       {tx.amount.toLocaleString('nb-NO')} kr
