@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState, Suspense } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
-// Force dynamic rendering (avoids static prerender error for pages using useSearchParams)
+// Prevent static prerendering for this page (it uses useSearchParams)
 export const dynamic = "force-dynamic";
 
-export default function SignInPage() {
+function SignInForm() {
   const router = useRouter();
   const params = useSearchParams();
   const callbackUrl = params.get("callbackUrl") ?? "/dashboard";
