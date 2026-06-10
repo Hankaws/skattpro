@@ -5,6 +5,9 @@ import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
+// Force dynamic rendering (avoids static prerender error for pages using useSearchParams)
+export const dynamic = "force-dynamic";
+
 export default function SignInPage() {
   const router = useRouter();
   const params = useSearchParams();
