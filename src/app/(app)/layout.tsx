@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard, Receipt, FileText, Settings, LogOut, Building2, User } from "lucide-react";
 import { redirect } from "next/navigation";
-import { auth } from "../../api/auth/[...nextauth]/route";
+import { auth } from "../api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
