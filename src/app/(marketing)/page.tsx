@@ -56,7 +56,7 @@ export default function SkattProLanding() {
         if (scrollY > 60) {
           header.style.background = 'var(--bg-glass-strong)';
           header.style.backdropFilter = 'blur(22px)';
-          header.style.webkitBackdropFilter = 'blur(22px)';
+          (header.style as any).webkitBackdropFilter = 'blur(22px)';
           header.style.borderBottom = '1px solid var(--border)';
         } else {
           header.style.background = 'transparent';
