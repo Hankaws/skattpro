@@ -1,178 +1,132 @@
-<!DOCTYPE html><html lang="no"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>SkattPro AI - Økonomidashboard</title><script src="https://cdn.tailwindcss.com"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@14.4.0/dist/chart.umd.min.js"></script><style>
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-.card { @apply bg-white rounded-xl shadow-sm border border-gray-100 p-6; }
-.stat-value { @apply text-3xl font-bold text-gray-900; }
-.stat-label { @apply text-sm text-gray-500 mt-1; }
-</style></head><body class="bg-gray-50 min-h-screen"><div class="bg-white border-b border-gray-200 sticky top-0 z-10"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex justify-between items-center h-16"><div class="flex items-center space-x-3"><div class="w-10 h-10 bg-gradient-to-br from-purple-600 to-blue-500 rounded-lg flex items-center justify-center"><span class="text-white font-bold text-lg">S</span></div><div><h1 class="text-xl font-bold text-gray-900">SkattPro AI</h1><p class="text-xs text-gray-500">Økonomidashboard</p></div></div><div class="flex items-center space-x-4"><button onclick="refreshData()" class="p-2 hover:bg-gray-100 rounded-lg"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg></button><div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center"><span class="text-purple-600 font-semibold text-sm">DU</span></div></div></div></div></div><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"><div class="mb-8"><h2 class="text-2xl font-bold text-gray-900">Hei! 👋</h2><p class="text-gray-600 mt-1">Her er oversikten over din økonomi</p></div><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"><div class="card"><div class="flex items-center justify-between"><div><p class="stat-label">Inntekt (i år)</p><p class="stat-value text-green-600" id="incomeDisplay">-</p></div><div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center"><svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg></div></div></div><div class="card"><div class="flex items-center justify-between"><div><p class="stat-label">Utgifter (i år)</p><p class="stat-value text-red-600" id="expensesDisplay">-</p></div><div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center"><svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path></svg></div></div></div><div class="card"><div class="flex items-center justify-between"><div><p class="stat-label">Overskudd</p><p class="stat-value text-blue-600" id="profitDisplay">-</p></div><div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center"><svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg></div></div></div><div class="card"><div class="flex items-center justify-between"><div><p class="stat-label">Estimert skatt</p><p class="stat-value text-purple-600" id="taxDisplay">-</p></div><div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center"><svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0zm6.5 2.5a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path></svg></div></div></div></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8"><div class="card"><h3 class="text-lg font-semibold text-gray-900 mb-4">Månedlig utvikling</h3><canvas id="monthlyChart" height="200"></canvas></div><div class="card"><h3 class="text-lg font-semibold text-gray-900 mb-4">Fordeling etter kategori</h3><canvas id="categoryChart" height="200"></canvas></div></div><div class="card mb-8"><h3 class="text-lg font-semibold text-gray-900 mb-4">💰 Forskuddsskatt Oversikt</h3><div class="grid grid-cols-1 md:grid-cols-3 gap-6"><div><p class="text-sm text-gray-500">Estimert årlig skatt</p><p class="text-2xl font-bold text-purple-600 mt-1" id="annualTaxDisplay">-</p></div><div><p class="text-sm text-gray-500">Kvartalsvis betaling</p><p class="text-2xl font-bold text-blue-600 mt-1" id="quarterlyTaxDisplay">-</p></div><div><p class="text-sm text-gray-500">Neste forfall</p><p class="text-lg font-semibold text-gray-900 mt-1" id="nextPaymentDisplay">-</p><p class="text-sm text-gray-500" id="nextPaymentAmount">-</p></div></div><div class="mt-6 pt-6 border-t border-gray-100"><h4 class="text-sm font-semibold text-gray-700 mb-3">Betalingsplan 2026</h4><div class="grid grid-cols-2 md:grid-cols-4 gap-4"><div class="text-center p-3 bg-gray-50 rounded-lg"><p class="text-xs text-gray-500">15. mars</p><p class="text-lg font-bold text-gray-900 mt-1" id="q1Payment">-</p></div><div class="text-center p-3 bg-gray-50 rounded-lg"><p class="text-xs text-gray-500">15. mai</p><p class="text-lg font-bold text-gray-900 mt-1" id="q2Payment">-</p></div><div class="text-center p-3 bg-blue-50 rounded-lg border-2 border-blue-200"><p class="text-xs text-blue-600">15. september</p><p class="text-lg font-bold text-blue-600 mt-1" id="q3Payment">-</p></div><div class="text-center p-3 bg-gray-50 rounded-lg"><p class="text-xs text-gray-500">15. november</p><p class="text-lg font-bold text-gray-900 mt-1" id="q4Payment">-</p></div></div></div></div><div class="card"><div class="flex justify-between items-center mb-4"><h3 class="text-lg font-semibold text-gray-900">Siste transaksjoner</h3><a href="/review-queue.html" class="text-sm text-purple-600 hover:underline">Se alle →</a></div><div class="overflow-x-auto"><table class="w-full"><thead><tr class="text-left text-sm text-gray-500 border-b border-gray-100"><th class="pb-3 font-medium">Dato</th><th class="pb-3 font-medium">Beskrivelse</th><th class="pb-3 font-medium">Kategori</th><th class="pb-3 font-medium text-right">Beløp</th></tr></thead><tbody id="recentTransactions"></tbody></table></div></div></div><div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"><div class="flex items-center justify-center h-full"><div class="bg-white rounded-xl p-8 text-center"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div><p class="text-gray-600 mt-4">Laster økonomidata...</p></div></div></div><script>
-// State
-let monthlyChart = null;
-let categoryChart = null;// API Configuration
-const API_BASE = 'http://localhost:3001/api';
-// For demo purposes, using mock token - replace with real auth
-const TOKEN = localStorage.getItem('skattpro_token') || 'demo-token';// Format currency
-function formatCurrency(amount) {
-return new Intl.NumberFormat('no-NO', {
-style: 'currency',
-currency: 'NOK',
-minimumFractionDigits: 0
-}).format(amount);
-}// Format date
-function formatDate(dateString) {
-return new Date(dateString).toLocaleDateString('no-NO', {
-day: 'numeric',
-month: 'short'
-});
-}// Show/hide loading
-function setLoading(loading) {
-document.getElementById('loadingOverlay').classList.toggle('hidden', !loading);
-}// Fetch dashboard data
-async function loadDashboard() {
-setLoading(true);
-try {
-const response = await fetch(`${API_BASE}/dashboard/profit`, {
-headers: {
-'Authorization': `Bearer ${TOKEN}`
-}
-});
-if (!response.ok) {
-throw new Error('Failed to load data');
-}
-const result = await response.json();
-updateDashboard(result.data);
-} catch (error) {
-console.error('Error loading dashboard:', error);
-alert('Kunne ikke laste dashboard. Sjekk at du er innlogget.');
-} finally {
-setLoading(false);
-}
-}// Update dashboard UI
-function updateDashboard(data) {
-// Summary stats
-document.getElementById('incomeDisplay').textContent = formatCurrency(data.summary.income);
-document.getElementById('expensesDisplay').textContent = formatCurrency(data.summary.expenses);
-document.getElementById('profitDisplay').textContent = formatCurrency(data.summary.profit);
-document.getElementById('taxDisplay').textContent = formatCurrency(data.tax.estimatedAnnual);
-// Tax tracker
-document.getElementById('annualTaxDisplay').textContent = formatCurrency(data.tax.estimatedAnnual);
-document.getElementById('quarterlyTaxDisplay').textContent = formatCurrency(data.tax.quarterlyPayment);
-if (data.tax.nextPayment) {
-const nextDate = new Date(data.tax.nextPayment.date);
-document.getElementById('nextPaymentDisplay').textContent = nextDate.toLocaleDateString('no-NO', {
-day: 'numeric',
-month: 'long'
-});
-document.getElementById('nextPaymentAmount').textContent = formatCurrency(data.tax.nextPayment.amount);
-}
-// Payment schedule
-document.getElementById('q1Payment').textContent = formatCurrency(data.tax.quarterlyPayment);
-document.getElementById('q2Payment').textContent = formatCurrency(data.tax.quarterlyPayment);
-document.getElementById('q3Payment').textContent = formatCurrency(data.tax.quarterlyPayment);
-document.getElementById('q4Payment').textContent = formatCurrency(data.tax.quarterlyPayment);// Monthly trend chart
-updateMonthlyChart(data.monthlyTrend);
-// Category chart
-updateCategoryChart(data.byCategory);
-// Recent transactions (mock data for now)
-updateRecentTransactions();
-}// Update monthly trend chart
-function updateMonthlyChart(monthlyData) {
-const ctx = document.getElementById('monthlyChart').getContext('2d');
-if (monthlyChart) {
-monthlyChart.destroy();
-}
-monthlyChart = new Chart(ctx, {
-type: 'bar',
-data: {
-labels: monthlyData.map(d => d.monthName.substring(0, 3)),
-datasets: [
-{
-label: 'Inntekt',
-data: monthlyData.map(d => d.income),
-backgroundColor: 'rgba(34, 197, 94, 0.8)',
-borderRadius: 4
-},
-{
-label: 'Utgifter',
-data: monthlyData.map(d => d.expenses),
-backgroundColor: 'rgba(239, 68, 68, 0.8)',
-borderRadius: 4
-}
-]
-},
-options: {
-responsive: true,
-maintainAspectRatio: false,
-plugins: {
-legend: {
-position: 'top',
-}
-},
-scales: {
-y: {
-beginAtZero: true,
-ticks: {
-callback: value => value >= 1000 ? `${value/1000}k` : value
-}
-}
-}
-}
-});
-}// Update category chart
-function updateCategoryChart(byCategory) {
-const ctx = document.getElementById('categoryChart').getContext('2d');
-if (categoryChart) {
-categoryChart.destroy();
-}
-// Get top 5 expense categories
-const categories = Object.entries(byCategory)
-.filter(([_, data]) => data.expenses > 0)
-.sort((a, b) => b[1].expenses - a[1].expenses)
-.slice(0, 5);
-categoryChart = new Chart(ctx, {
-type: 'doughnut',
-data: {
-labels: categories.map(([name]) => name),
-datasets: [{
-data: categories.map(([_, data]) => data.expenses),
-backgroundColor: [
-'rgba(147, 51, 234, 0.8)',
-'rgba(59, 130, 246, 0.8)',
-'rgba(16, 185, 129, 0.8)',
-'rgba(245, 158, 11, 0.8)',
-'rgba(239, 68, 68, 0.8)'
-],
-borderWidth: 0
-}]
-},
-options: {
-responsive: true,
-maintainAspectRatio: false,
-plugins: {
-legend: {
-position: 'right',
-}
-}
-}
-});
-}// Update recent transactions (mock for now)
-function updateRecentTransactions() {
-const tbody = document.getElementById('recentTransactions');
-const mockTransactions = [
-{ date: '2026-06-05', description: 'VIPPS BEDRIFT 123456', category: 'Salgsinntekt', amount: 15000 },
-{ date: '2026-06-04', description: 'APPLE STORE', category: 'Datautstyr', amount: -2499 },
-{ date: '2026-06-03', description: 'VY GRUPPEN', category: 'Reise', amount: -850 },
-{ date: '2026-06-02', description: 'MENY 1234', category: 'Møter', amount: -450 },
-{ date: '2026-06-01', description: 'GOOGLE WORKSPACE', category: 'Datautstyr', amount: -169 }
-];
-tbody.innerHTML = mockTransactions.map(t => `
-<tr class="border-b border-gray-50 hover:bg-gray-50"><td class="py-3 text-sm text-gray-900">${formatDate(t.date)}</td><td class="py-3 text-sm text-gray-900">${t.description}</td><td class="py-3"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-${t.category}
-</span></td><td class="py-3 text-sm text-right font-semibold ${t.amount > 0 ? 'text-green-600' : 'text-red-600'}">
-${t.amount > 0 ? '+' : ''}${formatCurrency(t.amount)}
-</td></tr>
-`).join('');
-}// Refresh data
-function refreshData() {
-loadDashboard();
-}// Initialize
-document.addEventListener('DOMContentLoaded', loadDashboard);
-</script></body></html>
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard – SkattPro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="skattpro-nav.css">
+  <style>
+    .page-header { padding: 60px 24px 40px; max-width: 900px; margin: 0 auto; }
+    .page-header h1 { font-size: 2.25rem; font-weight: 800; margin-bottom: 10px; }
+    .page-header p { color: var(--gray); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    .card { background: white; border: 1px solid var(--border); border-radius: 14px; padding: 22px; box-shadow: 0 6px 24px rgba(0,0,0,0.05); }
+    .metric { font-size: 1.7rem; font-weight: 800; }
+    .label { color: var(--gray); font-size: 0.92rem; }
+    .tables-wrap { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 22px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+    th, td { padding: 10px 8px; border-bottom: 1px solid var(--border); text-align: left; }
+    th { color: var(--gray); font-weight: 600; font-size: 0.85rem; }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; }
+    .muted { color: var(--gray); }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html" class="logo"><span class="logo-mark">S</span> SkattPro</a>
+    <div class="menu" id="primaryMenu">
+      <a href="index.html">Skatt</a>
+      <a href="kalkulator.html">Kalkulator</a>
+      <a href="faktura.html">Faktura</a>
+      <a href="forskuddsskatt.html">Forskudd</a>
+      <a href="skattefrister.html">Frister</a>
+      <a href="utgiftssporing.html">Utgifter</a>
+      <a href="paminnelser.html">Påminnelser</a>
+      <a href="pro-features.html">Pro</a>
+    </div>
+    <div class="nav-actions"><a href="ansatte-og-lonn/" class="btn btn-ghost">Ansatte</a></div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="document.getElementById('primaryMenu').classList.toggle('open')">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5"/></svg>
+    </button>
+  </nav>
+
+  <header class="page-header" style="padding-top: 40px;">
+    <h1>Dashboard</h1>
+    <p>Økonomisk oversikt og nylige transaksjoner for bedriften.</p>
+  </header>
+
+  <main class="container">
+    <section class="grid" style="max-width: 1100px; margin: 0 auto;">
+      <div class="card">
+        <div class="label">Inntekt (i år)</div>
+        <div class="metric" id="incomeDisplay" style="color:#16a34a">–</div>
+      </div>
+      <div class="card">
+        <div class="label">Utgifter (i år)</div>
+        <div class="metric" id="expensesDisplay" style="color:#dc2626">–</div>
+      </div>
+      <div class="card">
+        <div class="label">Overskudd</div>
+        <div class="metric" id="profitDisplay" style="color:var(--ink)">–</div>
+      </div>
+      <div class="card">
+        <div class="label">Beregnet årlig skatt</div>
+        <div class="metric" id="taxDisplay" style="color:#ea5800">–</div>
+      </div>
+    </section>
+
+    <div class="tables-wrap" style="max-width: 1100px; margin: 28px auto 0;">
+      <div class="card">
+        <div style="font-weight:700;margin-bottom: 10px;">Nylige transaksjoner</div>
+        <table>
+          <thead><tr><th>Dato</th><th>Beskrivelse</th><th>Kategori</th><th style="text-align:right">Beløp</th></tr></thead>
+          <tbody id="recentTransactions"></tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div style="font-weight:700; margin-bottom: 10px;">Fordeling</div>
+        <table>
+          <thead><tr><th>Kategori</th><th style="text-align:right">Beløp</th></tr></thead>
+          <tbody id="categoryRows"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script>
+  function fmt(n){ return new Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(n || 0); }
+  function dateLabel(s){ if(!s) return '-'; const d = new Date(s); return d.toLocaleDateString('no-NO', { day: 'numeric', month: 'short' }); }
+  function render() {
+    const data = window.__samples || {};
+    document.getElementById('incomeDisplay').textContent = fmt(data.income);
+    document.getElementById('expensesDisplay').textContent = fmt(data.expenses);
+    document.getElementById('profitDisplay').textContent = fmt(data.profit);
+    document.getElementById('taxDisplay').textContent = fmt(data.tax);
+    const tx = data.transactions || [];
+    document.getElementById('recentTransactions').innerHTML = tx.map(t => `<tr>
+      <td>${dateLabel(t.date)}</td>
+      <td>${escapeHtml(t.description)}</td>
+      <td><span class="badge" style="background:rgba(79,70,229,0.1);color:var(--primary)">${escapeHtml(t.category)}</span></td>
+      <td style="text-align:right; font-weight:700; color:${t.amount>=0?'#16a34a':'#dc2626'}">${t.amount>=0?'+':''}${fmt(t.amount)}</td>
+    </tr>`).join('') || '<tr><td colspan="4" class="muted">Ingen data enda.</td></tr>';
+    const cats = (data.byCategory || {});
+    const sorted = Object.entries(cats).slice(0, 8);
+    document.getElementById('categoryRows').innerHTML = sorted.map(([name, value]) => `<tr>
+      <td>${escapeHtml(name)}</td>
+      <td style="text-align:right; font-weight:700">${fmt(typeof value === 'object' && value.expenses ? value.expenses : value)}</td>
+    </tr>`).join('') || '<tr><td colspan="2" class="muted">Ingen fordeling enda.</td></tr>';
+  }
+  function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c])); }
+  document.addEventListener('DOMContentLoaded', () => {
+    window.__samples = {
+      income: 1240000,
+      expenses: 428000,
+      profit: 812000,
+      tax: 187000,
+      transactions: [
+        { date: '2026-06-05', description: 'VIPPS BEDRIFT 123456', category: 'Salgsinntekt', amount: 15000 },
+        { date: '2026-06-04', description: 'APPLE STORE', category: 'Datautstyr', amount: -2499 },
+        { date: '2026-06-03', description: 'VY GRUPPEN', category: 'Reise', amount: -850 },
+        { date: '2026-06-02', description: 'MENY 1234', category: 'Møter', amount: -450 },
+        { date: '2026-06-01', description: 'GOOGLE WORKSPACE', category: 'Abonnement', amount: -169 }
+      ],
+      byCategory: { Salg: 920000, Lønn: 284000, Drift: 96000, Markedsføring: 48000, Reise: 24000 }
+    };
+    render();
+  });
+  </script>
+</body>
+</html>

@@ -5,80 +5,233 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  // directUrl = env("DIRECT_URL") // for Supabase
+}
+
+// NextAuth required models
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?   // bcrypt hashed, for credentials auth (MVP)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
+  companies     Company[]
 }
 
 model Account {
-  id               String   @id @default(cuid())
+  id                String  @id @default(cuid())
   userId            String
-  name              String
-  number            String?  // kontonummer
-  type              String   // bank, cash, credit_card
-  currency          String   @default("NOK")
-  openingBalance    Decimal  @default(0)
-  currentBalance    Decimal  @default(0)
-  lastReconciledAt  DateTime?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// === SkattPro Business Models ===
+
+model Company {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name          String
+  orgNumber     String?  @unique
+  type          String   // ENK | AS | ANS | DA | etc.
+  address       String?
+  postalCode    String?
+  city          String?
+  country       String   @default("NO")
+  vatRegistered Boolean  @default(true)
+  fiscalYearStart DateTime?
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  accounts      BankAccount[]
+  transactions  Transaction[]
+  invoices      Invoice[]
+  receipts      Receipt[]
+  subscription  Subscription?
+}
+
+model BankAccount {
+  id               String   @id @default(cuid())
+  companyId        String
+  company          Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  name             String
+  type             String   // bank | cash | credit_card
+  iban             String?
+  last4            String?
+  balance          Decimal  @default(0) @db.Decimal(12,2)
+  lastReconciledAt DateTime?
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  transactions     Transaction[]
 }
 
 model Transaction {
   id          String   @id @default(cuid())
-  userId      String
+  companyId   String
+  company     Company     @relation(fields: [companyId], references: [id], onDelete: Cascade)
   accountId   String?
-  account     Account? @relation(fields: [accountId], references: [id])
-  type        String   // income, expense, transfer
-  amount      Decimal  @db.Decimal(10,2)
-  currency    String   @default("NOK")
-  description String
+  account     BankAccount? @relation(fields: [accountId], references: [id])
+
   date        DateTime
-  category    String?
-  tags        String[] @default([])
-  bookingDate DateTime?
-  dueDate     DateTime?
-  vatCode     String?  // H1, H0, F, I, K
+  amount      Decimal  @db.Decimal(12,2) // negative = expense/outflow
+  description String
+  merchant    String?
+  reference   String?
+
+  // Bookkeeping (Norwegian kontoplan + MVA)
+  category    String?  // Human readable e.g. "Salgsinntekt tjenester"
+  accountCode String?  // "3010", "5420" etc.
+  vatCode     String?  // H1 | H0 | F | I | K (standard Norwegian)
   vatRate     Decimal? @db.Decimal(5,2)
-  vatAmount   Decimal? @db.Decimal(10,2)
-  isCleared   Boolean  @default(false)
-  attachments String[] @default([])
+  vatAmount   Decimal? @db.Decimal(12,2)
+
+  // AI / Automation
+  aiConfidence  Float?
+  aiMethod      String?  // rule | llm | hybrid | manual
+  aiExplanation String?
+
+  isReconciled Boolean @default(false)
+  attachments  String[] @default([]) // receipt image urls or ids
+
+  receipt     Receipt? @relation("ReceiptTransaction")
+
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@index([companyId, date])
+  @@index([companyId, accountCode])
+  @@index([companyId, isReconciled])
 }
 
-model Company {
-  id                 String    @id @default(cuid())
-  userId             String
-  name               String
-  orgNumber          String?
-  type               String    // ENK, ANS, AS
-  address            String?
-  city               String?
-  postalCode         String?
-  country            String?   @default("NO")
-  vatNumber          String?
-  accountingStandard String    @default("NGAAP")
-  fiscalYearStart    DateTime?
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
-  invoices           Invoice[]
+model Receipt {
+  id            String   @id @default(cuid())
+  companyId     String
+  company       Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  transactionId String?  @unique
+  transaction   Transaction? @relation(fields: [transactionId], references: [id], name: "ReceiptTransaction")
+
+  imageUrl      String
+  originalName  String
+
+  // OCR results (from Tesseract or vision)
+  ocrText       String?
+  ocrMerchant   String?
+  ocrDate       DateTime?
+  ocrAmount     Decimal? @db.Decimal(12,2)
+  ocrVatAmount  Decimal?
+  ocrVatRate    Float?
+  ocrConfidence Float?
+
+  createdAt     DateTime @default(now())
+
+  @@index([companyId])
 }
 
 model Invoice {
-  id              String    @id @default(cuid())
-  companyId       String
-  company         Company   @relation(fields: [companyId], references: [id])
-  invoiceNumber   String
-  status          String    // draft, sent, paid, overdue, canceled
-  issueDate       DateTime
-  dueDate         DateTime
-  currency        String    @default("NOK")
-  subtotal        Decimal   @db.Decimal(10,2)
-  vatRate         Decimal?  @db.Decimal(5,2)
-  vatAmount       Decimal?  @db.Decimal(10,2)
-  total           Decimal   @db.Decimal(10,2)
-  pdfUrl          String?
-  sentAt          DateTime?
-  paidAt          DateTime?
-  metadata        Json?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  id            String   @id @default(cuid())
+  companyId     String
+  company       Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  invoiceNumber String   @unique
+  status        String   // draft | sent | paid | overdue | canceled
+
+  customerName  String
+  customerEmail String?
+  customerOrgNr String?
+
+  issueDate     DateTime
+  dueDate       DateTime
+  currency      String   @default("NOK")
+
+  subtotal      Decimal  @db.Decimal(12,2)
+  vatAmount     Decimal  @db.Decimal(12,2)
+  total         Decimal  @db.Decimal(12,2)
+
+  lineItems     Json     // Array of { description, quantity, unitPrice, vatRate, accountCode? }
+
+  pdfUrl        String?
+  ehfXmlUrl     String?  // for EHF/Peppol later
+
+  sentAt        DateTime?
+  paidAt        DateTime?
+  reminderCount Int      @default(0)
+  lastReminderAt DateTime?
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([companyId, status])
+  @@index([companyId, dueDate])
+}
+
+model Subscription {
+  id                   String   @id @default(cuid())
+  companyId            String   @unique
+  company              Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  plan                 String   // starter | pro | bedrift
+  status               String   // trialing | active | past_due | canceled | unpaid
+  stripeSubscriptionId String?  @unique
+  stripePriceId        String?
+  currentPeriodEnd     DateTime?
+  trialEndsAt          DateTime?
+  canceledAt           DateTime?
+
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+// Optional future: Corrections for AI learning, Payroll, MvaReport
+model Correction {
+  id                 String   @id @default(cuid())
+  companyId          String
+  transactionId      String
+  originalCategory   String?
+  originalAccountCode String?
+  originalConfidence Float?
+
+  correctedCategory  String
+  correctedAccountCode String?
+  userFeedback       String?
+
+  createdAt          DateTime @default(now())
 }
