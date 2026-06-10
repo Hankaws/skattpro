@@ -1,4 +1,5 @@
 import NextAuth from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
@@ -7,9 +8,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   session: { strategy: "jwt" },
   pages: {
     signIn: "/auth/signin",
-    // signUp is not a valid key in next-auth PagesOptions (use newUser or handle via custom flow)
   },
+  trustHost: true,
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
     CredentialsProvider({
       name: "credentials",
       credentials: {
