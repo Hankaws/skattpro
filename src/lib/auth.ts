@@ -17,10 +17,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Passord", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null;
-        const user = await prisma.user.findUnique({ where: { email: credentials.email } });
+        const email = credentials?.email as string | undefined;
+        const password = credentials?.password as string | undefined;
+        if (!email || !password) return null;
+        const user = await prisma.user.findUnique({ where: { email } });
         if (!user?.password) return null;
-        const valid = await bcrypt.compare(credentials.password, user.password);
+        const valid = await bcrypt.compare(password, user.password);
         if (!valid) return null;
         return { id: user.id, email: user.email, name: user.name ?? undefined };
       },
