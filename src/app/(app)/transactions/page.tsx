@@ -250,19 +250,19 @@ export default function TransactionsPage() {
 
       {transactions.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <Card className="p-4">
+          <div className="glass-card p-4">
             <div className="text-sm text-muted-foreground">Rader</div>
             <div className="text-2xl font-semibold">{transactions.length}</div>
             <div className="text-xs text-muted-foreground mt-1">{fileName || 'Lokal + DB'}</div>
-          </Card>
-          <Card className="p-4">
+          </div>
+          <div className="glass-card p-4">
             <div className="text-sm text-muted-foreground">Inntekter (AI)</div>
             <div className="text-2xl font-semibold text-emerald-600">{totalIncome.toLocaleString('nb-NO')} kr</div>
-          </Card>
-          <Card className="p-4">
+          </div>
+          <div className="glass-card p-4">
             <div className="text-sm text-muted-foreground">Utgifter (AI)</div>
             <div className="text-2xl font-semibold text-red-600">{totalExpense.toLocaleString('nb-NO')} kr</div>
-          </Card>
+          </div>
         </div>
       )}
 

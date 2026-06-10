@@ -53,7 +53,8 @@
 }
 
 @layer base {
-  * {
+  /* Scope shadcn border to app content only, so the pure marketing landing keeps its original clean design */
+  .app-shell * {
     @apply border-border;
   }
   body {
@@ -282,7 +283,21 @@
 
 /* Small polish for marketing vs app */
 .marketing-body {
-  background: var(--bg-primary);
-  color: var(--text-primary);
+  background: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
   transition: var(--transition);
+  font-family: "Inter", system-ui, sans-serif !important;
+}
+
+/* Prevent shadcn base from polluting the pure marketing landing design */
+.marketing-body * {
+  border-color: var(--border);
+}
+
+/* Make sure marketing glass effects are strong */
+.marketing-body .glass,
+.marketing-body .glass-card,
+.marketing-body .glass-strong {
+  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ArrowUp, ArrowDown, TrendingUp, AlertTriangle, Receipt } from 'lucide-react';
@@ -65,22 +64,14 @@ export default function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="glass-card p-5">
-          <StatCard title="Omsetning (YTD)" value={`${Math.round(stats.omsetning / 1000)} 000 kr`} trend="+8.2%" positive />
-        </div>
-        <div className="glass-card p-5">
-          <StatCard title="Utgifter (YTD)" value={`${Math.round(stats.utgifter / 1000)} 000 kr`} trend="-1.4%" />
-        </div>
-        <div className="glass-card p-5 border-2 border-primary-500">
-          <StatCard title="Resultat" value={`${Math.round(stats.resultat / 1000)} 000 kr`} trend="+14.1%" positive highlight />
-        </div>
-        <div className="glass-card p-5">
-          <StatCard title="Ubetalte fakturaer" value={String(stats.ubetalteFakturaer)} trend="Totalt ~148k kr" />
-        </div>
+        <StatCard title="Omsetning (YTD)" value={`${Math.round(stats.omsetning / 1000)} 000 kr`} trend="+8.2%" positive glass />
+        <StatCard title="Utgifter (YTD)" value={`${Math.round(stats.utgifter / 1000)} 000 kr`} trend="-1.4%" glass />
+        <StatCard title="Resultat" value={`${Math.round(stats.resultat / 1000)} 000 kr`} trend="+14.1%" positive highlight glass />
+        <StatCard title="Ubetalte fakturaer" value={String(stats.ubetalteFakturaer)} trend="Totalt ~148k kr" glass />
       </div>
 
       <div className="grid lg:grid-cols-5 gap-6">
-        <Card className="lg:col-span-3 p-6">
+        <div className="glass-card lg:col-span-3 p-6">
           <div className="flex items-center justify-between mb-4">
             <div>
               <div className="font-semibold">Resultatutvikling</div>
@@ -99,9 +90,9 @@ export default function Dashboard() {
           <div className="flex justify-between text-[10px] text-muted-foreground mt-2">
             <div>Jan</div><div>Nå</div>
           </div>
-        </Card>
+        </div>
 
-        <Card className="lg:col-span-2 p-6">
+        <div className="glass-card lg:col-span-2 p-6">
           <div className="flex items-center gap-2 mb-3">
             <TrendingUp className="h-5 w-5 text-primary-500" />
             <div className="font-semibold">AI-innsikt</div>
@@ -121,7 +112,7 @@ export default function Dashboard() {
           <Link href="/reports/forskuddsskatt" className="text-xs text-primary-600 mt-4 inline-block hover:underline">
             Åpne forskuddsskatt-kalkulator →
           </Link>
-        </Card>
+        </div>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6">
@@ -166,15 +157,18 @@ export default function Dashboard() {
   );
 }
 
-function StatCard({ title, value, trend, positive = false, highlight = false }: any) {
+function StatCard({ title, value, trend, positive = false, highlight = false, glass = false }: { title: string; value: string; trend: string; positive?: boolean; highlight?: boolean; glass?: boolean }) {
+  const base = glass 
+    ? `glass-card p-5 ${highlight ? 'border-2 border-primary-500' : ''}` 
+    : `p-5 rounded-2xl border bg-white/80 shadow-sm ${highlight ? 'border-primary-500' : ''}`;
   return (
-    <Card className={`p-5 ${highlight ? 'border-primary-500 shadow-md' : ''}`}>
+    <div className={base}>
       <div className="text-xs font-medium text-muted-foreground">{title}</div>
       <div className="text-3xl font-semibold tracking-tighter mt-1.5">{value}</div>
       <div className={`text-xs mt-1.5 flex items-center gap-1 ${positive ? 'text-emerald-600' : 'text-red-600'}`}>
         {positive ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />}
         {trend}
       </div>
-    </Card>
+    </div>
   );
 }

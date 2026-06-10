@@ -15,9 +15,15 @@ export default function MarketingLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="marketing-body min-h-screen">
+    <div className="marketing-body min-h-screen" style={{ 
+      '--bg-primary': '#ffffff', 
+      '--text-primary': '#0f172a',
+      background: 'var(--bg-primary)',
+      color: 'var(--text-primary)'
+    } as React.CSSProperties}>
       {/* The landing page is self-contained with its own header/footer.
-          This layout just provides the root HTML shell + metadata. */}
+          This layout just provides the root HTML shell + metadata. 
+          We force marketing-body here to isolate from shadcn/next-themes overrides. */}
       {children}
     </div>
   );

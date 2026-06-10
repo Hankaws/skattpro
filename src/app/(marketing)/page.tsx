@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useTheme } from 'next-themes';
 
 // Exact recreation of the polished high-converting landing (skattpro-landing/index.html)
 // Preserves visual identity, copy, interactions, pricing, and Norwegian tone 100%.
@@ -13,8 +14,9 @@ export default function SkattProLanding() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [newsletterStatus, setNewsletterStatus] = useState('');
   const [contactStatus, setContactStatus] = useState('');
+  const { setTheme: setNextTheme } = useTheme();
 
-  // Theme handling (matches original exactly + persistence)
+  // Theme handling (matches original exactly + persistence + sync with next-themes)
   useEffect(() => {
     const saved = localStorage.getItem('skattpro-theme') as 'light' | 'dark' | null;
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -24,7 +26,9 @@ export default function SkattProLanding() {
     if (initial === 'dark') {
       document.documentElement.classList.add('dark');
     }
-  }, []);
+    // Sync with next-themes
+    setNextTheme(initial);
+  }, [setNextTheme]);
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
@@ -36,6 +40,7 @@ export default function SkattProLanding() {
       document.documentElement.classList.remove('dark');
     }
     localStorage.setItem('skattpro-theme', newTheme);
+    setNextTheme(newTheme);
   };
 
   // Scrollspy + sticky CTA + header glass

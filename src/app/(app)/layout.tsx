@@ -29,9 +29,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 app-shell">
       {/* Top bar */}
-      <header className="border-b bg-white sticky top-0 z-50">
+      <header className="glass-strong border-b sticky top-0 z-50">
         <div className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-2.5">
@@ -57,7 +57,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         </div>
 
         {/* App navigation */}
-        <div className="border-t bg-white">
+        <div className="border-t glass" style={{background: 'var(--bg-glass)'}}>
           <div className="mx-auto max-w-7xl px-6 flex items-center gap-1 text-sm h-12">
             <NavLink href="/dashboard" icon={<LayoutDashboard className="h-4 w-4" />}>Dashboard</NavLink>
             <NavLink href="/transactions" icon={<Receipt className="h-4 w-4" />}>Transaksjoner</NavLink>
