@@ -127,6 +127,7 @@ export default function TransactionsPage() {
           const categorized = await categorizeBatch(parsed);
           const rows: TxRow[] = parsed.map((tx, i) => ({
             ...tx,
+            id: tx.id || `csv-${i}`,
             result: categorized[i],
           }));
 
