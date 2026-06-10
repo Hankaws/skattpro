@@ -63,13 +63,13 @@ export default function ReceiptsPage() {
       <h1 className="text-3xl font-bold mb-2">Kvitteringer</h1>
       <p className="text-muted-foreground mb-8">Ta bilde eller last opp – OCR + AI lager transaksjon automatisk.</p>
 
-      <Card className="p-8 border-dashed">
+      <div className="glass-card p-8 border-dashed border-2" style={{borderColor: 'var(--border)'}}>
         <div className="flex flex-col items-center text-center">
-          <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
-            <Camera className="h-8 w-8 text-primary" />
+          <div className="w-16 h-16 rounded-2xl bg-primary-500/10 flex items-center justify-center mb-4">
+            <Camera className="h-8 w-8 text-primary-500" />
           </div>
-          <h3 className="font-semibold text-lg">Last opp kvittering</h3>
-          <p className="text-sm text-muted-foreground mt-1 mb-6">Støtter JPG, PNG. OCR skjer i nettleseren din (personvern).</p>
+          <h3 className="font-semibold text-lg" style={{color: 'var(--text-primary)'}}>Last opp kvittering</h3>
+          <p className="text-sm mt-1 mb-6" style={{color: 'var(--text-secondary)'}}>Støtter JPG, PNG. OCR skjer i nettleseren din (personvern).</p>
 
           <label className="cursor-pointer">
             <Button size="lg" className="gap-2" disabled={processing}>
@@ -77,9 +77,9 @@ export default function ReceiptsPage() {
             </Button>
             <input type="file" accept="image/*" className="hidden" onChange={onDrop} disabled={processing} />
           </label>
-          <p className="text-xs text-muted-foreground mt-3">Eller ta bilde direkte med telefonen din</p>
+          <p className="text-xs mt-3" style={{color: 'var(--text-muted)'}}>Eller ta bilde direkte med telefonen din</p>
         </div>
-      </Card>
+      </div>
 
       {result && (
         <Card className="mt-8 p-6">
