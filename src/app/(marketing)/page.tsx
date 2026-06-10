@@ -61,7 +61,7 @@ export default function SkattProLanding() {
         } else {
           header.style.background = 'transparent';
           header.style.backdropFilter = 'none';
-          header.style.webkitBackdropFilter = 'none';
+          (header.style as any).webkitBackdropFilter = 'none';
           header.style.borderBottom = '1px solid transparent';
         }
       }
