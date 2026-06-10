@@ -74,6 +74,7 @@ model Company {
   city          String?
   country       String   @default("NO")
   vatRegistered Boolean  @default(true)
+  vatNumber     String?
   fiscalYearStart DateTime?
 
   createdAt     DateTime @default(now())
