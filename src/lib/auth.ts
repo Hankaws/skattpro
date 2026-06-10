@@ -7,7 +7,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   session: { strategy: "jwt" },
   pages: {
     signIn: "/auth/signin",
-    signUp: "/auth/signup",
+    // signUp is not a valid key in next-auth PagesOptions (use newUser or handle via custom flow)
   },
   providers: [
     CredentialsProvider({
