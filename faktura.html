@@ -44,6 +44,9 @@ body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:linear-grad
 
 /* Professional Print Layout */
 @media print {
+  body {
+    background: white !important;
+  }
   body * {
     visibility: hidden;
   }
@@ -57,115 +60,196 @@ body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:linear-grad
     top: 0;
     width: 100%;
     margin: 0;
-    padding: 0;
+    padding: 40px;
     background: white;
     color: #0f172a;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
   }
-  .container, .nav, .header, .card {
+  .container, .nav, .header, .card, .btn {
     display: none !important;
   }
   .invoice-header {
     display: flex !important;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 40px;
+    align-items: flex-start;
+    margin-bottom: 50px;
     border-bottom: 3px solid #6366f1;
-    padding-bottom: 20px;
+    padding-bottom: 25px;
   }
-  .invoice-logo {
-    font-size: 32px;
+  .invoice-logo-block {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .invoice-logo-mark {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, #6366f1, #0ea5e9);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
     font-weight: 900;
-    color: #6366f1;
+    font-size: 22px;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+  }
+  .invoice-logo-text {
+    font-size: 28px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #6366f1, #0ea5e9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   .invoice-title {
-    font-size: 28px;
-    font-weight: 800;
+    text-align: right;
+  }
+  .invoice-title-label {
+    font-size: 11pt;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .invoice-title-main {
+    font-size: 32px;
+    font-weight: 900;
     color: #0f172a;
     letter-spacing: 2px;
   }
   .invoice-parties {
     display: flex !important;
     justify-content: space-between;
-    margin-bottom: 40px;
-    gap: 40px;
+    margin-bottom: 50px;
+    gap: 60px;
   }
   .invoice-from, .invoice-to {
     flex: 1;
   }
   .invoice-section {
-    font-size: 10pt;
+    font-size: 9pt;
     font-weight: 700;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     color: #6366f1;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
+  }
+  .invoice-party-name {
+    font-size: 13pt;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 6px;
+  }
+  .invoice-party-detail {
+    font-size: 10pt;
+    color: #64748b;
+    line-height: 1.6;
   }
   .invoice-details {
-    margin-bottom: 30px;
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 35px;
   }
   .invoice-detail-row {
     display: flex !important;
     justify-content: space-between;
-    padding: 12px 0;
+    padding: 10px 0;
     border-bottom: 1px solid #e2e8f0;
-    font-size: 11pt;
+    font-size: 10.5pt;
+  }
+  .invoice-detail-row:first-child {
+    padding-top: 0;
   }
   .invoice-detail-row:last-child {
     border-bottom: none;
+    padding-bottom: 0;
   }
-  .invoice-description {
+  .invoice-detail-label {
+    color: #64748b;
+    font-weight: 500;
+  }
+  .invoice-detail-value {
+    color: #0f172a;
+    font-weight: 700;
+  }
+  .invoice-description-block {
     display: block !important;
-    margin: 20px 0;
-    padding: 15px;
+    margin: 30px 0;
+  }
+  .invoice-description-label {
+    font-size: 9pt;
+    font-weight: 700;
+    color: #6366f1;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 12px;
+  }
+  .invoice-description-text {
+    padding: 18px;
     background: #f8fafc;
-    border-radius: 8px;
-    font-size: 11pt;
-    line-height: 1.6;
+    border-radius: 10px;
+    border-left: 4px solid #6366f1;
+    font-size: 10.5pt;
+    line-height: 1.7;
+    color: #334155;
   }
   .invoice-total-section {
     display: block !important;
-    margin-top: 30px;
+    margin-top: 40px;
     page-break-inside: avoid;
   }
   .invoice-total-box {
-    background: #6366f1 !important;
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
     color: white !important;
-    padding: 20px 25px;
-    border-radius: 12px;
-    margin-top: 15px;
+    padding: 28px 32px;
+    border-radius: 16px;
+    margin-top: 20px;
+    box-shadow: 0 10px 40px rgba(99, 102, 241, 0.3);
   }
   .invoice-total-row {
     display: flex !important;
     justify-content: space-between;
-    margin-bottom: 10px;
-    font-size: 12pt;
+    margin-bottom: 12px;
+    font-size: 11pt;
   }
   .invoice-total-row.final {
-    font-size: 20pt;
+    font-size: 22pt;
     font-weight: 900;
     border-top: 2px solid rgba(255,255,255,0.4);
-    padding-top: 15px;
-    margin-top: 15px;
+    padding-top: 18px;
+    margin-top: 18px;
   }
   .invoice-footer {
     display: block !important;
-    margin-top: 50px;
-    padding-top: 25px;
+    margin-top: 60px;
+    padding-top: 30px;
     border-top: 2px solid #e2e8f0;
     text-align: center;
     color: #64748b;
-    font-size: 10pt;
-    line-height: 1.8;
+    font-size: 9.5pt;
+    line-height: 2;
+  }
+  .invoice-footer strong {
+    color: #0f172a;
+  }
+  .invoice-thanks {
+    font-size: 11pt;
+    color: #0f172a;
+    font-weight: 600;
+    margin-bottom: 15px;
   }
   @page {
-    margin: 2cm;
+    margin: 1.5cm;
+    size: A4;
   }
 }
 #invoicePrint {
   display: none;
 }
 
-.invoice-header, .invoice-parties, .invoice-description, .invoice-total-section {
+.invoice-header, .invoice-parties, .invoice-description-block, .invoice-total-section {
   display: none;
 }
 </style>
@@ -274,34 +358,42 @@ Laster faktura...
 <!-- Professional Print Layout (hidden on screen) -->
 <div id="invoicePrint">
 <div class="invoice-header">
-<div class="invoice-logo">SkattPro</div>
-<div class="invoice-title">FAKTURA</div>
+<div class="invoice-logo-block">
+<div class="invoice-logo-mark">S</div>
+<div class="invoice-logo-text">SkattPro</div>
+</div>
+<div class="invoice-title">
+<div class="invoice-title-label">Dokument</div>
+<div class="invoice-title-main">FAKTURA</div>
+</div>
 </div>
 
 <div class="invoice-parties">
 <div class="invoice-from">
 <div class="invoice-section">Fra:</div>
-<div id="printCompany"></div>
-<div id="printOrg"></div>
+<div class="invoice-party-name" id="printCompany"></div>
+<div class="invoice-party-detail" id="printOrg"></div>
 </div>
 <div class="invoice-to">
 <div class="invoice-section">Til:</div>
-<div id="printClient"></div>
+<div class="invoice-party-name" id="printClient"></div>
 </div>
 </div>
 
 <div class="invoice-details">
 <div class="invoice-detail-row">
-<span>Fakturanummer:</span>
-<strong id="printInvNum"></strong>
+<span class="invoice-detail-label">Fakturanummer:</span>
+<strong class="invoice-detail-value" id="printInvNum"></strong>
 </div>
 <div class="invoice-detail-row">
-<span>Dato:</span>
-<strong id="printDate"></strong>
+<span class="invoice-detail-label">Dato:</span>
+<strong class="invoice-detail-value" id="printDate"></strong>
 </div>
 </div>
 
-<div class="invoice-description" id="printDescBlock">
+<div class="invoice-description-block">
+<div class="invoice-description-label">Beskrivelse:</div>
+<div class="invoice-description-text" id="printDescBlock"></div>
 </div>
 
 <div class="invoice-total-section">
@@ -322,7 +414,7 @@ Laster faktura...
 </div>
 
 <div class="invoice-footer">
-Takk for oppdraget!<br>
+<div class="invoice-thanks">Takk for oppdraget!</div>
 Betaling innen 14 dager.<br>
 <br>
 <strong>SkattPro</strong> · Org.nr: <span id="printOrgFooter"></span><br>
