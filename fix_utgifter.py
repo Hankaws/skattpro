@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+import re
+
+html = r'''<!DOCTYPE html>
 <html lang="no">
 <head>
   <meta charset="UTF-8">
@@ -241,4 +243,8 @@
     }
   </script>
 </body>
-</html>
+</html>'''
+
+with open('utgiftssporing.html', 'w', encoding='utf-8') as f:
+    f.write(html)
+print('utgiftssporing.html written')

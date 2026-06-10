@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id               String   @id @default(cuid())
+  userId            String
+  name              String
+  number            String?  // kontonummer
+  type              String   // bank, cash, credit_card
+  currency          String   @default("NOK")
+  openingBalance    Decimal  @default(0)
+  currentBalance    Decimal  @default(0)
+  lastReconciledAt  DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Transaction {
+  id          String   @id @default(cuid())
+  userId      String
+  accountId   String?
+  account     Account? @relation(fields: [accountId], references: [id])
+  type        String   // income, expense, transfer
+  amount      Decimal  @db.Decimal(10,2)
+  currency    String   @default("NOK")
+  description String
+  date        DateTime
+  category    String?
+  tags        String[] @default([])
+  bookingDate DateTime?
+  dueDate     DateTime?
+  vatCode     String?  // H1, H0, F, I, K
+  vatRate     Decimal? @db.Decimal(5,2)
+  vatAmount   Decimal? @db.Decimal(10,2)
+  isCleared   Boolean  @default(false)
+  attachments String[] @default([])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Company {
+  id                 String    @id @default(cuid())
+  userId             String
+  name               String
+  orgNumber          String?
+  type               String    // ENK, ANS, AS
+  address            String?
+  city               String?
+  postalCode         String?
+  country            String?   @default("NO")
+  vatNumber          String?
+  accountingStandard String    @default("NGAAP")
+  fiscalYearStart    DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  invoices           Invoice[]
+}
+
+model Invoice {
+  id              String    @id @default(cuid())
+  companyId       String
+  company         Company   @relation(fields: [companyId], references: [id])
+  invoiceNumber   String
+  status          String    // draft, sent, paid, overdue, canceled
+  issueDate       DateTime
+  dueDate         DateTime
+  currency        String    @default("NOK")
+  subtotal        Decimal   @db.Decimal(10,2)
+  vatRate         Decimal?  @db.Decimal(5,2)
+  vatAmount       Decimal?  @db.Decimal(10,2)
+  total           Decimal   @db.Decimal(10,2)
+  pdfUrl          String?
+  sentAt          DateTime?
+  paidAt          DateTime?
+  metadata        Json?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}

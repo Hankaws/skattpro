@@ -1,31 +1,13 @@
 # Dependencies
-node_modules/
-.pnpm-store/
+/node_modules
+/.next
+/.vercel
 
-# Vercel
-.vercel
-
-# Environment
+# Env
+.env*.local
 .env
-.env.local
-.env.production
 
-# Logs
-*.log
-npm-debug.log*
-
-# OS
+# Misc
 .DS_Store
-Thumbs.db
-
-# IDE
-.vscode/
-.idea/
-
-# Build outputs
-dist/
-build/
-
-# Prisma
-prisma/*.db
-prisma/*.db-journal
+*.log
+prisma/migrations/

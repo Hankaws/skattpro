@@ -1,563 +1,186 @@
 <!DOCTYPE html>
 <html lang="no">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SkattPro - Regnskap for fremtiden</title>
-<meta name="description" content="SkattPro er Norges første regnskapssystem designet for freelancere. Enkel skatteberegning, faktura, og lønnspapirer. Prøv gratis i dag!">
-<meta name="keywords" content="regnskap, skatt, ENK, enkeltmannsforetak, faktura, lønn, norsk regnskap, skatteberegning">
-<meta name="author" content="SkattPro">
-<meta property="og:title" content="SkattPro - Regnskap for fremtiden">
-<meta property="og:description" content="Norges første regnskapssystem for freelancere. Enkelt, moderne og AI-drevet.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://skattpro.no">
-<meta name="twitter:card" content="summary_large_image">
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-:root {
-  --primary: #4f46e5;
-  --primary-dark: #4338ca;
-  --accent: #06b6d4;
-  --dark: #0f172a;
-  --gray: #475569;
-  --light: #f1f5f9;
-  --white: #ffffff;
-}
-
-body {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: var(--white);
-  color: var(--dark);
-  line-height: 1.6;
-  overflow-x: hidden;
-}
-
-/* Navigation */
-.nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 48px;
-  max-width: 1400px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 100;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 22px;
-  font-weight: 800;
-  color: var(--dark);
-  text-decoration: none;
-}
-
-.logo-icon {
-  width: 42px;
-  height: 42px;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 900;
-  font-size: 22px;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-}
-
-.menu {
-  display: flex;
-  gap: 8px;
-}
-
-.menu a {
-  color: var(--gray);
-  text-decoration: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 15px;
-  transition: all 0.2s;
-}
-
-.menu a:hover {
-  color: var(--dark);
-  background: var(--light);
-}
-
-.nav-actions {
-  display: flex;
-  gap: 12px;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 24px;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 15px;
-  text-decoration: none;
-  cursor: pointer;
-  border: none;
-  transition: all 0.3s;
-  font-family: inherit;
-}
-
-.btn-ghost {
-  background: transparent;
-  color: var(--dark);
-}
-
-.btn-ghost:hover {
-  background: var(--light);
-}
-
-.btn-primary {
-  background: var(--primary);
-  color: white;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-}
-
-.btn-primary:hover {
-  background: var(--primary-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
-}
-
-/* Hero */
-.hero {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 100px 24px 80px;
-  text-align: center;
-  position: relative;
-}
-
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, rgba(79, 70, 229, 0.08), rgba(6, 182, 212, 0.08));
-  border: 1px solid rgba(79, 70, 229, 0.2);
-  padding: 8px 16px;
-  border-radius: 9999px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--primary);
-  margin-bottom: 28px;
-}
-
-.hero h1 {
-  font-size: 4rem;
-  font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.04em;
-  margin-bottom: 24px;
-  background: linear-gradient(135deg, var(--dark) 0%, var(--gray) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.hero-sub {
-  font-size: 1.25rem;
-  color: var(--gray);
-  max-width: 600px;
-  margin: 0 auto 40px;
-  line-height: 1.7;
-}
-
-.hero-cta {
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-  margin-bottom: 60px;
-}
-
-.btn-large {
-  padding: 16px 32px;
-  font-size: 16px;
-}
-
-.hero-social {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 32px;
-  padding-top: 40px;
-  border-top: 1px solid var(--light);
-}
-
-.social-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.social-stars {
-  display: flex;
-  gap: 2px;
-  color: #fbbf24;
-  font-size: 18px;
-}
-
-.social-text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.social-label {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--dark);
-}
-
-.social-desc {
-  font-size: 13px;
-  color: var(--gray);
-}
-
-/* Dashboard Preview */
-.dashboard-preview {
-  max-width: 1200px;
-  margin: 80px auto;
-  padding: 0 24px;
-}
-
-.dashboard-image {
-  background: linear-gradient(135deg, var(--light) 0%, #e2e8f0 100%);
-  border-radius: 20px;
-  border: 1px solid var(--light);
-  padding: 40px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
-  position: relative;
-  overflow: hidden;
-}
-
-.dashboard-mockup {
-  background: white;
-  border-radius: 12px;
-  padding: 32px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-}
-
-/* Features */
-.features {
-  max-width: 1200px;
-  margin: 100px auto;
-  padding: 0 24px;
-}
-
-.features-header {
-  text-align: center;
-  margin-bottom: 60px;
-}
-
-.features h2 {
-  font-size: 2.5rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  margin-bottom: 16px;
-}
-
-.features-sub {
-  font-size: 1.125rem;
-  color: var(--gray);
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-}
-
-.feature-card {
-  background: white;
-  border: 1px solid var(--light);
-  border-radius: 16px;
-  padding: 32px;
-  transition: all 0.3s;
-}
-
-.feature-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-  border-color: rgba(79, 70, 229, 0.3);
-}
-
-.feature-icon {
-  width: 56px;
-  height: 56px;
-  background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(6, 182, 212, 0.1));
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  margin-bottom: 20px;
-}
-
-.feature-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 12px;
-}
-
-.feature-desc {
-  color: var(--gray);
-  line-height: 1.7;
-}
-
-/* CTA Section */
-.cta-section {
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  padding: 100px 24px;
-  text-align: center;
-  color: white;
-  margin-top: 100px;
-}
-
-.cta-section h2 {
-  font-size: 2.5rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  margin-bottom: 16px;
-}
-
-.cta-section p {
-  font-size: 1.25rem;
-  opacity: 0.95;
-  margin-bottom: 32px;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.cta-section .btn {
-  background: white;
-  color: var(--primary);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-}
-
-.cta-section .btn:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
-}
-
-/* Footer */
-.footer {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 60px 24px;
-  text-align: center;
-  color: var(--gray);
-  font-size: 14px;
-}
-
-/* Calculator Section Integration */
-.calculator-section {
-  max-width: 800px;
-  margin: 80px auto;
-  padding: 0 24px;
-}
-
-.calculator-section h2 {
-  font-size: 2rem;
-  font-weight: 800;
-  text-align: center;
-  margin-bottom: 40px;
-  letter-spacing: -0.03em;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .nav { padding: 16px 20px; }
-  .menu { display: none; }
-  .hero h1 { font-size: 2.5rem; }
-  .hero-sub { font-size: 1.125rem; }
-  .hero-cta { flex-direction: column; }
-  .hero-social { flex-direction: column; gap: 24px; }
-  .features h2 { font-size: 2rem; }
-  .cta-section h2 { font-size: 2rem; }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkattPro – Enkelt regnskap for norske bedrifter</title>
+  <meta name="description" content="SkattPro er Norges moderne regnskapssystem. Enkel faktura, skattekalkulator, lønn og mer. Prøv gratis.">
+  <meta property="og:title" content="SkattPro – Regnskap for fremtiden">
+  <meta property="og:description" content="Norges enkleste regnskapssystem for freelancere og små bedrifter.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://skattpro.no">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="skattpro-nav.css">
+  <link rel="stylesheet" href="skattpro-home.css">
 </head>
 <body>
-<!-- Nav -->
+  <!-- Navigation -->
   <nav class="nav">
     <a href="index.html" class="logo">
-      <div class="logo-mark">S</div>
+      <span class="logo-mark">S</span>
       SkattPro
     </a>
-    <div class="menu">
-      <a href="index.html">Skatt</a>
+    <div class="menu" id="primaryMenu">
+      <a href="index.html" class="active">Skatt</a>
       <a href="kalkulator.html">Kalkulator</a>
       <a href="faktura.html">Faktura</a>
       <a href="forskuddsskatt.html">Forskudd</a>
       <a href="skattefrister.html">Frister</a>
       <a href="utgiftssporing.html">Utgifter</a>
       <a href="paminnelser.html">Påminnelser</a>
-      <a href="pro-features.html" class="active">Pro</a>
+      <a href="pro-features.html">Pro</a>
     </div>
+    <div class="nav-actions">
+      <a href="ansatte-og-lonn/" class="btn btn-ghost">Ansatte</a>
+      <a href="kalkulator.html" class="btn btn-primary">Kom i gang</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="toggleMenu()">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+      </svg>
+    </button>
   </nav>
 
-<!-- Hero -->
-<section class="hero">
-  <div class="hero-badge">
-    <span>✨</span>
-    Nytt: AI-drevet regnskap
-  </div>
-  
-  <h1>Regnskap som holder<br>deg i forkant</h1>
-  
-  <p class="hero-sub">
-    SkattPro hjelper 130,000+ bedrifter med å spare tid og ta smartere økonomiske beslutninger.
-  </p>
-  
-  <div class="hero-cta">
-      <a href="kalkulator.html" class="btn btn-primary btn-large">
-        Beregn skatt nå →
-      </a>
-      <a href="faktura.html" class="btn btn-ghost btn-large" style="background:white;border:1px solid var(--border)">
-        Lag faktura
-      </a>
-    </div>
-  
-  <div class="hero-social">
-    <div class="social-item">
-      <div class="social-stars">★★★★★</div>
-      <div class="social-text">
-        <span class="social-label">4.9 av 5</span>
-        <span class="social-desc">Basert på 2,000+ anmeldelser</span>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">
+        ✨&nbsp;Nytt: AI-drevet regnskap
+      </div>
+      <h1>Regnskap som holder deg i forkant</h1>
+      <p class="hero-sub">
+        SkattPro hjelper norske bedrifter med enkel faktura, smart skattekalkulator, lønn og Utgiftssporing. Alt i ett system.
+      </p>
+      <div class="hero-cta">
+        <a href="kalkulator.html" class="btn btn-primary btn-large">Beregn skatt nå →</a>
+        <a href="faktura.html" class="btn btn-ghost btn-large">Lag faktura</a>
+      </div>
+      <div class="hero-social">
+        <div class="social-item">
+          <div class="social-stars">★★★★★</div>
+          <div class="social-text">
+            <span class="social-label">4.9 / 5</span>
+            <span class="social-desc">2 000+ anmeldelser</span>
+          </div>
+        </div>
+        <div class="social-item">
+          <div class="social-stars">★★★★★</div>
+          <div class="social-text">
+            <span class="social-label">4.9 / 5</span>
+            <span class="social-desc">1 000+ bedrifter</span>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="social-item">
-      <div class="social-stars">★★★★★</div>
-      <div class="social-text">
-        <span class="social-label">4.9 av 5</span>
-        <span class="social-desc">Basert på 1,000+ anmeldelser</span>
+  </section>
+
+  <!-- Dashboard Preview -->
+  <section class="dashboard-preview">
+    <div class="dashboard-image">
+      <div class="dashboard-mockup">
+        <span class="dashboard-mockup-icon">📊</span>
+        <h3>Modent dashboard</h3>
+        <p>Sanntids oversikt over inntekt, utgifter og skatt — direkte fra banken.</p>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Dashboard Preview -->
-<section class="dashboard-preview">
-  <div class="dashboard-image">
-    <div class="dashboard-mockup">
-      <div style="text-align: center; padding: 60px 20px; color: var(--gray);">
-        <div style="font-size: 48px; margin-bottom: 16px;">📊</div>
-        <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">Moderne dashboard</div>
-        <div>Sanntids oversikt over inntekt, utgifter og skatt</div>
+  <!-- Features Grid -->
+  <section class="features" id="features">
+    <div class="features-header">
+      <h2>Alt du trenger for å drive bedrift</h2>
+      <p class="features-sub">Komplett regnskapssystem designet for norske bedrifter.</p>
+    </div>
+    <div class="feature-grid">
+      <article class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3 class="feature-title">Regnskap</h3>
+        <p class="feature-desc">Hold oversikt over inntekt og utgifter. Automatisk kategorisering og rapportering.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon">🧾</div>
+        <h3 class="feature-title">Faktura</h3>
+        <p class="feature-desc">Lag profesjonelle fakturaer på minutter. Auto-purring og betalingsoppfølging.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon">🧮</div>
+        <h3 class="feature-title">Skattekalkulator</h3>
+        <p class="feature-desc">Beregn trinnskatt, trygdeavgift og nettoinntekt med oppdaterte satser for 2026.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon">🏦</div>
+        <h3 class="feature-title">Bank &amp; Konto</h3>
+        <p class="feature-desc">Koble bedriftskontoen din. Automatisk import og avstemming hver dag.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon">👥</div>
+        <h3 class="feature-title">Ansatte &amp; Lønn</h3>
+        <p class="feature-desc">Enkel lønnskjøring, a-melding og pensjonstrekk. Alt samlet ett sted.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon">📸</div>
+        <h3 class="feature-title">Kvitteringer</h3>
+        <p class="feature-desc">Ta bilde av kvitteringer. OCR leser beløp og kategoriserer automatisk.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Calculator Section -->
+  <section class="calculator-section" id="kalkulator">
+    <h2>Beregn skatten din nå</h2>
+    <div class="calculator-stage">
+      <div class="calculator-placeholder">
+        <div class="calculator-placeholder-icon">🧮</div>
+        <h3>Skattekalkulator</h3>
+        <p>Beregn trinnskatt, trygdeavgift og nettoinntekt. Oppdaterte satser for 2026 direkte fra Skatteetaten.</p>
+        <a href="kalkulator.html" class="btn btn-primary btn-large">Åpne kalkulatoren →</a>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Features -->
-<section class="features" id="features">
-  <div class="features-header">
-    <h2>Alt du trenger for å drive bedrift</h2>
-    <p class="features-sub">Komplett regnskapssystem designet for norske bedrifter</p>
-  </div>
-  
-  <div class="feature-grid">
-    <div class="feature-card">
-      <div class="feature-icon">📊</div>
-      <h3 class="feature-title">Regnskap</h3>
-      <p class="feature-desc">
-        Hold oversikt over inntekt og utgifter. Automatisk kategorisering og rapportering.
-      </p>
+  <!-- CTA Section -->
+  <section class="cta-section" id="start">
+    <div class="container">
+      <h2>Klar til å komme i gang?</h2>
+      <p>Bli med over 130 000 fornøyde bedrifter som bruker SkattPro hver dag.</p>
+      <a href="kalkulator.html" class="btn btn-large">Start gratis prøveperiode →</a>
     </div>
-    
-    <div class="feature-card">
-      <div class="feature-icon">🧾</div>
-      <h3 class="feature-title">Faktura</h3>
-      <p class="feature-desc">
-        Lag profesjonelle fakturaer på minutter. Auto-purring og betalingsoppfølging.
-      </p>
-    </div>
-    
-    <div class="feature-card">
-      <div class="feature-icon">📱</div>
-      <h3 class="feature-title">Skattemelding</h3>
-      <p class="feature-desc">
-        Innlevering til Skatteetaten og Altinn rett fra systemet. Alt ferdig utfylt.
-      </p>
-    </div>
-    
-    <div class="feature-card">
-      <div class="feature-icon">🏦</div>
-      <h3 class="feature-title">Bank & Konto</h3>
-      <p class="feature-desc">
-        Koble bedriftskontoen din. Automatisk import og avstemming hver dag.
-      </p>
-    </div>
-    
-    <div class="feature-card">
-      <div class="feature-icon">👥</div>
-      <h3 class="feature-title">Ansatte & Lønn</h3>
-      <p class="feature-title">
-        Enkel lønnskjøring, a-melding og pensjonstrekk. Alt samlet ett sted.
-      </p>
-    </div>
-    
-    <div class="feature-card">
-      <div class="feature-icon">📸</div>
-      <h3 class="feature-title">Kvitteringer</h3>
-      <p class="feature-desc">
-        Ta bilde av kvitteringer. OCR leser beløp og kategoriserer automatisk.
-      </p>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- Calculator Integration -->
-<section class="calculator-section">
-  <h2>Beregn skatten din nå</h2>
-  <!-- Existing calculator functionality would be embedded here -->
-  <div style="text-align: center; padding: 60px; background: var(--light); border-radius: 16px;">
-    <div style="font-size: 48px; margin-bottom: 16px;">🧮</div>
-    <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">Skattekalkulator</div>
-    <div style="color: var(--gray);">Beregn trinnskatt, trygdeavgift og nettoinntekt</div>
-  </div>
-</section>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>&copy; 2026 SkattPro. Alle rettigheter reservert.</div>
+      <nav class="footer-links">
+        <a href="index.html">Hjem</a>
+        <a href="kalkulator.html">Kalkulator</a>
+        <a href="faktura.html">Faktura</a>
+        <a href="pro-features.html">Pro</a>
+      </nav>
+    </div>
+  </footer>
 
-<!-- CTA -->
-<section class="cta-section" id="start">
-  <h2>Klar til å komme i gang?</h2>
-  <p>Bli med over 130,000 fornøyde bedrifter som bruker SkattPro</p>
-  <a href="#registrer" class="btn btn-large">
-    Start gratis prøveperiode →
-  </a>
-</section>
-
-<!-- Footer -->
-<footer class="footer">
-  <div>© 2026 SkattPro. Alle rettigheter reservert.</div>
-</footer>
-
-<script>
-// Smooth scroll
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    e.preventDefault();
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('primaryMenu');
+      const toggle = document.querySelector('.nav-toggle');
+      if (!menu || !toggle) return;
+      const isOpen = menu.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', String(isOpen));
     }
-  });
-});
-</script>
+
+    document.addEventListener('click', function (event) {
+      const menu = document.getElementById('primaryMenu');
+      const toggle = document.querySelector('.nav-toggle');
+      if (!menu || !toggle) return;
+      if (menu.classList.contains('is-open') && !menu.contains(event.target) && !toggle.contains(event.target)) {
+        menu.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  </script>
 </body>
 </html>
