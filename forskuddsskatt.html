@@ -6,239 +6,40 @@
   <title>SkattPro – Forskuddsskatt</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="skattpro-nav.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    :root {
-      --primary: #6366f1;
-      --primary-dark: #4f46e5;
-      --success: #10b981;
-      --danger: #ef4444;
-      --warning: #f59e0b;
-      --dark: #0f172a;
-      --gray: #64748b;
-      --light: #f8fafc;
-      --border: #e2e8f0;
-    }
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
-      color: var(--dark);
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-    .nav {
-      background: white;
-      border-bottom: 1px solid var(--border);
-      padding: 16px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .logo {
-      font-size: 20px;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--primary), #0ea5e9);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .logo-mark {
-      width: 32px;
-      height: 32px;
-      background: linear-gradient(135deg, var(--primary), #0ea5e9);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 900;
-      font-size: 16px;
-    }
-    .menu {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .menu a {
-      padding: 8px 12px;
-      border-radius: 8px;
-      text-decoration: none;
-      color: var(--gray);
-      font-size: 0.9rem;
-      font-weight: 600;
-      transition: all 0.2s;
-    }
-    .menu a:hover, .menu a.active {
-      background: var(--primary);
-      color: white;
-    }
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 40px 20px;
-    }
-    .header {
-      text-align: center;
-      margin-bottom: 32px;
-    }
-    .header h1 {
-      font-size: 2rem;
-      font-weight: 800;
-      margin-bottom: 8px;
-    }
-    .header p {
-      color: var(--gray);
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 380px;
-      gap: 24px;
-    }
-    @media (max-width: 900px) {
-      .grid { grid-template-columns: 1fr; }
-      .results { position: static; }
-    }
-    .card {
-      background: white;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      border: 1px solid var(--border);
-    }
-    .card h2 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .form-group {
-      margin-bottom: 16px;
-    }
-    .form-group label {
-      display: block;
-      font-weight: 600;
-      font-size: 0.9rem;
-      margin-bottom: 6px;
-    }
-    .form-group input {
-      width: 100%;
-      padding: 10px 12px;
-      border: 2px solid var(--border);
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-family: inherit;
-    }
-    .form-group input:focus {
-      outline: none;
-      border-color: var(--primary);
-    }
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    @media (max-width: 600px) {
-      .form-row { grid-template-columns: 1fr; }
-    }
-    .hint {
-      font-size: 0.8rem;
-      color: var(--gray);
-      margin-top: 4px;
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px 20px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      cursor: pointer;
-      border: none;
-      transition: all 0.2s;
-      text-decoration: none;
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white;
-      width: 100%;
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-    }
-    .results {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white;
-      position: sticky;
-      top: 24px;
-    }
-    .results h2 {
-      color: white;
-    }
-    .stat {
-      background: rgba(255,255,255,0.1);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 12px;
-      backdrop-filter: blur(10px);
-    }
-    .stat-label {
-      font-size: 0.85rem;
-      opacity: 0.9;
-      margin-bottom: 4px;
-    }
-    .stat-value {
-      font-size: 1.8rem;
-      font-weight: 800;
-    }
-    .term-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 16px;
-    }
-    .term-card {
-      background: rgba(255,255,255,0.15);
-      border-radius: 10px;
-      padding: 12px;
-      text-align: center;
-    }
-    .term-card .month {
-      font-size: 0.75rem;
-      font-weight: 700;
-      opacity: 0.9;
-      text-transform: uppercase;
-    }
-    .term-card .amount {
-      font-size: 1.2rem;
-      font-weight: 900;
-      margin: 6px 0;
-    }
-    .alert-box {
-      padding: 14px;
-      background: rgba(245,158,11,0.15);
-      border: 1px solid var(--warning);
-      border-radius: 12px;
-      margin-bottom: 20px;
-    }
-    .alert-box strong {
-      color: #92400e;
-      display: block;
-      margin-bottom: 4px;
-    }
-    .alert-box p {
-      color: var(--gray);
-      font-size: 0.85rem;
-      margin: 0;
-    }
+    .header { text-align: center; margin-bottom: 32px; }
+    .header h1 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
+    .header p { color: var(--gray); }
+    .grid { display: grid; grid-template-columns: 1fr 380px; gap: 24px; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+    .card { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid var(--border); }
+    .card h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; }
+    .form-group input { width: 100%; padding: 10px 12px; border: 2px solid var(--border); border-radius: 8px; font-size: 0.95rem; font-family: inherit; }
+    .form-group input:focus { outline: none; border-color: var(--primary); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+    .btn-full { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; border-radius: 10px; font-weight: 700; font-size: 0.95rem; cursor: pointer; border: none; transition: all 0.2s; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; width: 100%; }
+    .btn-full:hover { transform: translateY(-2px); }
+    .results-card { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; position: sticky; top: 24px; }
+    .results-card h2 { color: white; }
+    .result-stat { background: rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; margin-bottom: 16px; backdrop-filter: blur(10px); }
+    .result-label { font-size: 0.875rem; opacity: 0.9; margin-bottom: 6px; }
+    .result-value { font-size: 1.75rem; font-weight: 800; }
+    .result-value.green { color: #86efac; }
+    .breakdown { margin-top: 24px; background: rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; }
+    .breakdown-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .breakdown-item:last-child { border-bottom: none; }
+    .term-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 20px; }
+    @media (max-width: 600px) { .term-grid { grid-template-columns: 1fr 1fr; } }
+    .term-card { background: rgba(255,255,255,0.1); border-radius: 10px; padding: 14px; text-align: center; }
+    .term-month { font-size: 0.75rem; font-weight: 700; opacity: 0.9; text-transform: uppercase; }
+    .term-amount { font-size: 1.1rem; font-weight: 900; margin: 6px 0; }
+    .alert-box { padding: 14px; background: rgba(245,158,11,0.1); border: 1px solid var(--warning); border-radius: 12px; margin: 16px 0; }
+    .alert-box strong { color: #92400e; }
+    .alert-box p { color: var(--gray); font-size: 0.9rem; margin: 6px 0 0; }
   </style>
 </head>
 <body>
@@ -255,89 +56,96 @@
       <a href="skattefrister.html">Frister</a>
       <a href="utgiftssporing.html">Utgifter</a>
       <a href="paminnelser.html">Påminnelser</a>
-      <a href="pro-features.html" style="color:var(--primary);font-weight:600">Pro</a>
+      <a href="pro-features.html">Pro</a>
     </div>
   </nav>
 
   <div class="container">
     <div class="header">
       <h1>📅 Forskuddsskatt 2026</h1>
-      <p>Beregn kvartalsvis forskuddsskatt for enkeltpersonforetak</p>
+      <p>Beregn kvartalsvis forskuddsskatt for ENK</p>
+    </div>
+
+    <div class="alert-box">
+      <strong>💡 Tommelfingerregel:</strong>
+      <p>Sett av <strong>40% av overskuddet</strong> til skatt. Dette dekker forskuddsskatt og eventuell restskatt.</p>
     </div>
 
     <div class="grid">
       <div class="card">
-        <h2>💰 Dine opplysninger</h2>
-        <div class="alert-box">
-          <strong>💡 40%-regelen</strong>
-          <p>Skatteetaten anbefaler å sette av 40% av overskuddet til skatt.</p>
-        </div>
+        <h2>📊 Dine opplysninger</h2>
         <div class="form-row">
           <div class="form-group">
             <label>Forventet overskudd 2026</label>
             <input type="number" id="profit" value="500000" min="0" step="10000" oninput="calculate()">
-            <div class="hint">Inntekter − kostnader</div>
           </div>
           <div class="form-group">
             <label>Annen inntekt (lønn/pensjon)</label>
             <input type="number" id="otherIncome" value="0" min="0" step="1000" oninput="calculate()">
-            <div class="hint">Hvor skatt er trukket</div>
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label>Fradrag (gjeldsrente, etc.)</label>
+            <label>Fradrag (gjeldsrente etc.)</label>
             <input type="number" id="deductions" value="0" min="0" step="1000" oninput="calculate()">
           </div>
           <div class="form-group">
-            <label>Formue over gratisgrensen</label>
+            <label>Formue over 2 055 600 kr</label>
             <input type="number" id="wealth" value="0" min="0" step="10000" oninput="calculate()">
-            <div class="hint">Over 2 055 600 kr (2026)</div>
           </div>
         </div>
       </div>
 
-      <div class="card results">
-        <h2>📊 Din forskuddsskatt</h2>
-        <div class="stat">
-          <div class="stat-label">Total skatt 2026</div>
-          <div class="stat-value" id="totalTax">0 kr</div>
+      <div class="card results-card">
+        <h2>📈 Din forskuddsskatt</h2>
+        <div class="result-stat">
+          <div class="result-label">Total skatt (årlig)</div>
+          <div class="result-value" id="totalTax">0 kr</div>
         </div>
-        <div class="stat">
-          <div class="stat-label">Effektiv skattesats</div>
-          <div class="stat-value" id="effectiveRate">0%</div>
+        <div class="result-stat">
+          <div class="result-label">Effektiv skattesats</div>
+          <div class="result-value" id="effectiveRate">0%</div>
+        </div>
+        <div class="breakdown">
+          <div class="breakdown-item"><span>Alminnelig skatt</span><strong id="almSkatt">0 kr</strong></div>
+          <div class="breakdown-item"><span>Trygdeavgift</span><strong id="trygd">0 kr</strong></div>
+          <div class="breakdown-item"><span>Trinnskatt</span><strong id="trinn">0 kr</strong></div>
+          <div class="breakdown-item"><span>Formuesskatt</span><strong id="formue">0 kr</strong></div>
         </div>
         <div style="margin-top:20px">
-          <strong style="display:block;margin-bottom:12px;font-size:0.95rem">4 terminer:</strong>
+          <div style="font-size:0.875rem;opacity:0.9;margin-bottom:10px">💰 Betal disse 4 terminene:</div>
           <div class="term-grid">
             <div class="term-card">
-              <div class="month">Mars</div>
-              <div class="amount" id="term1">0 kr</div>
+              <div class="term-month">Mars</div>
+              <div class="term-amount" id="term1">0 kr</div>
             </div>
             <div class="term-card">
-              <div class="month">Mai</div>
-              <div class="amount" id="term2">0 kr</div>
+              <div class="term-month">Mai</div>
+              <div class="term-amount" id="term2">0 kr</div>
             </div>
             <div class="term-card">
-              <div class="month">Sep</div>
-              <div class="amount" id="term3">0 kr</div>
+              <div class="term-month">Sep</div>
+              <div class="term-amount" id="term3">0 kr</div>
             </div>
             <div class="term-card">
-              <div class="month">Nov</div>
-              <div class="amount" id="term4">0 kr</div>
+              <div class="term-month">Nov</div>
+              <div class="term-amount" id="term4">0 kr</div>
             </div>
           </div>
-        </div>
-        <div class="stat" style="margin-top:20px">
-          <div class="stat-label">Anbefalt månedlig sparing</div>
-          <div class="stat-value" id="monthlySave">0 kr</div>
-          <div class="hint" style="color:rgba(255,255,255,0.8)">Basert på 40%-regelen</div>
         </div>
       </div>
     </div>
   </div>
 
   <script>
+    const TRINN_LEVELS = [
+      { limit: 200150, rate: 0 },
+      { limit: 279450, rate: 0.017 },
+      { limit: 677900, rate: 0.04 },
+      { limit: 980100, rate: 0.137 },
+      { limit: 1467200, rate: 0.168 }
+    ];
+
     function calculate() {
       const profit = parseFloat(document.getElementById('profit').value) || 0;
       const otherIncome = parseFloat(document.getElementById('otherIncome').value) || 0;
@@ -347,51 +155,45 @@
       const totalIncome = profit + otherIncome;
       const taxableIncome = Math.max(0, totalIncome - deductions);
 
-      // 2026 rates
-      const almSkattRate = 0.22;
-      const trygdeavgiftRate = 0.156;
-      const wealthTaxRate = 0.01;
+      // Alminnelig skatt (22%)
+      const almSkatt = taxableIncome * 0.22;
 
-      const almSkatt = taxableIncome * almSkattRate;
-      const trygdeavgift = profit * trygdeavgiftRate;
+      // Trygdeavgift (15.6% for næring)
+      const trygdeavgift = profit * 0.156;
 
-      // Trinnskatt 2026
-      const trinnLevels = [
-        { limit: 200150, rate: 0 },
-        { limit: 279450, rate: 0.017 },
-        { limit: 677900, rate: 0.04 },
-        { limit: 980100, rate: 0.137 },
-        { limit: 1467200, rate: 0.168 }
-      ];
+      // Trinnskatt
       let trinnskatt = 0;
       let prevLimit = 0;
-      for(const level of trinnLevels) {
-        if(taxableIncome > prevLimit) {
+      for (const level of TRINN_LEVELS) {
+        if (taxableIncome > prevLimit) {
           const incomeInLevel = Math.min(taxableIncome, level.limit) - prevLimit;
           trinnskatt += incomeInLevel * level.rate;
           prevLimit = level.limit;
         }
       }
-      if(taxableIncome > prevLimit) {
+      if (taxableIncome > prevLimit) {
         trinnskatt += (taxableIncome - prevLimit) * 0.168;
       }
 
+      // Formuesskatt (1% over 2 055 600)
       const wealthThreshold = 2055600;
       const taxableWealth = Math.max(0, wealth - wealthThreshold);
-      const wealthTax = taxableWealth * wealthTaxRate;
+      const formuesskatt = taxableWealth * 0.01;
 
-      const totalAnnualTax = almSkatt + trygdeavgift + trinnskatt + wealthTax;
-      const termAmount = totalAnnualTax / 4;
-      const monthlySave = (profit * 0.40) / 12;
-      const effectiveRate = profit > 0 ? (totalAnnualTax / profit * 100) : 0;
+      const totalTax = almSkatt + trygdeavgift + trinnskatt + formuesskatt;
+      const effectiveRate = profit > 0 ? (totalTax / profit * 100) : 0;
+      const termAmount = totalTax / 4;
 
-      document.getElementById('totalTax').textContent = formatNOK(totalAnnualTax);
+      document.getElementById('totalTax').textContent = formatNOK(totalTax);
       document.getElementById('effectiveRate').textContent = effectiveRate.toFixed(1) + '%';
+      document.getElementById('almSkatt').textContent = formatNOK(almSkatt);
+      document.getElementById('trygd').textContent = formatNOK(trygdeavgift);
+      document.getElementById('trinn').textContent = formatNOK(trinnskatt);
+      document.getElementById('formue').textContent = formatNOK(formuesskatt);
       document.getElementById('term1').textContent = formatNOK(termAmount);
       document.getElementById('term2').textContent = formatNOK(termAmount);
       document.getElementById('term3').textContent = formatNOK(termAmount);
       document.getElementById('term4').textContent = formatNOK(termAmount);
-      document.getElementById('monthlySave').textContent = formatNOK(monthlySave);
     }
 
     function formatNOK(n) {

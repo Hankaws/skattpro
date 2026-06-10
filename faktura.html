@@ -3,84 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SkattPro – Lag Faktura</title>
+  <title>SkattPro – Faktura</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="skattpro-nav.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    :root {
-      --primary: #6366f1;
-      --primary-dark: #4f46e5;
-      --success: #10b981;
-      --danger: #ef4444;
-      --dark: #0f172a;
-      --gray: #64748b;
-      --light: #f8fafc;
-      --border: #e2e8f0;
-    }
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
-      color: var(--dark);
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-    .nav {
-      background: white;
-      border-bottom: 1px solid var(--border);
-      padding: 16px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .logo {
-      font-size: 20px;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--primary), #0ea5e9);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .logo-mark {
-      width: 32px;
-      height: 32px;
-      background: linear-gradient(135deg, var(--primary), #0ea5e9);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 900;
-      font-size: 16px;
-    }
-    .menu {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .menu a {
-      padding: 8px 12px;
-      border-radius: 8px;
-      text-decoration: none;
-      color: var(--gray);
-      font-size: 0.9rem;
-      font-weight: 600;
-      transition: all 0.2s;
-    }
-    .menu a:hover, .menu a.active {
-      background: var(--primary);
-      color: white;
-    }
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 40px 20px;
-    }
     .header {
       text-align: center;
       margin-bottom: 32px;
@@ -100,7 +27,6 @@
     }
     @media (max-width: 768px) {
       .grid { grid-template-columns: 1fr; }
-      .nav { padding: 16px 20px; }
     }
     .card {
       background: white;
@@ -146,7 +72,7 @@
     @media (max-width: 500px) {
       .form-row { grid-template-columns: 1fr; }
     }
-    .btn {
+    .btn-full {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -159,19 +85,12 @@
       border: none;
       transition: all 0.2s;
       text-decoration: none;
-    }
-    .btn-primary {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
       width: 100%;
     }
-    .btn-primary:hover {
+    .btn-full:hover {
       transform: translateY(-2px);
-    }
-    .btn-secondary {
-      background: white;
-      color: var(--primary);
-      border: 2px solid var(--border);
     }
     .preview-box {
       background: var(--light);
@@ -212,30 +131,17 @@
       font-size: 1.2rem;
     }
     @media print {
-          .nav, .no-print, .btn-primary { display: none !important; }
-          body { background: white; }
-          .container { padding: 20px; max-width: 800px; margin: 0 auto; }
-          .card { box-shadow: none; border: 1px solid #ddd; page-break-inside: avoid; }
-          .grid { display: block; }
-          .preview-box { 
-            break-inside: avoid; 
-            border: 2px solid #333;
-            background: white;
-            padding: 30px;
-          }
-          .summary { 
-            break-inside: avoid;
-            background: #f8fafc !important;
-            color: #0f172a !important;
-            border: 1px solid #ddd;
-          }
-          .summary-row.highlight { 
-            border-top: 2px solid #333;
-            font-size: 1.3rem;
-          }
-          h1, h2 { color: #0f172a !important; }
-          * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-        }
+      .nav, .no-print, .btn-full { display: none !important; }
+      body { background: white; }
+      .container { padding: 20px; max-width: 800px; margin: 0 auto; }
+      .card { box-shadow: none; border: 1px solid #ddd; page-break-inside: avoid; }
+      .grid { display: block; }
+      .preview-box { break-inside: avoid; border: 2px solid #333; background: white; padding: 30px; }
+      .summary { break-inside: avoid; background: #f8fafc !important; color: #0f172a !important; border: 1px solid #ddd; }
+      .summary-row.highlight { border-top: 2px solid #333; font-size: 1.3rem; }
+      h1, h2 { color: #0f172a !important; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
   </style>
 </head>
 <body>
@@ -294,7 +200,7 @@
           <label>Beskrivelse</label>
           <textarea id="desc" rows="3" placeholder="Konsulenttjenester..." oninput="updatePreview()"></textarea>
         </div>
-        <button class="btn btn-primary" onclick="window.print()">🖨️ Skriv ut / PDF</button>
+        <button class="btn-full" onclick="window.print()">🖨️ Skriv ut / PDF</button>
       </div>
 
       <div class="card">
@@ -350,7 +256,7 @@
 
       const vatAmount = amount * (vatRate / 100);
       const total = amount + vatAmount;
-      const keep = amount * 0.60; // Rough estimate after tax
+      const keep = amount * 0.60;
 
       document.getElementById('prevCompany').textContent = company;
       document.getElementById('prevClient').textContent = client;
