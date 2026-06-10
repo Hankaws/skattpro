@@ -8,179 +8,29 @@
   <link rel="canonical" href="https://skattpro.no/paminnelser.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="skattpro-nav.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    :root {
-      --primary: #6366f1;
-      --primary-dark: #4f46e5;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --dark: #0f172a;
-      --gray: #64748b;
-      --light: #f8fafc;
-      --border: #e2e8f0;
-    }
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
-      color: var(--dark);
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-    .nav {
-      background: white;
-      border-bottom: 1px solid var(--border);
-      padding: 20px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-    .logo {
-      font-size: 24px;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--primary), #0ea5e9);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .logo-mark {
-      width: 40px;
-      height: 40px;
-      background: linear-gradient(135deg, var(--primary), #0ea5e9);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 900;
-      font-size: 20px;
-      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
-    }
-    .menu {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .menu a {
-      color: var(--gray);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
-      padding: 8px 12px;
-      border-radius: 8px;
-      transition: all 0.2s;
-    }
-    .menu a:hover, .menu a.active {
-      color: var(--primary);
-      background: rgba(99, 102, 241, 0.1);
-    }
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 40px 20px;
-    }
-    .header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-    .header h1 {
-      font-size: 2.5rem;
-      font-weight: 800;
-      margin-bottom: 12px;
-      letter-spacing: -0.02em;
-    }
-    .header p {
-      font-size: 1.1rem;
-      color: var(--gray);
-    }
-    .card {
-      background: white;
-      border-radius: 16px;
-      padding: 32px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      border: 1px solid var(--border);
-      margin-bottom: 24px;
-    }
-    .card h2 {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .reminder-item {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 16px;
-      background: var(--light);
-      border-radius: 12px;
-      margin-bottom: 12px;
-      border: 1px solid var(--border);
-    }
-    .reminder-checkbox {
-      width: 20px;
-      height: 20px;
-      cursor: pointer;
-    }
-    .reminder-info {
-      flex: 1;
-    }
-    .reminder-title {
-      font-weight: 700;
-      color: var(--dark);
-      margin-bottom: 4px;
-    }
-    .reminder-date {
-      color: var(--gray);
-      font-size: 0.9rem;
-    }
-    .reminder-frequency {
-      display: inline-block;
-      padding: 4px 10px;
-      background: rgba(99, 102, 241, 0.1);
-      color: var(--primary);
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      margin-top: 6px;
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 14px 28px;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
-      border: none;
-      transition: all 0.3s;
-      font-family: inherit;
-      text-decoration: none;
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white;
-      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
-    }
-    @media (max-width: 600px) {
-      .nav { padding: 16px 20px; }
-      .header h1 { font-size: 1.8rem; }
-      .menu { justify-content: center; }
-    }
+    .header { text-align: center; margin-bottom: 40px; }
+    .header h1 { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; }
+    .header p { font-size: 1.1rem; color: var(--gray); }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 40px; }
+    .feature-card { background: white; border-radius: 16px; padding: 28px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid var(--border); }
+    .feature-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+    .feature-card p { color: var(--gray); font-size: 0.95rem; line-height: 1.7; }
+    .feature-icon { font-size: 1.75rem; }
+    .pricing-section { background: linear-gradient(135deg, #f0f9ff, #e0e7ff); border-radius: 20px; padding: 40px; text-align: center; margin-top: 40px; }
+    .pricing-section h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 16px; }
+    .pricing-section p { color: var(--gray); font-size: 1rem; max-width: 600px; margin: 0 auto 24px; }
+    .pricing-card { background: white; border-radius: 16px; padding: 32px; max-width: 500px; margin: 0 auto; box-shadow: 0 8px 30px rgba(0,0,0,0.12); border: 2px solid var(--primary); }
+    .price { font-size: 3rem; font-weight: 900; color: var(--primary); margin: 16px 0; }
+    .price span { font-size: 1rem; color: var(--gray); font-weight: 400; }
+    .price-features { list-style: none; padding: 0; margin: 24px 0; text-align: left; }
+    .price-features li { padding: 10px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; font-size: 0.95rem; }
+    .price-features li:last-child { border-bottom: none; }
+    .price-features li::before { content: '✓'; color: var(--primary); font-weight: 900; font-size: 1.1rem; }
+    .cta-button { display: inline-block; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 14px 32px; border-radius: 12px; font-weight: 700; font-size: 1rem; text-decoration: none; margin-top: 20px; transition: all 0.2s; }
+    .cta-button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4); }
+    @media (max-width: 768px) { .header h1 { font-size: 1.8rem; } .features-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -203,70 +53,53 @@
 
   <div class="container">
     <div class="header">
-      <h1>⏰ Påminnelser</h1>
+      <h1>🔔 Påminnelser</h1>
       <p>Aldri gå glipp av en viktig skattefrist igjen</p>
     </div>
 
-    <div class="card">
-      <h2>🔔 Aktive påminnelser</h2>
-      <div class="reminder-item">
-        <input type="checkbox" class="reminder-checkbox" checked>
-        <div class="reminder-info">
-          <div class="reminder-title">Skattemelding 2025</div>
-          <div class="reminder-date">📅 4. mai 2026</div>
-          <span class="reminder-frequency">🔁 7 dager før frist</span>
-        </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <h3><span class="feature-icon">📧</span> E-post-varsler</h3>
+        <p>Få automatiske e-post-varsler 14 dager og 3 dager før hver frist. Aldri miss en a-melding eller mva-melding igjen.</p>
       </div>
-      <div class="reminder-item">
-        <input type="checkbox" class="reminder-checkbox" checked>
-        <div class="reminder-info">
-          <div class="reminder-title">Mva-melding Q1 2026</div>
-          <div class="reminder-date">📅 30. april 2026</div>
-          <span class="reminder-frequency">🔁 3 dager før frist</span>
-        </div>
+      <div class="feature-card">
+        <h3><span class="feature-icon">📱</span> SMS-varsler</h3>
+        <p>Kortere varsler på SMS dagen før fristen. Perfekt for de som er mye på farten og sjekker ikke e-posten like ofte.</p>
       </div>
-      <div class="reminder-item">
-        <input type="checkbox" class="reminder-checkbox">
-        <div class="reminder-info">
-          <div class="reminder-title">Forskuddsskatt Q2 2026</div>
-          <div class="reminder-date">📅 15. mai 2026</div>
-          <span class="reminder-frequency">🔁 1 dag før frist</span>
-        </div>
+      <div class="feature-card">
+        <h3><span class="feature-icon">📅</span> Kalender-integrasjon</h3>
+        <p>Legg til alle frister direkte i Google Calendar, Outlook eller Apple Calendar med ett klikk.</p>
       </div>
-      <div class="reminder-item">
-        <input type="checkbox" class="reminder-checkbox" checked>
-        <div class="reminder-info">
-          <div class="reminder-title">A-melding (månedlig)</div>
-          <div class="reminder-date">📅 5. hver måned</div>
-          <span class="reminder-frequency">🔁 Månedlig</span>
-        </div>
+      <div class="feature-card">
+        <h3><span class="feature-icon">⚙️</span> Tilpassbare varsler</h3>
+        <p>Velg hvilke frister du vil bli varslet om og hvor langt i forkant. Skru av varsler du ikke trenger.</p>
+      </div>
+      <div class="feature-card">
+        <h3><span class="feature-icon">🏢</span> Flere enheter</h3>
+        <p>Administrer varsler for flere ENK eller AS fra samme konto. Perfekt for regnskapsførere.</p>
+      </div>
+      <div class="feature-card">
+        <h3><span class="feature-icon">✅</span> Bekreftelsessystem</h3>
+        <p>Få bekreftelse når du har fullført en innlevering. Systemet holder oversikt over hva som er gjort.</p>
       </div>
     </div>
 
-    <div class="card">
-      <h2>📬Varslingskanaler</h2>
-      <p style="color:var(--gray);margin-bottom:20px">Velg hvordan du vil motta påminnelser:</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:600px">
-        <label style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--light);border-radius:12px;cursor:pointer">
-          <input type="checkbox" checked>
-          <span style="font-weight:600">✉️ E-post</span>
-        </label>
-        <label style="display:flex;align-items:center;gap:12px;padding:16px;background:var(--light);border-radius:12px;cursor:pointer">
-          <input type="checkbox">
-          <span style="font-weight:600">📱 SMS</span>
-        </label>
+    <div class="pricing-section">
+      <h2>Få påminnelser med SkattPro Pro</h2>
+      <p>Automatiske frist-varsler er inkludert i Pro-abonnementet</p>
+      <div class="pricing-card">
+        <div class="price">149 kr <span>/md</span></div>
+        <ul class="price-features">
+          <li>Ubegrensede beregninger og lagring</li>
+          <li>PDF og CSV eksport av alle beregninger</li>
+          <li>Administrasjon av ubegrenset antall ansatte</li>
+          <li>Utgiftssporing med OCR av kvitteringer</li>
+          <li>Automatiske frist-varsler på e-post og SMS</li>
+          <li>Prioritert kundesupport</li>
+        </ul>
+        <a href="pro-features.html" class="cta-button">Prøv Pro gratis i 14 dager</a>
       </div>
-      <button class="btn btn-primary" style="margin-top:20px">💾 Lagre innstillinger</button>
     </div>
   </div>
-
-  <script>
-    // Save reminder preferences
-    document.querySelectorAll('.reminder-checkbox').forEach(cb => {
-      cb.addEventListener('change', () => {
-        console.log('Reminder toggled:', cb.nextElementSibling.querySelector('.reminder-title').textContent);
-      });
-    });
-  </script>
 </body>
 </html>

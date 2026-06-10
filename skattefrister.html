@@ -1,228 +1,222 @@
 <!DOCTYPE html>
 <html lang="no">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SkattPro – Skattefrister 2026 | Oversikt over alle frister</title>
-<meta name="description" content="Oversikt over alle skattefrister i 2026: skattemelding, mva-melding, a-melding, forskuddsskatt og mer.">
-<link rel="canonical" href="https://skattpro.no/skattefrister.html">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--primary:#6366f1;--primary-dark:#4f46e5;--success:#10b981;--danger:#ef4444;--warning:#f59e0b;--dark:#0f172a;--gray:#64748b;--light:#f8fafc;--border:#e2e8f0}
-body{font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;background:linear-gradient(135deg,#f0f9ff 0%,#e0e7ff 100%);color:var(--dark);line-height:1.6}
-.nav{background:white;border-bottom:1px solid var(--border);padding:16px 40px;display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:20px;font-weight:800;background:linear-gradient(135deg,var(--primary),#0ea5e9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;display:flex;align-items:center;gap:10px}
-.logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--primary),#0ea5e9);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:18px;box-shadow:0 4px 14px rgba(99,102,241,0.4)}
-.menu{display:flex;gap:16px;flex-wrap:wrap}
-.menu a{color:var(--gray);text-decoration:none;font-size:.9rem;font-weight:500}
-.menu a:hover{color:var(--primary)}
-.container{max-width:1100px;margin:0 auto;padding:40px 20px}
-.header{text-align:center;margin-bottom:32px}
-.header h1{font-size:2.4rem;font-weight:800;letter-spacing:-.02em;margin-bottom:10px}
-.header p{font-size:1.1rem;color:var(--gray)}
-.status-banner{background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid #f59e0b;border-radius:14px;padding:20px;margin-bottom:24px}
-.status-banner h3{font-size:1rem;font-weight:700;color:#92400e;margin-bottom:4px;display:flex;align-items:center;gap:8px}
-.status-banner p{color:#78350f;font-size:.95rem}
-.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
-.filter-btn{padding:10px 16px;border:2px solid var(--border);border-radius:999px;background:white;color:var(--gray);font-size:.9rem;font-weight:600;cursor:pointer;transition:all .2s}
-.filter-btn:hover{border-color:var(--primary);color:var(--primary)}
-.filter-btn.active{background:var(--primary);color:white;border-color:var(--primary)}
-.calendar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
-.deadline-card{background:white;border:2px solid var(--border);border-radius:14px;padding:20px;transition:all .2s}
-.deadline-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.08)}
-.deadline-card.urgent{border-color:var(--danger);background:linear-gradient(135deg,#fef2f2,#fee2e2)}
-.deadline-card.warning{border-color:var(--warning);background:linear-gradient(135deg,#fffbeb,#fef3c7)}
-.deadline-card.ok{border-color:var(--success);background:linear-gradient(135deg,#f0fdf4,#dcfce7)}
-.deadline-month{font-size:.7rem;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
-.deadline-title{font-weight:700;font-size:1rem;margin-bottom:6px;color:var(--dark)}
-.deadline-date{font-size:.85rem;color:var(--gray);margin-bottom:10px}
-.deadline-desc{font-size:.875rem;color:var(--gray);line-height:1.6;margin-bottom:12px}
-.days-left{font-size:.85rem;font-weight:700;display:inline-block;padding:4px 10px;border-radius:999px}
-.days-left.urgent{background:var(--danger);color:white}
-.days-left.warning{background:var(--warning);color:white}
-.days-left.ok{background:var(--success);color:white}
-.deadline-type{font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.5px}
-.type-skattemelding{background:#dbeafe;color:#1e40af}
-.type-mva{background:#dcfce7;color:#166534}
-.type-a-melding{background:#fef3c7;color:#92400e}
-.type-forskudd{background:#fce7f3;color:#9d174d}
-.type-annet{background:#e0e7ff;color:#3730a3}
-.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:40px}
-.info-card{background:white;border:1px solid var(--border);border-radius:14px;padding:20px}
-.info-card h3{font-size:1.05rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.info-card ul{color:var(--gray);font-size:.9rem;line-height:1.8;padding-left:18px}
-.info-card li{margin-bottom:4px}
-@media(max-width:768px){.nav{padding:16px 20px}.header h1{font-size:1.8rem}.calendar-grid{grid-template-columns:1fr}.filter-row{justify-content:center}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkattPro – Skattefrister 2026</title>
+  <meta name="description" content="Oversikt over alle skattefrister i 2026: skattemelding, mva-melding, a-melding, forskuddsskatt og mer.">
+  <link rel="canonical" href="https://skattpro.no/skattefrister.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="skattpro-nav.css">
+  <style>
+    .header { text-align: center; margin-bottom: 32px; }
+    .header h1 { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 10px; }
+    .header p { font-size: 1.1rem; color: var(--gray); }
+    .status-banner { background: linear-gradient(135deg, #fef3c7, #fde68a); border: 1px solid #f59e0b; border-radius: 14px; padding: 20px; margin-bottom: 24px; }
+    .status-banner h3 { font-size: 1rem; font-weight: 700; color: #92400e; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+    .status-banner p { color: #78350f; font-size: 0.95rem; }
+    .filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; justify-content: center; }
+    .filter-btn { padding: 10px 16px; border: 2px solid var(--border); border-radius: 999px; background: white; color: var(--gray); font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .filter-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+    .calendar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+    .deadline-card { background: white; border: 2px solid var(--border); border-radius: 14px; padding: 20px; transition: all 0.2s; }
+    .deadline-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    .deadline-card.urgent { border-color: var(--danger); background: linear-gradient(135deg, #fef2f2, #fee2e2); }
+    .deadline-card.warning { border-color: var(--warning); background: linear-gradient(135deg, #fffbeb, #fef3c7); }
+    .deadline-card.ok { border-color: var(--success); background: linear-gradient(135deg, #f0fdf4, #dcfce7); }
+    .deadline-month { font-size: 0.7rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+    .deadline-title { font-weight: 700; font-size: 1rem; margin-bottom: 6px; color: var(--dark); }
+    .deadline-date { font-size: 0.85rem; color: var(--gray); margin-bottom: 10px; }
+    .deadline-desc { font-size: 0.875rem; color: var(--gray); line-height: 1.6; margin-bottom: 12px; }
+    .days-left { font-size: 0.85rem; font-weight: 700; display: inline-block; padding: 4px 10px; border-radius: 999px; }
+    .days-left.urgent { background: var(--danger); color: white; }
+    .days-left.warning { background: var(--warning); color: white; }
+    .days-left.ok { background: var(--success); color: white; }
+    .deadline-type { font-size: 0.7rem; font-weight: 700; padding: 4px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; margin-top: 8px; }
+    .type-skattemelding { background: #dbeafe; color: #1e40af; }
+    .type-mva { background: #dcfce7; color: #166534; }
+    .type-a-melding { background: #fef3c7; color: #92400e; }
+    .type-forskudd { background: #fce7f3; color: #9d174d; }
+    .type-annet { background: #e0e7ff; color: #3730a3; }
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 40px; }
+    .info-card { background: white; border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
+    .info-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .info-card ul { color: var(--gray); font-size: 0.9rem; line-height: 1.8; padding-left: 18px; }
+    .info-card li { margin-bottom: 4px; }
+    @media (max-width: 768px) { .header h1 { font-size: 1.8rem; } .calendar-grid { grid-template-columns: 1fr; } }
+  </style>
 </head>
 <body>
-<nav class="nav">
-<a href="index.html" class="logo"><div class="logo-mark">S</div>SkattPro</a>
-<nav class="menu">
-<a href="index.html">Skatt</a>
-<a href="kalkulator.html">Kalkulator</a>
-<a href="faktura.html">Faktura</a>
-<a href="forskuddsskatt.html">Forskudd</a>
-<a href="skattefrister.html">Frister</a>
-<a href="utgiftssporing.html">Utgifter</a>
-<a href="paminnelser.html">Påminnelser</a>
-<a href="pro-features.html" style="color:var(--primary);font-weight:600">Pro</a>
-</nav>
-</nav>
+  <nav class="nav">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">S</div>
+      SkattPro
+    </a>
+    <div class="menu">
+      <a href="index.html">Skatt</a>
+      <a href="kalkulator.html">Kalkulator</a>
+      <a href="faktura.html">Faktura</a>
+      <a href="forskuddsskatt.html">Forskudd</a>
+      <a href="skattefrister.html" class="active">Frister</a>
+      <a href="utgiftssporing.html">Utgifter</a>
+      <a href="paminnelser.html">Påminnelser</a>
+      <a href="pro-features.html">Pro</a>
+    </div>
+  </nav>
 
-<div class="container">
-<div class="header">
-<h1>📅 Skattefrister 2026</h1>
-<p>Hold oversikt over alle viktige frister for skatt, mva og a-melding</p>
-</div>
+  <div class="container">
+    <div class="header">
+      <h1>📅 Skattefrister 2026</h1>
+      <p>Hold oversikt over alle viktige frister for skatt, mva og a-melding</p>
+    </div>
 
-<div id="statusBanner" class="status-banner">
-<h3>🕐 Neste frist</h3>
-<p id="nextDeadlineText">Laster...</p>
-</div>
+    <div id="statusBanner" class="status-banner">
+      <h3>🕐 Neste frist</h3>
+      <p id="nextDeadlineText">Laster...</p>
+    </div>
 
-<div class="filter-row">
-<button class="filter-btn active" data-filter="all">Alle</button>
-<button class="filter-btn" data-filter="skattemelding">Skattemelding</button>
-<button class="filter-btn" data-filter="mva">Mva</button>
-<button class="filter-btn" data-filter="a-melding">A-melding</button>
-<button class="filter-btn" data-filter="forskudd">Forskudd</button>
-<button class="filter-btn" data-filter="annet">Annet</button>
-</div>
+    <div class="filter-row">
+      <button class="filter-btn active" data-filter="all">Alle</button>
+      <button class="filter-btn" data-filter="skattemelding">Skattemelding</button>
+      <button class="filter-btn" data-filter="mva">Mva</button>
+      <button class="filter-btn" data-filter="a-melding">A-melding</button>
+      <button class="filter-btn" data-filter="forskudd">Forskudd</button>
+      <button class="filter-btn" data-filter="annet">Annet</button>
+    </div>
 
-<div id="calendarGrid" class="calendar-grid"></div>
+    <div id="calendarGrid" class="calendar-grid"></div>
 
-<div class="info-grid">
-<div class="info-card">
-<h3>🔴 For sent</h3>
-<ul>
-<li>Skattemelding: Tilleggsskatt opptil 40 %</li>
-<li>Mva-melding: 1 % av skyldig mva (min 200 kr)</li>
-<li>A-melding: 2 forelegg à 1 000 kr ved gjentakelse</li>
-<li>Forskuddsskatt: 10,25 % rente per år</li>
-</ul>
-</div>
-<div class="info-card" style="border-color:var(--primary)">
-<h3>✅ Tips</h3>
-<ul>
-<li>Sett på kalender-varslinger 1 uke før frist</li>
-<li>Betal heller for mye enn for lite forskudd</li>
-<li>Justér forskuddet hvis inntekten endrer seg</li>
-<li>Bruk SkattPro for å holde oversikt automatisk</li>
-</ul>
-</div>
-</div>
-</div>
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>🔴 For sent</h3>
+        <ul>
+          <li>Skattemelding: Tilleggsskatt opptil 40 %</li>
+          <li>Mva-melding: 1 % av skyldig mva (min 200 kr)</li>
+          <li>A-melding: 2 forenklete forelegg à 1 000 kr ved gjentakelse</li>
+          <li>Forskuddsskatt: Rentetillegg på 10,25 % per år</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3>💡 Tips</h3>
+        <ul>
+          <li>Sett opp kalendervarsler for alle frister</li>
+          <li>Betal forskuddsskatt litt for mye heller enn for lite</li>
+          <li>Lever a-meldingen senest 5. hver måned</li>
+          <li>Med SkattPro Pro får du automatiske varsler</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
-<script>
-const deadlines = [
-{ date: '2026-01-05', title: 'A-melding for desember 2025', type: 'a-melding', desc: 'Siste frist for å sende a-melding for desember 2025' },
-{ date: '2026-02-05', title: 'A-melding for januar 2026', type: 'a-melding', desc: 'Siste frist for å sende a-melding for januar 2026' },
-{ date: '2026-03-05', title: 'A-melding for februar 2026', type: 'a-melding', desc: 'Siste frist for å sende a-melding for februar 2026' },
-{ date: '2026-04-05', title: 'A-melding for mars 2026', type: 'a-melding', desc: 'Siste frist for å sende a-melding for mars 2026' },
-{ date: '2026-05-05', title: 'A-melding for april 2026', type: 'a-melding', desc: 'Siste frist for å sende a-melding for april 2026' },
-{ date: '2026-06-05', title: 'A-melding for mai 2026', type: 'a-melding', desc: 'Siste frist for å sende a-melding for mai 2026' },
-{ date: '2026-07-05', title: 'A-melding for juni 2026', type: 'a-melding', desc: 'Siste frist for å sende a-melding for juni 2026' },
-{ date: '2026-08-05', title: 'A-melding for juli 2026', type: 'a-melding', desc: 'Siste frist for å sende a-melding for juli 2026' },
-{ date: '2026-09-05', title: 'A-melding for august 2026', type: 'a-melding', desc: 'Siste frist for å sende a-melding for august 2026' },
-{ date: '2026-10-05', title: 'A-melding for september 2026', type: 'a-melding', desc: 'Siste frist for å sende a-melding for september 2026' },
-{ date: '2026-11-05', title: 'A-melding for oktober 2026', type: 'a-melding', desc: 'Siste frist for å sende a-melding for oktober 2026' },
-{ date: '2026-12-05', title: 'A-melding for november 2026', type: 'a-melding', desc: 'Siste frist for å sende a-melding for november 2026' },
-{ date: '2026-01-31', title: 'Mva-melding Q4 2025', type: 'mva', desc: '4. termin 2025 – siste frist for å sende mva-melding' },
-{ date: '2026-04-30', title: 'Mva-melding Q1 2026', type: 'mva', desc: '1. termin 2026 – siste frist for å sende mva-melding' },
-{ date: '2026-06-30', title: 'Mva-melding Q2 2026', type: 'mva', desc: '2. termin 2026 – siste frist for å sende mva-melding' },
-{ date: '2026-08-31', title: 'Mva-melding Q3 2026', type: 'mva', desc: '3. termin 2026 – siste frist for å sende mva-melding' },
-{ date: '2026-10-31', title: 'Mva-melding Q4 2026', type: 'mva', desc: '4. termin 2026 – siste frist for å sende mva-melding' },
-{ date: '2026-05-04', title: 'Skattemelding 2025', type: 'skattemelding', desc: 'Lever eller endre skattemeldingen for 2025' },
-{ date: '2026-06-30', title: 'Skattemelding for AS 2025', type: 'skattemelding', desc: 'Siste frist for skattemelding for aksjeselskap' },
-{ date: '2026-11-30', title: 'Skattemelding 2026 (forhåndsvarsel)', type: 'skattemelding', desc: 'Kontroller forhåndsvarselet om skatt for 2026' },
-{ date: '2026-03-15', title: 'Forskuddsskatt Q1 2026', type: 'forskudd', desc: '1. termin forskuddsskatt for 2026' },
-{ date: '2026-05-15', title: 'Forskuddsskatt Q2 2026', type: 'forskudd', desc: '2. termin forskuddsskatt for 2026' },
-{ date: '2026-09-15', title: 'Forskuddsskatt Q3 2026', type: 'forskudd', desc: '3. termin forskuddsskatt for 2026' },
-{ date: '2026-11-15', title: 'Forskuddsskatt Q4 2026', type: 'forskudd', desc: '4. termin forskuddsskatt for 2026' },
-{ date: '2026-03-31', title: 'Årsregnskap AS 2025', type: 'annet', desc: 'Lever årsregnskap for AS til Brønnøysundregisterne' },
-{ date: '2026-12-31', title: 'Slutt på skatteåret 2026', type: 'annet', desc: 'Siste dag for å gjøre grep som påvirker skatten for 2026' }
-];
+  <script>
+    const deadlines = [
+      { date: '2026-01-05', title: 'A-melding for desember 2025', type: 'a-melding', desc: 'Siste frist for å sende a-melding for desember 2025' },
+      { date: '2026-02-05', title: 'A-melding for januar 2026', type: 'a-melding', desc: 'Siste frist for å sende a-melding for januar 2026' },
+      { date: '2026-03-05', title: 'A-melding for februar 2026', type: 'a-melding', desc: 'Siste frist for å sende a-melding for februar 2026' },
+      { date: '2026-04-05', title: 'A-melding for mars 2026', type: 'a-melding', desc: 'Siste frist for å sende a-melding for mars 2026' },
+      { date: '2026-05-05', title: 'A-melding for april 2026', type: 'a-melding', desc: 'Siste frist for å sende a-melding for april 2026' },
+      { date: '2026-06-05', title: 'A-melding for mai 2026', type: 'a-melding', desc: 'Siste frist for å sende a-melding for mai 2026' },
+      { date: '2026-07-05', title: 'A-melding for juni 2026', type: 'a-melding', desc: 'Siste frist for å sende a-melding for juni 2026' },
+      { date: '2026-08-05', title: 'A-melding for juli 2026', type: 'a-melding', desc: 'Siste frist for å sende a-melding for juli 2026' },
+      { date: '2026-09-05', title: 'A-melding for august 2026', type: 'a-melding', desc: 'Siste frist for å sende a-melding for august 2026' },
+      { date: '2026-10-05', title: 'A-melding for september 2026', type: 'a-melding', desc: 'Siste frist for å sende a-melding for september 2026' },
+      { date: '2026-11-05', title: 'A-melding for oktober 2026', type: 'a-melding', desc: 'Siste frist for å sende a-melding for oktober 2026' },
+      { date: '2026-12-05', title: 'A-melding for november 2026', type: 'a-melding', desc: 'Siste frist for å sende a-melding for november 2026' },
+      { date: '2026-01-31', title: 'Mva-melding Q4 2025', type: 'mva', desc: '4. termin 2025 – siste frist for å sende mva-melding' },
+      { date: '2026-04-30', title: 'Mva-melding Q1 2026', type: 'mva', desc: '1. termin 2026 – siste frist for å sende mva-melding' },
+      { date: '2026-06-30', title: 'Mva-melding Q2 2026', type: 'mva', desc: '2. termin 2026 – siste frist for å sende mva-melding' },
+      { date: '2026-08-31', title: 'Mva-melding Q3 2026', type: 'mva', desc: '3. termin 2026 – siste frist for å sende mva-melding' },
+      { date: '2026-10-31', title: 'Mva-melding Q4 2026', type: 'mva', desc: '4. termin 2026 – siste frist for å sende mva-melding' },
+      { date: '2026-05-04', title: 'Skattemelding 2025', type: 'skattemelding', desc: 'Lever eller endre skattemeldingen for 2025' },
+      { date: '2026-06-30', title: 'Skattemelding for AS 2025', type: 'skattemelding', desc: 'Siste frist for skattemelding for aksjeselskap' },
+      { date: '2026-11-30', title: 'Skattemelding 2026 (forhåndsvarsel)', type: 'skattemelding', desc: 'Kontroller forhåndsvarselet om skatt for 2026' },
+      { date: '2026-03-15', title: 'Forskuddsskatt Q1 2026', type: 'forskudd', desc: '1. termin forskuddsskatt for 2026' },
+      { date: '2026-05-15', title: 'Forskuddsskatt Q2 2026', type: 'forskudd', desc: '2. termin forskuddsskatt for 2026' },
+      { date: '2026-09-15', title: 'Forskuddsskatt Q3 2026', type: 'forskudd', desc: '3. termin forskuddsskatt for 2026' },
+      { date: '2026-11-15', title: 'Forskuddsskatt Q4 2026', type: 'forskudd', desc: '4. termin forskuddsskatt for 2026' },
+      { date: '2026-03-31', title: 'Årsregnskap AS 2025', type: 'annet', desc: 'Lever årsregnskap for AS til Brønnøysundregisterne' },
+      { date: '2026-12-31', title: 'Slutt på skatteåret 2026', type: 'annet', desc: 'Siste dag for å gjøre grep som påvirker skatten for 2026' }
+    ];
 
-const typeLabels = {
-'skattemelding': 'Skattemelding',
-'mva': 'Mva',
-'a-melding': 'A-melding',
-'forskudd': 'Forskudd',
-'annet': 'Annet'
-};
+    const typeLabels = {
+      'skattemelding': 'Skattemelding',
+      'mva': 'Mva',
+      'a-melding': 'A-melding',
+      'forskudd': 'Forskudd',
+      'annet': 'Annet'
+    };
 
-function daysUntil(dateStr){
-const today = new Date();
-today.setHours(0,0,0,0);
-const deadline = new Date(dateStr);
-const diff = deadline - today;
-return Math.ceil(diff / (1000 * 60 * 60 * 24));
-}
+    function daysUntil(dateStr) {
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      const deadline = new Date(dateStr);
+      const diff = deadline - today;
+      return Math.ceil(diff / (1000 * 60 * 60 * 24));
+    }
 
-function formatDate(dateStr){
-const d = new Date(dateStr);
-return d.toLocaleDateString('nb-NO', { day: 'numeric', month: 'long', year: 'numeric' });
-}
+    function formatDate(dateStr) {
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('nb-NO', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
 
-function getUrgencyClass(days){
-if(days < 0) return { card: 'urgent', badge: 'urgent' };
-if(days <= 7) return { card: 'urgent', badge: 'urgent' };
-if(days <= 30) return { card: 'warning', badge: 'warning' };
-return { card: 'ok', badge: 'ok' };
-}
+    function getUrgencyClass(days) {
+      if (days < 0) return 'urgent';
+      if (days <= 7) return 'urgent';
+      if (days <= 30) return 'warning';
+      return 'ok';
+    }
 
-function renderDeadlines(filter = 'all'){
-const grid = document.getElementById('calendarGrid');
-const filtered = filter === 'all' ? deadlines : deadlines.filter(d => d.type === filter);
-filtered.sort((a,b) => new Date(a.date) - new Date(b.date));
+    function renderDeadlines(filter = 'all') {
+      const grid = document.getElementById('calendarGrid');
+      const filtered = filter === 'all' ? deadlines : deadlines.filter(d => d.type === filter);
+      filtered.sort((a,b) => new Date(a.date) - new Date(b.date));
 
-grid.innerHTML = filtered.map(d => {
-const days = daysUntil(d.date);
-const urgency = getUrgencyClass(days);
-const daysText = days < 0
-? `<span class="days-left ${urgency.badge}">${Math.abs(days)} dager for sent</span>`
-: days === 0
-? `<span class="days-left ${urgency.badge}">I DAG!</span>`
-: `<span class="days-left ${urgency.badge}">${days} dager igjen</span>`;
+      grid.innerHTML = filtered.map(d => {
+        const days = daysUntil(d.date);
+        const urgency = getUrgencyClass(days);
+        let daysText = days < 0
+          ? `<span class="days-left urgent">${Math.abs(days)} dager for sent</span>`
+          : days === 0
+          ? `<span class="days-left warning">I DAG!</span>`
+          : `<span class="days-left ok">${days} dager igjen</span>`;
 
-return `
-<div class="deadline-card ${urgency.card}">
-<div class="deadline-month">${new Date(d.date).toLocaleDateString('nb-NO', { month: 'long' })}</div>
-<div class="deadline-title">${d.title}</div>
-<div class="deadline-date">${formatDate(d.date)}</div>
-<div class="deadline-desc">${d.desc}</div>
-<div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
-${daysText}
-<span class="deadline-type type-${d.type}">${typeLabels[d.type]}</span>
-</div>
-</div>
-`;
-}).join('');
-}
+        return `
+          <div class="deadline-card ${urgency}">
+            <div class="deadline-month">${new Date(d.date).toLocaleDateString('nb-NO', { month: 'long' })}</div>
+            <div class="deadline-title">${d.title}</div>
+            <div class="deadline-date">${formatDate(d.date)}</div>
+            <div class="deadline-desc">${d.desc}</div>
+            <div>${daysText}</div>
+            <span class="deadline-type type-${d.type}">${typeLabels[d.type]}</span>
+          </div>
+        `;
+      }).join('');
+    }
 
-function updateNextDeadline(){
-const today = new Date();
-today.setHours(0,0,0,0);
-const upcoming = deadlines.filter(d => new Date(d.date) >= today).sort((a,b) => new Date(a.date) - new Date(b.date))[0];
-if(upcoming){
-const days = daysUntil(upcoming.date);
-document.getElementById('nextDeadlineText').innerHTML = `<strong>${upcoming.title}</strong> ${formatDate(upcoming.date)} · <span style="font-weight:700;color:#92400e">${days} dager igjen</span>`;
-} else {
-document.getElementById('nextDeadlineText').textContent = 'Ingen flere frister i 2026.';
-}
-}
+    function updateNextDeadline() {
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      const upcoming = deadlines.filter(d => new Date(d.date) >= today).sort((a,b) => new Date(a.date) - new Date(b.date))[0];
+      if (upcoming) {
+        const days = daysUntil(upcoming.date);
+        document.getElementById('nextDeadlineText').innerHTML = `<strong>${upcoming.title}</strong> ${formatDate(upcoming.date)} · <span class="days-left ok">${days} dager igjen</span>`;
+      } else {
+        document.getElementById('nextDeadlineText').textContent = 'Ingen flere frister i 2026.';
+      }
+    }
 
-document.querySelectorAll('.filter-btn').forEach(btn => {
-btn.addEventListener('click', () => {
-document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-btn.classList.add('active');
-renderDeadlines(btn.dataset.filter);
-});
-});
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderDeadlines(btn.dataset.filter);
+      });
+    });
 
-renderDeadlines();
-updateNextDeadline();
-</script>
+    renderDeadlines();
+    updateNextDeadline();
+  </script>
 </body>
 </html>
